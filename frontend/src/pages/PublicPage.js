@@ -79,17 +79,42 @@ const PublicPage = () => {
   const getThemeStyles = () => {
     const theme = page.theme || 'default';
     const themes = {
-      default: { background: '#ffffff', text: '#000000' },
-      dark: { background: '#1a1a1a', text: '#ffffff' },
-      gradient: { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', text: '#ffffff' },
-      minimal: { background: '#f9fafb', text: '#000000' }
+      default: { 
+        background: '#ffffff', 
+        text: '#000000',
+        button: '#000000',
+        buttonText: '#ffffff'
+      },
+      dark: { 
+        background: '#1a1a1a', 
+        text: '#ffffff',
+        button: '#ffffff',
+        buttonText: '#000000'
+      },
+      gradient: { 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+        text: '#ffffff',
+        button: '#ffffff',
+        buttonText: '#764ba2'
+      },
+      minimal: { 
+        background: '#f9fafb', 
+        text: '#000000',
+        button: 'transparent',
+        buttonText: '#000000'
+      }
     };
     return themes[theme] || themes.default;
   };
 
   const getButtonClass = () => {
     const style = page.buttonStyle || 'rounded';
-    return `public-link button-${style}`;
+    const theme = page.theme || 'default';
+    let className = `public-link button-${style}`;
+    if (theme === 'minimal') {
+      className += ' button-outlined';
+    }
+    return className;
   };
 
   const getFontFamily = () => {
@@ -105,10 +130,22 @@ const PublicPage = () => {
   };
 
   const themeStyles = getThemeStyles();
+  
+  // Use custom colors if they differ from default, otherwise use theme
+  const hasCustomBackground = page.customColors?.background && page.customColors.background !== '#ffffff';
+  const hasCustomText = page.customColors?.text && page.customColors.text !== '#000000';
+  const hasCustomButton = page.customColors?.button && page.customColors.button !== '#000000';
+  const hasCustomButtonText = page.customColors?.buttonText && page.customColors.buttonText !== '#ffffff';
+  
   const pageStyle = {
-    background: page.customColors?.background || themeStyles.background,
-    color: page.customColors?.text || themeStyles.text,
+    background: hasCustomBackground ? page.customColors.background : themeStyles.background,
+    color: hasCustomText ? page.customColors.text : themeStyles.text,
     fontFamily: getFontFamily()
+  };
+  
+  const buttonStyle = {
+    background: hasCustomButton ? page.customColors.button : themeStyles.button,
+    color: hasCustomButtonText ? page.customColors.buttonText : themeStyles.buttonText
   };
 
   return (
@@ -119,12 +156,12 @@ const PublicPage = () => {
         )}
         {!page.avatar && <div className="public-avatar-placeholder"></div>}
         
-        <h1 style={{ color: page.customColors?.text || '#000000' }}>
+        <h1 style={{ color: hasCustomText ? page.customColors.text : themeStyles.text }}>
           {page.title}
         </h1>
         
         {page.bio && (
-          <p className="public-bio" style={{ color: page.customColors?.text || '#666666' }}>
+          <p className="public-bio" style={{ color: hasCustomText ? page.customColors.text : themeStyles.text, opacity: 0.8 }}>
             {page.bio}
           </p>
         )}
@@ -140,10 +177,7 @@ const PublicPage = () => {
                   key={link._id}
                   onClick={() => handleLinkClick(link._id, link.url)}
                   className={getButtonClass()}
-                  style={{
-                    background: page.customColors?.button || '#000000',
-                    color: page.customColors?.buttonText || '#ffffff'
-                  }}
+                  style={buttonStyle}
                 >
                   <div className="link-content">
                     <IconComponent size={20} className="link-icon" />
