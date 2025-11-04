@@ -17,6 +17,12 @@ const linkSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  iconSize: {
+    type: Number,
+    default: 50,
+    min: 30,
+    max: 100
+  },
   position: {
     type: String,
     enum: ['main', 'top', 'bottom'],

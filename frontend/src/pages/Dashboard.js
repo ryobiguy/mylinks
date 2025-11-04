@@ -12,7 +12,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link', iconOnly: false, position: 'main' });
+  const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link', iconOnly: false, iconSize: 50, position: 'main' });
   const [showAddLink, setShowAddLink] = useState(false);
 
   const iconOptions = [
@@ -117,7 +117,7 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPage(response.data.page);
-      setNewLink({ title: '', url: '', icon: 'link', iconOnly: false, position: 'main' });
+      setNewLink({ title: '', url: '', icon: 'link', iconOnly: false, iconSize: 50, position: 'main' });
       setShowAddLink(false);
       toast.success('Link added!');
     } catch (error) {
@@ -425,6 +425,23 @@ const Dashboard = () => {
                       <span>Icon Only (no text)</span>
                     </label>
                   </div>
+
+                  {newLink.iconOnly && (
+                    <div className="form-group">
+                      <label>Icon Size: {newLink.iconSize}px</label>
+                      <input
+                        type="range"
+                        min="30"
+                        max="100"
+                        value={newLink.iconSize}
+                        onChange={(e) => setNewLink({ ...newLink, iconSize: parseInt(e.target.value) })}
+                        className="slider-input"
+                      />
+                      <small style={{ color: '#666', fontSize: '0.875rem' }}>
+                        Adjust the size of your icon (30px - 100px)
+                      </small>
+                    </div>
+                  )}
 
                   <div className="form-group">
                     <label>Position</label>

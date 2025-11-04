@@ -185,18 +185,19 @@ const PublicPage = () => {
               .sort((a, b) => a.order - b.order)
               .map((link) => {
                 const iconData = getIcon(link.icon);
+                const size = link.iconSize || 50;
                 return (
                   <button
                     key={link._id}
                     onClick={() => handleLinkClick(link._id, link.url)}
                     className="icon-only-link"
-                    style={buttonStyle}
+                    style={{ ...buttonStyle, width: size, height: size }}
                     title={link.title}
                   >
                     {iconData.type === 'image' ? (
-                      <img src={iconData.icon} alt={link.title} style={{ width: 24, height: 24 }} />
+                      <img src={iconData.icon} alt={link.title} style={{ width: '100%', height: '100%' }} />
                     ) : (
-                      <iconData.icon size={24} />
+                      <iconData.icon size={size * 0.6} />
                     )}
                   </button>
                 );
@@ -212,18 +213,19 @@ const PublicPage = () => {
             .map((link) => {
               const iconData = getIcon(link.icon);
               if (link.iconOnly === true) {
+                const size = link.iconSize || 60;
                 return (
                   <button
                     key={link._id}
                     onClick={() => handleLinkClick(link._id, link.url)}
                     className="icon-only-link-main"
-                    style={buttonStyle}
+                    style={{ ...buttonStyle, width: size, height: size }}
                     title={link.title}
                   >
                     {iconData.type === 'image' ? (
-                      <img src={iconData.icon} alt={link.title} style={{ width: 28, height: 28 }} />
+                      <img src={iconData.icon} alt={link.title} style={{ width: '100%', height: '100%' }} />
                     ) : (
-                      <iconData.icon size={28} />
+                      <iconData.icon size={size * 0.6} />
                     )}
                   </button>
                 );
@@ -257,18 +259,19 @@ const PublicPage = () => {
               .sort((a, b) => a.order - b.order)
               .map((link) => {
                 const iconData = getIcon(link.icon);
+                const size = link.iconSize || 50;
                 return (
                   <button
                     key={link._id}
                     onClick={() => handleLinkClick(link._id, link.url)}
                     className="icon-only-link"
-                    style={buttonStyle}
+                    style={{ ...buttonStyle, width: size, height: size }}
                     title={link.title}
                   >
                     {iconData.type === 'image' ? (
-                      <img src={iconData.icon} alt={link.title} style={{ width: 24, height: 24 }} />
+                      <img src={iconData.icon} alt={link.title} style={{ width: '100%', height: '100%' }} />
                     ) : (
-                      <iconData.icon size={24} />
+                      <iconData.icon size={size * 0.6} />
                     )}
                   </button>
                 );
