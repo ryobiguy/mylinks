@@ -69,7 +69,7 @@ router.put('/my-page', auth, async (req, res) => {
 // Add link
 router.post('/my-page/links', auth, async (req, res) => {
   try {
-    const { title, url, icon } = req.body;
+    const { title, url, icon, iconOnly, position } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -80,6 +80,8 @@ router.post('/my-page/links', auth, async (req, res) => {
       title,
       url,
       icon: icon || 'link',
+      iconOnly: iconOnly || false,
+      position: position || 'main',
       order: page.links.length
     });
 
