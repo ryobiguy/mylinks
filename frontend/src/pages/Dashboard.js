@@ -523,6 +523,34 @@ const Dashboard = () => {
                   {page?.links?.map((link) => {
                     const iconOption = iconOptions.find(opt => opt.name === link.icon);
                     const iconData = iconOption ? { type: iconOption.type, icon: iconOption.icon } : { type: 'react', icon: FaLink };
+                    const size = link.iconSize || 50;
+                    
+                    // If icon-only, show as circular icon
+                    if (link.iconOnly) {
+                      return (
+                        <div 
+                          key={link._id} 
+                          className="preview-icon-only"
+                          style={{
+                            width: size * 0.4,
+                            height: size * 0.4,
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            margin: '5px auto'
+                          }}
+                        >
+                          {iconData.type === 'image' ? (
+                            <img src={iconData.icon} alt={link.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                          ) : (
+                            <iconData.icon size={size * 0.3} />
+                          )}
+                        </div>
+                      );
+                    }
+                    
+                    // Regular link with text
                     return (
                       <div 
                         key={link._id} 
