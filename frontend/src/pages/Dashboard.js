@@ -522,7 +522,7 @@ const Dashboard = () => {
                 {page?.links?.length === 0 ? (
                   <p className="empty-state">No links yet. Add your first link!</p>
                 ) : (
-                  page?.links?.map((link) => (
+                  page?.links?.sort((a, b) => a.order - b.order).map((link) => (
                     <div 
                       key={link._id} 
                       className={`link-item ${draggedLink?._id === link._id ? 'dragging' : ''}`}
