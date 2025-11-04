@@ -504,7 +504,8 @@ const Dashboard = () => {
                 </p>
                 <div className="preview-links">
                   {page?.links?.map((link) => {
-                    const IconComponent = iconOptions.find(opt => opt.name === link.icon)?.icon || FaLink;
+                    const iconOption = iconOptions.find(opt => opt.name === link.icon);
+                    const iconData = iconOption ? { type: iconOption.type, icon: iconOption.icon } : { type: 'react', icon: FaLink };
                     return (
                       <div 
                         key={link._id} 
@@ -514,7 +515,11 @@ const Dashboard = () => {
                           color: page?.customColors?.buttonText || '#ffffff'
                         }}
                       >
-                        <IconComponent size={16} />
+                        {iconData.type === 'image' ? (
+                          <img src={iconData.icon} alt={link.title} style={{ width: 16, height: 16 }} />
+                        ) : (
+                          <iconData.icon size={16} />
+                        )}
                         <span>{link.title}</span>
                       </div>
                     );
