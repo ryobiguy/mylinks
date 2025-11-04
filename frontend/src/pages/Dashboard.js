@@ -519,7 +519,13 @@ const Dashboard = () => {
                 <p style={{ color: page?.customColors?.text || '#666666' }}>
                   {page?.bio || 'Your bio'}
                 </p>
-                <div className="preview-links">
+                <div className="preview-links" style={{ 
+                  display: 'flex', 
+                  flexDirection: page?.links?.some(l => l.iconOnly) ? 'row' : 'column',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: '10px'
+                }}>
                   {page?.links?.map((link) => {
                     const iconOption = iconOptions.find(opt => opt.name === link.icon);
                     const iconData = iconOption ? { type: iconOption.type, icon: iconOption.icon } : { type: 'react', icon: FaLink };
@@ -538,7 +544,7 @@ const Dashboard = () => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            margin: '5px auto'
+                            flexShrink: 0
                           }}
                         >
                           {iconData.type === 'image' ? (
