@@ -1,0 +1,133 @@
+.public-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.public-content {
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
+}
+
+.public-avatar-placeholder {
+  width: 96px;
+  height: 96px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+}
+
+.public-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  object-fit: cover;
+}
+
+.public-page h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.public-bio {
+  font-size: 16px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.public-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.public-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  width: 100%;
+}
+
+.public-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.social-links a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #000;
+}
+
+.powered-by {
+  padding-top: 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.powered-by a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.powered-by a:hover {
+  color: #000;
+}
+
+.loading-page,
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.not-found h1 {
+  font-size: 72px;
+  margin-bottom: 20px;
+}
+
+.not-found p {
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .public-content {
+    max-width: 100%;
+  }
+
+  .public-link {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}
