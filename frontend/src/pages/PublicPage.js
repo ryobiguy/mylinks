@@ -192,11 +192,11 @@ const PublicPage = () => {
         {/* Main Links */}
         <div className="public-links">
           {page.links
-            .filter(link => link.isActive && link.position === 'main')
+            .filter(link => link.isActive && (!link.position || link.position === 'main'))
             .sort((a, b) => a.order - b.order)
             .map((link) => {
               const IconComponent = getIcon(link.icon);
-              if (link.iconOnly) {
+              if (link.iconOnly === true) {
                 return (
                   <button
                     key={link._id}
