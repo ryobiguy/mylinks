@@ -90,15 +90,23 @@ const Dashboard = () => {
 
   const handleAddLink = async (e) => {
     e.preventDefault();
-    if (!newLink.title || !newLink.url) return;
+    if (!newLink.url) return;
+
+    // If icon-only and no title, use the icon name as title
+    const linkToAdd = {
+      ...newLink,
+      title: newLink.title || (newLink.iconOnly ? iconOptions.find(opt => opt.name === newLink.icon)?.label || 'Link' : '')
+    };
+
+    if (!linkToAdd.title) return;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${API_URL}/pages/my-page/links`, newLink, {
+      const response = await axios.post(`${API_URL}/pages/my-page/links`, linkToAdd, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPage(response.data.page);
-      setNewLink({ title: '', url: '' });
+      setNewLink({ title: '', url: '', icon: 'link', iconOnly: false, position: 'main' });
       setShowAddLink(false);
       toast.success('Link added!');
     } catch (error) {
@@ -360,10 +368,10 @@ const Dashboard = () => {
                 <form onSubmit={handleAddLink} className="add-link-form">
                   <input
                     type="text"
-                    placeholder="Link title"
+                    placeholder={newLink.iconOnly ? "Link title (for tooltip)" : "Link title"}
                     value={newLink.title}
                     onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
-                    required
+                    required={!newLink.iconOnly}
                   />
                   <input
                     type="url"
