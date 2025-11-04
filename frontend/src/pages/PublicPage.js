@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ExternalLink } from 'lucide-react';
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import './PublicPage.css';
 
 const PublicPage = () => {
@@ -26,6 +27,24 @@ const PublicPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getIcon = (iconName) => {
+    const icons = {
+      link: FaLink,
+      facebook: FaFacebook,
+      twitter: FaTwitter,
+      instagram: FaInstagram,
+      youtube: FaYoutube,
+      tiktok: FaTiktok,
+      linkedin: FaLinkedin,
+      reddit: FaReddit,
+      github: FaGithub,
+      discord: FaDiscord,
+      twitch: FaTwitch,
+      spotify: FaSpotify
+    };
+    return icons[iconName] || FaLink;
   };
 
   const handleLinkClick = async (linkId, url) => {
@@ -79,20 +98,26 @@ const PublicPage = () => {
           {page.links
             .filter(link => link.isActive)
             .sort((a, b) => a.order - b.order)
-            .map((link) => (
-              <button
-                key={link._id}
-                onClick={() => handleLinkClick(link._id, link.url)}
-                className="public-link"
-                style={{
-                  background: page.customColors?.button || '#000000',
-                  color: page.customColors?.buttonText || '#ffffff'
-                }}
-              >
-                <span>{link.title}</span>
-                <ExternalLink size={18} />
-              </button>
-            ))}
+            .map((link) => {
+              const IconComponent = getIcon(link.icon);
+              return (
+                <button
+                  key={link._id}
+                  onClick={() => handleLinkClick(link._id, link.url)}
+                  className="public-link"
+                  style={{
+                    background: page.customColors?.button || '#000000',
+                    color: page.customColors?.buttonText || '#ffffff'
+                  }}
+                >
+                  <div className="link-content">
+                    <IconComponent size={20} className="link-icon" />
+                    <span>{link.title}</span>
+                  </div>
+                  <ExternalLink size={18} />
+                </button>
+              );
+            })}
         </div>
 
         {page.socialLinks && (

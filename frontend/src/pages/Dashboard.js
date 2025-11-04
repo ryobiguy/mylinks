@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink } from 'lucide-react';
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -11,8 +12,23 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [newLink, setNewLink] = useState({ title: '', url: '' });
+  const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link' });
   const [showAddLink, setShowAddLink] = useState(false);
+
+  const iconOptions = [
+    { name: 'link', icon: FaLink, label: 'Default Link' },
+    { name: 'facebook', icon: FaFacebook, label: 'Facebook' },
+    { name: 'twitter', icon: FaTwitter, label: 'X (Twitter)' },
+    { name: 'instagram', icon: FaInstagram, label: 'Instagram' },
+    { name: 'youtube', icon: FaYoutube, label: 'YouTube' },
+    { name: 'tiktok', icon: FaTiktok, label: 'TikTok' },
+    { name: 'linkedin', icon: FaLinkedin, label: 'LinkedIn' },
+    { name: 'reddit', icon: FaReddit, label: 'Reddit' },
+    { name: 'github', icon: FaGithub, label: 'GitHub' },
+    { name: 'discord', icon: FaDiscord, label: 'Discord' },
+    { name: 'twitch', icon: FaTwitch, label: 'Twitch' },
+    { name: 'spotify', icon: FaSpotify, label: 'Spotify' }
+  ];
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -175,6 +191,27 @@ const Dashboard = () => {
                     onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
                     required
                   />
+                  
+                  <div className="icon-picker">
+                    <label>Choose Icon:</label>
+                    <div className="icon-grid">
+                      {iconOptions.map((option) => {
+                        const IconComponent = option.icon;
+                        return (
+                          <button
+                            key={option.name}
+                            type="button"
+                            className={`icon-option ${newLink.icon === option.name ? 'selected' : ''}`}
+                            onClick={() => setNewLink({ ...newLink, icon: option.name })}
+                            title={option.label}
+                          >
+                            <IconComponent size={24} />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="form-actions">
                     <button type="submit" className="btn-primary btn-small">Add</button>
                     <button 
