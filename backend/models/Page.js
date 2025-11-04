@@ -13,6 +13,15 @@ const linkSchema = new mongoose.Schema({
     type: String,
     default: 'link'
   },
+  iconOnly: {
+    type: Boolean,
+    default: false
+  },
+  position: {
+    type: String,
+    enum: ['main', 'top', 'bottom'],
+    default: 'main'
+  },
   clicks: {
     type: Number,
     default: 0

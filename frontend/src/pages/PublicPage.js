@@ -166,12 +166,49 @@ const PublicPage = () => {
           </p>
         )}
 
+        {/* Top Icons */}
+        {page.links.filter(link => link.isActive && link.position === 'top').length > 0 && (
+          <div className="icon-links top-icons">
+            {page.links
+              .filter(link => link.isActive && link.position === 'top')
+              .sort((a, b) => a.order - b.order)
+              .map((link) => {
+                const IconComponent = getIcon(link.icon);
+                return (
+                  <button
+                    key={link._id}
+                    onClick={() => handleLinkClick(link._id, link.url)}
+                    className="icon-only-link"
+                    style={buttonStyle}
+                    title={link.title}
+                  >
+                    <IconComponent size={24} />
+                  </button>
+                );
+              })}
+          </div>
+        )}
+
+        {/* Main Links */}
         <div className="public-links">
           {page.links
-            .filter(link => link.isActive)
+            .filter(link => link.isActive && link.position === 'main')
             .sort((a, b) => a.order - b.order)
             .map((link) => {
               const IconComponent = getIcon(link.icon);
+              if (link.iconOnly) {
+                return (
+                  <button
+                    key={link._id}
+                    onClick={() => handleLinkClick(link._id, link.url)}
+                    className="icon-only-link-main"
+                    style={buttonStyle}
+                    title={link.title}
+                  >
+                    <IconComponent size={28} />
+                  </button>
+                );
+              }
               return (
                 <button
                   key={link._id}
@@ -188,6 +225,29 @@ const PublicPage = () => {
               );
             })}
         </div>
+
+        {/* Bottom Icons */}
+        {page.links.filter(link => link.isActive && link.position === 'bottom').length > 0 && (
+          <div className="icon-links bottom-icons">
+            {page.links
+              .filter(link => link.isActive && link.position === 'bottom')
+              .sort((a, b) => a.order - b.order)
+              .map((link) => {
+                const IconComponent = getIcon(link.icon);
+                return (
+                  <button
+                    key={link._id}
+                    onClick={() => handleLinkClick(link._id, link.url)}
+                    className="icon-only-link"
+                    style={buttonStyle}
+                    title={link.title}
+                  >
+                    <IconComponent size={24} />
+                  </button>
+                );
+              })}
+          </div>
+        )}
 
         {page.socialLinks && (
           <div className="social-links">

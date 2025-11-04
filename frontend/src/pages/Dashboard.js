@@ -12,7 +12,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link' });
+  const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link', iconOnly: false, position: 'main' });
   const [showAddLink, setShowAddLink] = useState(false);
 
   const iconOptions = [
@@ -391,6 +391,30 @@ const Dashboard = () => {
                         );
                       })}
                     </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={newLink.iconOnly}
+                        onChange={(e) => setNewLink({ ...newLink, iconOnly: e.target.checked })}
+                      />
+                      <span>Icon Only (no text)</span>
+                    </label>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Position</label>
+                    <select
+                      value={newLink.position}
+                      onChange={(e) => setNewLink({ ...newLink, position: e.target.value })}
+                      className="select-input"
+                    >
+                      <option value="top">Top (Social Icons)</option>
+                      <option value="main">Main (Regular Links)</option>
+                      <option value="bottom">Bottom (Footer Icons)</option>
+                    </select>
                   </div>
 
                   <div className="form-actions">
