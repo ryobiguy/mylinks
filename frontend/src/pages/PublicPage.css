@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&family=Roboto:wght@400;500;700&family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
 .public-page {
   min-height: 100vh;
   display: flex;
@@ -74,6 +76,30 @@
 .public-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Button Styles */
+.button-rounded {
+  border-radius: 12px;
+}
+
+.button-square {
+  border-radius: 0;
+}
+
+.button-pill {
+  border-radius: 50px;
+}
+
+.button-outlined {
+  background: transparent !important;
+  border: 2px solid currentColor;
+  color: inherit !important;
+}
+
+.button-outlined .link-content,
+.button-outlined svg {
+  color: inherit;
 }
 
 .social-links {

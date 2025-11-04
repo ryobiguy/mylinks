@@ -76,8 +76,43 @@ const PublicPage = () => {
     );
   }
 
+  const getThemeStyles = () => {
+    const theme = page.theme || 'default';
+    const themes = {
+      default: { background: '#ffffff', text: '#000000' },
+      dark: { background: '#1a1a1a', text: '#ffffff' },
+      gradient: { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', text: '#ffffff' },
+      minimal: { background: '#f9fafb', text: '#000000' }
+    };
+    return themes[theme] || themes.default;
+  };
+
+  const getButtonClass = () => {
+    const style = page.buttonStyle || 'rounded';
+    return `public-link button-${style}`;
+  };
+
+  const getFontFamily = () => {
+    const fonts = {
+      system: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      inter: '"Inter", sans-serif',
+      poppins: '"Poppins", sans-serif',
+      roboto: '"Roboto", sans-serif',
+      montserrat: '"Montserrat", sans-serif',
+      playfair: '"Playfair Display", serif'
+    };
+    return fonts[page.font] || fonts.system;
+  };
+
+  const themeStyles = getThemeStyles();
+  const pageStyle = {
+    background: page.customColors?.background || themeStyles.background,
+    color: page.customColors?.text || themeStyles.text,
+    fontFamily: getFontFamily()
+  };
+
   return (
-    <div className="public-page" style={{ background: page.customColors?.background || '#ffffff' }}>
+    <div className="public-page" style={pageStyle}>
       <div className="public-content">
         {page.avatar && (
           <img src={page.avatar} alt={page.title} className="public-avatar" />
@@ -104,7 +139,7 @@ const PublicPage = () => {
                 <button
                   key={link._id}
                   onClick={() => handleLinkClick(link._id, link.url)}
-                  className="public-link"
+                  className={getButtonClass()}
                   style={{
                     background: page.customColors?.button || '#000000',
                     color: page.customColors?.buttonText || '#ffffff'

@@ -210,6 +210,141 @@ const Dashboard = () => {
             </div>
 
             <div className="section-card">
+              <h3>Appearance</h3>
+              
+              <div className="form-group">
+                <label>Theme</label>
+                <div className="theme-grid">
+                  <button
+                    type="button"
+                    className={`theme-option ${!page?.theme || page?.theme === 'default' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'default' })}
+                  >
+                    <div className="theme-preview default-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Default</span>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'dark' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'dark' })}
+                  >
+                    <div className="theme-preview dark-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Dark</span>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'gradient' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'gradient' })}
+                  >
+                    <div className="theme-preview gradient-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Gradient</span>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'minimal' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'minimal' })}
+                  >
+                    <div className="theme-preview minimal-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Minimal</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Button Style</label>
+                <select
+                  value={page?.buttonStyle || 'rounded'}
+                  onChange={(e) => handleUpdatePage({ buttonStyle: e.target.value })}
+                  className="select-input"
+                >
+                  <option value="rounded">Rounded</option>
+                  <option value="square">Square</option>
+                  <option value="pill">Pill</option>
+                  <option value="outlined">Outlined</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Font</label>
+                <select
+                  value={page?.font || 'system'}
+                  onChange={(e) => handleUpdatePage({ font: e.target.value })}
+                  className="select-input"
+                >
+                  <option value="system">System Default</option>
+                  <option value="inter">Inter</option>
+                  <option value="poppins">Poppins</option>
+                  <option value="roboto">Roboto</option>
+                  <option value="montserrat">Montserrat</option>
+                  <option value="playfair">Playfair Display</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Background Color</label>
+                <input
+                  type="color"
+                  value={page?.customColors?.background || '#ffffff'}
+                  onChange={(e) => handleUpdatePage({ 
+                    customColors: { ...page?.customColors, background: e.target.value }
+                  })}
+                  className="color-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Text Color</label>
+                <input
+                  type="color"
+                  value={page?.customColors?.text || '#000000'}
+                  onChange={(e) => handleUpdatePage({ 
+                    customColors: { ...page?.customColors, text: e.target.value }
+                  })}
+                  className="color-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Button Color</label>
+                <input
+                  type="color"
+                  value={page?.customColors?.button || '#000000'}
+                  onChange={(e) => handleUpdatePage({ 
+                    customColors: { ...page?.customColors, button: e.target.value }
+                  })}
+                  className="color-input"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Button Text Color</label>
+                <input
+                  type="color"
+                  value={page?.customColors?.buttonText || '#ffffff'}
+                  onChange={(e) => handleUpdatePage({ 
+                    customColors: { ...page?.customColors, buttonText: e.target.value }
+                  })}
+                  className="color-input"
+                />
+              </div>
+            </div>
+
+            <div className="section-card">
               <div className="section-header">
                 <h3>Links</h3>
                 <button 

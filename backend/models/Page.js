@@ -56,6 +56,16 @@ const pageSchema = new mongoose.Schema({
     default: 'default',
     enum: ['default', 'dark', 'gradient', 'minimal', 'colorful']
   },
+  buttonStyle: {
+    type: String,
+    default: 'rounded',
+    enum: ['rounded', 'square', 'pill', 'outlined']
+  },
+  font: {
+    type: String,
+    default: 'system',
+    enum: ['system', 'inter', 'poppins', 'roboto', 'montserrat', 'playfair']
+  },
   customColors: {
     background: {
       type: String,
