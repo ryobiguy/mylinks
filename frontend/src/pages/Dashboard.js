@@ -142,6 +142,8 @@ const Dashboard = () => {
         link.order = index;
       });
       
+      console.log('Reordering links:', newLinks.map(l => ({ id: l._id, order: l.order })));
+      
       const response = await axios.put(`${API_URL}/pages/my-page/links/reorder`, 
         { links: newLinks.map(l => ({ id: l._id, order: l.order })) },
         { headers: { Authorization: `Bearer ${token}` }}
@@ -151,7 +153,8 @@ const Dashboard = () => {
       toast.success('Link order updated!');
     } catch (error) {
       console.error('Move link error:', error);
-      toast.error('Failed to reorder link');
+      console.error('Error details:', error.response?.data);
+      toast.error(error.response?.data?.error || 'Failed to reorder link');
     }
   };
 

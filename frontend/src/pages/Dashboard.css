@@ -129,7 +129,8 @@
 }
 
 .upload-btn:hover {
-  background: #4338CA;
+  background: #white;
+  color: #4F46E5;
 }
 
 .theme-grid {
