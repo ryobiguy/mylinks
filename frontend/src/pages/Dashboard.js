@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import './Dashboard.css';
 
@@ -126,23 +126,39 @@ const Dashboard = () => {
     }
   };
 
-  const handleMoveLink = async (linkId, direction) => {
+  const [draggedLink, setDraggedLink] = useState(null);
+
+  const handleDragStart = (e, link) => {
+    setDraggedLink(link);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = async (e, targetLink) => {
+    e.preventDefault();
+    
+    if (!draggedLink || draggedLink._id === targetLink._id) {
+      setDraggedLink(null);
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
-      const currentIndex = page.links.findIndex(l => l._id === linkId);
-      const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-      
-      if (newIndex < 0 || newIndex >= page.links.length) return;
+      const draggedIndex = page.links.findIndex(l => l._id === draggedLink._id);
+      const targetIndex = page.links.findIndex(l => l._id === targetLink._id);
       
       const newLinks = [...page.links];
-      [newLinks[currentIndex], newLinks[newIndex]] = [newLinks[newIndex], newLinks[currentIndex]];
+      newLinks.splice(draggedIndex, 1);
+      newLinks.splice(targetIndex, 0, draggedLink);
       
       // Update order values
       newLinks.forEach((link, index) => {
         link.order = index;
       });
-      
-      console.log('Reordering links:', newLinks.map(l => ({ id: l._id, order: l.order })));
       
       const response = await axios.put(`${API_URL}/pages/my-page/links/reorder`, 
         { links: newLinks.map(l => ({ id: l._id, order: l.order })) },
@@ -150,11 +166,12 @@ const Dashboard = () => {
       );
       
       setPage(response.data.page);
+      setDraggedLink(null);
       toast.success('Link order updated!');
     } catch (error) {
-      console.error('Move link error:', error);
-      console.error('Error details:', error.response?.data);
-      toast.error(error.response?.data?.error || 'Failed to reorder link');
+      console.error('Reorder error:', error);
+      toast.error('Failed to reorder link');
+      setDraggedLink(null);
     }
   };
 
@@ -505,25 +522,17 @@ const Dashboard = () => {
                 {page?.links?.length === 0 ? (
                   <p className="empty-state">No links yet. Add your first link!</p>
                 ) : (
-                  page?.links?.map((link, index) => (
-                    <div key={link._id} className="link-item">
-                      <div className="link-reorder-buttons">
-                        <button 
-                          onClick={() => handleMoveLink(link._id, 'up')} 
-                          className="btn-icon-small"
-                          disabled={index === 0}
-                          title="Move up"
-                        >
-                          <ChevronUp size={16} />
-                        </button>
-                        <button 
-                          onClick={() => handleMoveLink(link._id, 'down')} 
-                          className="btn-icon-small"
-                          disabled={index === page.links.length - 1}
-                          title="Move down"
-                        >
-                          <ChevronDown size={16} />
-                        </button>
+                  page?.links?.map((link) => (
+                    <div 
+                      key={link._id} 
+                      className={`link-item ${draggedLink?._id === link._id ? 'dragging' : ''}`}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, link)}
+                      onDragOver={handleDragOver}
+                      onDrop={(e) => handleDrop(e, link)}
+                    >
+                      <div className="drag-handle" title="Drag to reorder">
+                        <GripVertical size={20} />
                       </div>
                       <div className="link-info">
                         <h4>{link.title}</h4>

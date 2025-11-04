@@ -393,34 +393,29 @@
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   gap: 10px;
-}
-
-.link-reorder-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.btn-icon-small {
-  background: transparent;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  padding: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  cursor: move;
   transition: all 0.2s;
 }
 
-.btn-icon-small:hover:not(:disabled) {
-  background: #f3f4f6;
+.link-item:hover {
   border-color: #d1d5db;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.btn-icon-small:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+.link-item.dragging {
+  opacity: 0.5;
+  border-color: #4F46E5;
+}
+
+.drag-handle {
+  color: #9ca3af;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
 }
 
 .link-info {
