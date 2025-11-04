@@ -22,6 +22,13 @@
   gap: 10px;
 }
 
+.nav-actions button,
+.nav-actions a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn-small {
   padding: 8px 16px;
   font-size: 14px;
