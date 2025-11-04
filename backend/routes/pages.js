@@ -94,6 +94,32 @@ router.post('/my-page/links', auth, async (req, res) => {
   }
 });
 
+// Reorder links
+router.put('/my-page/links/reorder', auth, async (req, res) => {
+  try {
+    const { links } = req.body; // Array of { id, order }
+
+    const page = await Page.findOne({ user: req.userId });
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    // Update order for each link
+    links.forEach(({ id, order }) => {
+      const link = page.links.id(id);
+      if (link) {
+        link.order = order;
+      }
+    });
+
+    await page.save();
+    res.json({ page });
+  } catch (error) {
+    console.error('Reorder links error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Update link
 router.put('/my-page/links/:linkId', auth, async (req, res) => {
   try {

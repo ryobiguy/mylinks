@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, ChevronUp, ChevronDown } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import './Dashboard.css';
 
@@ -123,6 +123,35 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Add link error:', error);
       toast.error('Failed to add link');
+    }
+  };
+
+  const handleMoveLink = async (linkId, direction) => {
+    try {
+      const token = localStorage.getItem('token');
+      const currentIndex = page.links.findIndex(l => l._id === linkId);
+      const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+      
+      if (newIndex < 0 || newIndex >= page.links.length) return;
+      
+      const newLinks = [...page.links];
+      [newLinks[currentIndex], newLinks[newIndex]] = [newLinks[newIndex], newLinks[currentIndex]];
+      
+      // Update order values
+      newLinks.forEach((link, index) => {
+        link.order = index;
+      });
+      
+      const response = await axios.put(`${API_URL}/pages/my-page/links/reorder`, 
+        { links: newLinks.map(l => ({ id: l._id, order: l.order })) },
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
+      
+      setPage(response.data.page);
+      toast.success('Link order updated!');
+    } catch (error) {
+      console.error('Move link error:', error);
+      toast.error('Failed to reorder link');
     }
   };
 
@@ -473,8 +502,26 @@ const Dashboard = () => {
                 {page?.links?.length === 0 ? (
                   <p className="empty-state">No links yet. Add your first link!</p>
                 ) : (
-                  page?.links?.map((link) => (
+                  page?.links?.map((link, index) => (
                     <div key={link._id} className="link-item">
+                      <div className="link-reorder-buttons">
+                        <button 
+                          onClick={() => handleMoveLink(link._id, 'up')} 
+                          className="btn-icon-small"
+                          disabled={index === 0}
+                          title="Move up"
+                        >
+                          <ChevronUp size={16} />
+                        </button>
+                        <button 
+                          onClick={() => handleMoveLink(link._id, 'down')} 
+                          className="btn-icon-small"
+                          disabled={index === page.links.length - 1}
+                          title="Move down"
+                        >
+                          <ChevronDown size={16} />
+                        </button>
+                      </div>
                       <div className="link-info">
                         <h4>{link.title}</h4>
                         <a href={link.url} target="_blank" rel="noopener noreferrer" className="link-url">
