@@ -16,18 +16,28 @@ const Dashboard = () => {
   const [showAddLink, setShowAddLink] = useState(false);
 
   const iconOptions = [
-    { name: 'link', icon: FaLink, label: 'Default Link' },
-    { name: 'facebook', icon: FaFacebook, label: 'Facebook' },
-    { name: 'twitter', icon: FaTwitter, label: 'X (Twitter)' },
-    { name: 'instagram', icon: FaInstagram, label: 'Instagram' },
-    { name: 'youtube', icon: FaYoutube, label: 'YouTube' },
-    { name: 'tiktok', icon: FaTiktok, label: 'TikTok' },
-    { name: 'linkedin', icon: FaLinkedin, label: 'LinkedIn' },
-    { name: 'reddit', icon: FaReddit, label: 'Reddit' },
-    { name: 'github', icon: FaGithub, label: 'GitHub' },
-    { name: 'discord', icon: FaDiscord, label: 'Discord' },
-    { name: 'twitch', icon: FaTwitch, label: 'Twitch' },
-    { name: 'spotify', icon: FaSpotify, label: 'Spotify' }
+    { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
+    { name: 'facebook', icon: FaFacebook, label: 'Facebook', type: 'react' },
+    { name: 'fb', icon: '/icons/fb.png', label: 'Facebook (Custom)', type: 'image' },
+    { name: 'twitter', icon: FaTwitter, label: 'X (Twitter)', type: 'react' },
+    { name: 'x', icon: '/icons/x.png', label: 'X (Custom)', type: 'image' },
+    { name: 'instagram', icon: FaInstagram, label: 'Instagram', type: 'react' },
+    { name: 'insta', icon: '/icons/insta.png', label: 'Instagram (Custom)', type: 'image' },
+    { name: 'youtube', icon: FaYoutube, label: 'YouTube', type: 'react' },
+    { name: 'yt', icon: '/icons/yt.png', label: 'YouTube (Custom)', type: 'image' },
+    { name: 'tiktok', icon: FaTiktok, label: 'TikTok', type: 'react' },
+    { name: 'tiktok-custom', icon: '/icons/tiktok.png', label: 'TikTok (Custom)', type: 'image' },
+    { name: 'linkedin', icon: FaLinkedin, label: 'LinkedIn', type: 'react' },
+    { name: 'reddit', icon: FaReddit, label: 'Reddit', type: 'react' },
+    { name: 'github', icon: FaGithub, label: 'GitHub', type: 'react' },
+    { name: 'discord', icon: FaDiscord, label: 'Discord', type: 'react' },
+    { name: 'discord-custom', icon: '/icons/discord.png', label: 'Discord (Custom)', type: 'image' },
+    { name: 'twitch', icon: FaTwitch, label: 'Twitch', type: 'react' },
+    { name: 'twitch-custom', icon: '/icons/twitch.png', label: 'Twitch (Custom)', type: 'image' },
+    { name: 'spotify', icon: FaSpotify, label: 'Spotify', type: 'react' },
+    { name: 'snapchat', icon: '/icons/snapchat.png', label: 'Snapchat', type: 'image' },
+    { name: 'telegram', icon: '/icons/telegram.png', label: 'Telegram', type: 'image' },
+    { name: 'pinterest', icon: '/icons/pinterest.png', label: 'Pinterest', type: 'image' }
   ];
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
@@ -385,7 +395,6 @@ const Dashboard = () => {
                     <label>Choose Icon:</label>
                     <div className="icon-grid">
                       {iconOptions.map((option) => {
-                        const IconComponent = option.icon;
                         return (
                           <button
                             key={option.name}
@@ -394,7 +403,11 @@ const Dashboard = () => {
                             onClick={() => setNewLink({ ...newLink, icon: option.name })}
                             title={option.label}
                           >
-                            <IconComponent size={24} />
+                            {option.type === 'image' ? (
+                              <img src={option.icon} alt={option.label} style={{ width: 24, height: 24 }} />
+                            ) : (
+                              <option.icon size={24} />
+                            )}
                           </button>
                         );
                       })}

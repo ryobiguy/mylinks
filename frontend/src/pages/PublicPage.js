@@ -31,20 +31,30 @@ const PublicPage = () => {
 
   const getIcon = (iconName) => {
     const icons = {
-      link: FaLink,
-      facebook: FaFacebook,
-      twitter: FaTwitter,
-      instagram: FaInstagram,
-      youtube: FaYoutube,
-      tiktok: FaTiktok,
-      linkedin: FaLinkedin,
-      reddit: FaReddit,
-      github: FaGithub,
-      discord: FaDiscord,
-      twitch: FaTwitch,
-      spotify: FaSpotify
+      link: { type: 'react', icon: FaLink },
+      facebook: { type: 'react', icon: FaFacebook },
+      fb: { type: 'image', icon: '/icons/fb.png' },
+      twitter: { type: 'react', icon: FaTwitter },
+      x: { type: 'image', icon: '/icons/x.png' },
+      instagram: { type: 'react', icon: FaInstagram },
+      insta: { type: 'image', icon: '/icons/insta.png' },
+      youtube: { type: 'react', icon: FaYoutube },
+      yt: { type: 'image', icon: '/icons/yt.png' },
+      tiktok: { type: 'react', icon: FaTiktok },
+      'tiktok-custom': { type: 'image', icon: '/icons/tiktok.png' },
+      linkedin: { type: 'react', icon: FaLinkedin },
+      reddit: { type: 'react', icon: FaReddit },
+      github: { type: 'react', icon: FaGithub },
+      discord: { type: 'react', icon: FaDiscord },
+      'discord-custom': { type: 'image', icon: '/icons/discord.png' },
+      twitch: { type: 'react', icon: FaTwitch },
+      'twitch-custom': { type: 'image', icon: '/icons/twitch.png' },
+      spotify: { type: 'react', icon: FaSpotify },
+      snapchat: { type: 'image', icon: '/icons/snapchat.png' },
+      telegram: { type: 'image', icon: '/icons/telegram.png' },
+      pinterest: { type: 'image', icon: '/icons/pinterest.png' }
     };
-    return icons[iconName] || FaLink;
+    return icons[iconName] || { type: 'react', icon: FaLink };
   };
 
   const handleLinkClick = async (linkId, url) => {
@@ -173,7 +183,7 @@ const PublicPage = () => {
               .filter(link => link.isActive && link.position === 'top')
               .sort((a, b) => a.order - b.order)
               .map((link) => {
-                const IconComponent = getIcon(link.icon);
+                const iconData = getIcon(link.icon);
                 return (
                   <button
                     key={link._id}
@@ -182,7 +192,11 @@ const PublicPage = () => {
                     style={buttonStyle}
                     title={link.title}
                   >
-                    <IconComponent size={24} />
+                    {iconData.type === 'image' ? (
+                      <img src={iconData.icon} alt={link.title} style={{ width: 24, height: 24 }} />
+                    ) : (
+                      <iconData.icon size={24} />
+                    )}
                   </button>
                 );
               })}
@@ -195,7 +209,7 @@ const PublicPage = () => {
             .filter(link => link.isActive && (!link.position || link.position === 'main'))
             .sort((a, b) => a.order - b.order)
             .map((link) => {
-              const IconComponent = getIcon(link.icon);
+              const iconData = getIcon(link.icon);
               if (link.iconOnly === true) {
                 return (
                   <button
@@ -205,7 +219,11 @@ const PublicPage = () => {
                     style={buttonStyle}
                     title={link.title}
                   >
-                    <IconComponent size={28} />
+                    {iconData.type === 'image' ? (
+                      <img src={iconData.icon} alt={link.title} style={{ width: 28, height: 28 }} />
+                    ) : (
+                      <iconData.icon size={28} />
+                    )}
                   </button>
                 );
               }
@@ -217,7 +235,11 @@ const PublicPage = () => {
                   style={buttonStyle}
                 >
                   <div className="link-content">
-                    <IconComponent size={20} className="link-icon" />
+                    {iconData.type === 'image' ? (
+                      <img src={iconData.icon} alt={link.title} className="link-icon" style={{ width: 20, height: 20 }} />
+                    ) : (
+                      <iconData.icon size={20} className="link-icon" />
+                    )}
                     <span>{link.title}</span>
                   </div>
                   <ExternalLink size={18} />
@@ -233,7 +255,7 @@ const PublicPage = () => {
               .filter(link => link.isActive && link.position === 'bottom')
               .sort((a, b) => a.order - b.order)
               .map((link) => {
-                const IconComponent = getIcon(link.icon);
+                const iconData = getIcon(link.icon);
                 return (
                   <button
                     key={link._id}
@@ -242,7 +264,11 @@ const PublicPage = () => {
                     style={buttonStyle}
                     title={link.title}
                   >
-                    <IconComponent size={24} />
+                    {iconData.type === 'image' ? (
+                      <img src={iconData.icon} alt={link.title} style={{ width: 24, height: 24 }} />
+                    ) : (
+                      <iconData.icon size={24} />
+                    )}
                   </button>
                 );
               })}
