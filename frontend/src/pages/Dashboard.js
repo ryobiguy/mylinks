@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import './Dashboard.css';
 
@@ -63,6 +63,29 @@ const Dashboard = () => {
       console.error('Update page error:', error);
       toast.error('Failed to update page');
     }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be less than 2MB');
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        await handleUpdatePage({ avatar: reader.result });
+        toast.success('Profile picture updated!');
+      } catch (error) {
+        toast.error('Failed to upload image');
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleAddLink = async (e) => {
@@ -141,6 +164,29 @@ const Dashboard = () => {
           <div className="editor-section">
             <div className="section-card">
               <h3>Page Info</h3>
+              
+              <div className="form-group">
+                <label>Profile Picture</label>
+                <div className="avatar-upload">
+                  {page?.avatar ? (
+                    <img src={page.avatar} alt="Profile" className="avatar-preview" />
+                  ) : (
+                    <div className="avatar-placeholder">No Image</div>
+                  )}
+                  <label htmlFor="avatar-input" className="upload-btn">
+                    <Upload size={18} />
+                    Upload Image
+                  </label>
+                  <input
+                    id="avatar-input"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+              </div>
+
               <div className="form-group">
                 <label>Title</label>
                 <input
