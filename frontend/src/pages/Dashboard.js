@@ -37,7 +37,8 @@ const Dashboard = () => {
     { name: 'spotify', icon: FaSpotify, label: 'Spotify', type: 'react' },
     { name: 'snapchat', icon: '/icons/snapchat.png', label: 'Snapchat', type: 'image' },
     { name: 'telegram', icon: '/icons/telegram.png', label: 'Telegram', type: 'image' },
-    { name: 'pinterest', icon: '/icons/pinterest.png', label: 'Pinterest', type: 'image' }
+    { name: 'pinterest', icon: '/icons/pinterest.png', label: 'Pinterest', type: 'image' },
+    { name: 'onlyfans', icon: '/icons/of.png', label: 'OnlyFans', type: 'image' }
   ];
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';

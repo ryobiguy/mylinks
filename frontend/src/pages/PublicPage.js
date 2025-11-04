@@ -52,7 +52,8 @@ const PublicPage = () => {
       spotify: { type: 'react', icon: FaSpotify },
       snapchat: { type: 'image', icon: '/icons/snapchat.png' },
       telegram: { type: 'image', icon: '/icons/telegram.png' },
-      pinterest: { type: 'image', icon: '/icons/pinterest.png' }
+      pinterest: { type: 'image', icon: '/icons/pinterest.png' },
+      onlyfans: { type: 'image', icon: '/icons/of.png' }
     };
     return icons[iconName] || { type: 'react', icon: FaLink };
   };
