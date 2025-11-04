@@ -438,16 +438,41 @@ const Dashboard = () => {
               <h3>Preview</h3>
             </div>
             <div className="phone-preview">
-              <div className="preview-content">
-                <div className="preview-avatar"></div>
-                <h2>{page?.title}</h2>
-                <p>{page?.bio}</p>
+              <div 
+                className="preview-content"
+                style={{
+                  background: page?.customColors?.background || '#ffffff',
+                  color: page?.customColors?.text || '#000000'
+                }}
+              >
+                {page?.avatar ? (
+                  <img src={page.avatar} alt="Profile" className="preview-avatar-img" />
+                ) : (
+                  <div className="preview-avatar"></div>
+                )}
+                <h2 style={{ color: page?.customColors?.text || '#000000' }}>
+                  {page?.title || 'Your Title'}
+                </h2>
+                <p style={{ color: page?.customColors?.text || '#666666' }}>
+                  {page?.bio || 'Your bio'}
+                </p>
                 <div className="preview-links">
-                  {page?.links?.map((link) => (
-                    <div key={link._id} className="preview-link">
-                      {link.title}
-                    </div>
-                  ))}
+                  {page?.links?.map((link) => {
+                    const IconComponent = iconOptions.find(opt => opt.name === link.icon)?.icon || FaLink;
+                    return (
+                      <div 
+                        key={link._id} 
+                        className={`preview-link preview-button-${page?.buttonStyle || 'rounded'}`}
+                        style={{
+                          background: page?.customColors?.button || '#000000',
+                          color: page?.customColors?.buttonText || '#ffffff'
+                        }}
+                      >
+                        <IconComponent size={16} />
+                        <span>{link.title}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

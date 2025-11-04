@@ -439,7 +439,30 @@
   color: white;
   padding: 15px;
   border-radius: 8px;
+  text-align: center;
   font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.preview-button-rounded {
+  border-radius: 8px;
+}
+
+.preview-button-square {
+  border-radius: 0;
+}
+
+.preview-button-pill {
+  border-radius: 50px;
+}
+
+.preview-button-outlined {
+  background: transparent !important;
+  border: 2px solid currentColor;
 }
 
 .loading {
