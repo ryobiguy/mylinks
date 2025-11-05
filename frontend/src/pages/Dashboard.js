@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import { QRCodeSVG } from 'qrcode.react';
+import { HexColorPicker } from 'react-colorful';
 import ImageCropModal from '../components/ImageCropModal';
 import ScheduleModal from '../components/ScheduleModal';
 import './Dashboard.css';
@@ -22,6 +23,7 @@ const Dashboard = () => {
   const [showQRCode, setShowQRCode] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
+  const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
 
   const iconOptions = [
     { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
@@ -526,13 +528,10 @@ const Dashboard = () => {
               <div className="form-group">
                 <label>Background Color</label>
                 <div className="color-picker-wrapper">
-                  <input
-                    type="color"
-                    value={page?.customColors?.background || '#ffffff'}
-                    onChange={(e) => handleUpdatePage({ 
-                      customColors: { ...page?.customColors, background: e.target.value }
-                    })}
-                    className="color-input-picker"
+                  <div 
+                    className="color-preview-circle"
+                    style={{ background: page?.customColors?.background || '#ffffff' }}
+                    onClick={() => setOpenColorPicker(openColorPicker === 'background' ? null : 'background')}
                   />
                   <input
                     type="text"
@@ -544,18 +543,25 @@ const Dashboard = () => {
                     placeholder="#ffffff"
                   />
                 </div>
+                {openColorPicker === 'background' && (
+                  <div className="color-picker-popover">
+                    <HexColorPicker 
+                      color={page?.customColors?.background || '#ffffff'}
+                      onChange={(color) => handleUpdatePage({ 
+                        customColors: { ...page?.customColors, background: color }
+                      })}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
                 <label>Text Color</label>
                 <div className="color-picker-wrapper">
-                  <input
-                    type="color"
-                    value={page?.customColors?.text || '#000000'}
-                    onChange={(e) => handleUpdatePage({ 
-                      customColors: { ...page?.customColors, text: e.target.value }
-                    })}
-                    className="color-input-picker"
+                  <div 
+                    className="color-preview-circle"
+                    style={{ background: page?.customColors?.text || '#000000' }}
+                    onClick={() => setOpenColorPicker(openColorPicker === 'text' ? null : 'text')}
                   />
                   <input
                     type="text"
@@ -567,18 +573,25 @@ const Dashboard = () => {
                     placeholder="#000000"
                   />
                 </div>
+                {openColorPicker === 'text' && (
+                  <div className="color-picker-popover">
+                    <HexColorPicker 
+                      color={page?.customColors?.text || '#000000'}
+                      onChange={(color) => handleUpdatePage({ 
+                        customColors: { ...page?.customColors, text: color }
+                      })}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
                 <label>Button Color</label>
                 <div className="color-picker-wrapper">
-                  <input
-                    type="color"
-                    value={page?.customColors?.button || '#000000'}
-                    onChange={(e) => handleUpdatePage({ 
-                      customColors: { ...page?.customColors, button: e.target.value }
-                    })}
-                    className="color-input-picker"
+                  <div 
+                    className="color-preview-circle"
+                    style={{ background: page?.customColors?.button || '#000000' }}
+                    onClick={() => setOpenColorPicker(openColorPicker === 'button' ? null : 'button')}
                   />
                   <input
                     type="text"
@@ -590,18 +603,25 @@ const Dashboard = () => {
                     placeholder="#000000"
                   />
                 </div>
+                {openColorPicker === 'button' && (
+                  <div className="color-picker-popover">
+                    <HexColorPicker 
+                      color={page?.customColors?.button || '#000000'}
+                      onChange={(color) => handleUpdatePage({ 
+                        customColors: { ...page?.customColors, button: color }
+                      })}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
                 <label>Button Text Color</label>
                 <div className="color-picker-wrapper">
-                  <input
-                    type="color"
-                    value={page?.customColors?.buttonText || '#ffffff'}
-                    onChange={(e) => handleUpdatePage({ 
-                      customColors: { ...page?.customColors, buttonText: e.target.value }
-                    })}
-                    className="color-input-picker"
+                  <div 
+                    className="color-preview-circle"
+                    style={{ background: page?.customColors?.buttonText || '#ffffff' }}
+                    onClick={() => setOpenColorPicker(openColorPicker === 'buttonText' ? null : 'buttonText')}
                   />
                   <input
                     type="text"
@@ -613,6 +633,16 @@ const Dashboard = () => {
                     placeholder="#ffffff"
                   />
                 </div>
+                {openColorPicker === 'buttonText' && (
+                  <div className="color-picker-popover">
+                    <HexColorPicker 
+                      color={page?.customColors?.buttonText || '#ffffff'}
+                      onChange={(color) => handleUpdatePage({ 
+                        customColors: { ...page?.customColors, buttonText: color }
+                      })}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
