@@ -11,6 +11,10 @@ app.use(cors({
   origin: ['http://localhost:3000', 'https://mylinks.live', 'https://www.mylinks.live'],
   credentials: true
 }));
+
+// Stripe webhook needs raw body
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }), require('./routes/payments'));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -18,6 +22,7 @@ app.use(cookieParser());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pages', require('./routes/pages'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/payments', require('./routes/payments'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/linkhub', {

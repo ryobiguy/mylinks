@@ -368,8 +368,15 @@ const Dashboard = () => {
 
       <div className="dashboard-content">
         <div className="dashboard-header">
-          <h1>Edit Your Page</h1>
-          <p>mylinks.com/{user?.username}</p>
+          <div>
+            <h1>Edit Your Page</h1>
+            <p>mylinks.com/{user?.username}</p>
+          </div>
+          {user?.plan === 'free' && (
+            <Link to="/pricing" className="upgrade-btn">
+              👑 Upgrade to Pro
+            </Link>
+          )}
         </div>
 
         <div className="dashboard-grid">
