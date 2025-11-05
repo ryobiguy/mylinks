@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowLeft, Eye, MousePointer, Link as LinkIcon, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Eye, MousePointer, Link as LinkIcon, TrendingUp, Calendar, Clock } from 'lucide-react';
 import './Analytics.css';
 
 const Analytics = () => {
@@ -85,28 +85,77 @@ const Analytics = () => {
           </div>
         </div>
 
-        <div className="top-links-section">
-          <h2>Top Performing Links</h2>
-          {analytics.topLinks.length === 0 ? (
-            <p className="empty-state">No link data yet</p>
-          ) : (
-            <div className="top-links-list">
-              {analytics.topLinks.map((link, index) => (
-                <div key={link.id} className="top-link-item">
-                  <div className="link-rank">#{index + 1}</div>
-                  <div className="link-details">
-                    <h3>{link.title}</h3>
-                    <a href={link.url} target="_blank" rel="noopener noreferrer" className="link-url">
-                      {link.url}
-                    </a>
+        <div className="analytics-grid">
+          <div className="top-links-section">
+            <h2>Top Performing Links</h2>
+            {analytics.topLinks.length === 0 ? (
+              <p className="empty-state">No link data yet</p>
+            ) : (
+              <div className="top-links-list">
+                {analytics.topLinks.map((link, index) => (
+                  <div key={link.id} className="top-link-item">
+                    <div className="link-rank">#{index + 1}</div>
+                    <div className="link-details">
+                      <h3>{link.title}</h3>
+                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="link-url">
+                        {link.url}
+                      </a>
+                    </div>
+                    <div className="link-stats">
+                      <span className="click-count">{link.clicks} clicks</span>
+                    </div>
                   </div>
-                  <div className="link-stats">
-                    <span className="click-count">{link.clicks} clicks</span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="insights-section">
+            <h2>Quick Insights</h2>
+            <div className="insights-list">
+              <div className="insight-item">
+                <div className="insight-icon">
+                  <TrendingUp size={20} />
+                </div>
+                <div className="insight-text">
+                  <strong>Average CTR:</strong> {analytics.clickThroughRate}%
+                  <p>Click-through rate from page views</p>
+                </div>
+              </div>
+              
+              <div className="insight-item">
+                <div className="insight-icon">
+                  <LinkIcon size={20} />
+                </div>
+                <div className="insight-text">
+                  <strong>Links:</strong> {analytics.activeLinks} active / {analytics.totalLinks} total
+                  <p>Currently visible links on your page</p>
+                </div>
+              </div>
+
+              <div className="insight-item">
+                <div className="insight-icon">
+                  <MousePointer size={20} />
+                </div>
+                <div className="insight-text">
+                  <strong>Avg. Clicks per Link:</strong> {analytics.totalLinks > 0 ? (analytics.totalClicks / analytics.totalLinks).toFixed(1) : 0}
+                  <p>Average engagement per link</p>
+                </div>
+              </div>
+
+              {analytics.topLinks.length > 0 && (
+                <div className="insight-item">
+                  <div className="insight-icon">
+                    <TrendingUp size={20} />
+                  </div>
+                  <div className="insight-text">
+                    <strong>Top Performer:</strong> {analytics.topLinks[0].title}
+                    <p>{analytics.topLinks[0].clicks} clicks ({((analytics.topLinks[0].clicks / analytics.totalClicks) * 100).toFixed(1)}% of total)</p>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
