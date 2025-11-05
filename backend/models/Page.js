@@ -101,7 +101,11 @@ const pageSchema = new mongoose.Schema({
   theme: {
     type: String,
     default: 'default',
-    enum: ['default', 'dark', 'gradient', 'minimal', 'colorful']
+    enum: ['default', 'dark', 'gradient', 'minimal', 'colorful', 'neon', 'sunset', 'ocean', 'forest']
+  },
+  hideBranding: {
+    type: Boolean,
+    default: false
   },
   buttonStyle: {
     type: String,

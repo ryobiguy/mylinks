@@ -130,6 +130,30 @@ const PublicPage = () => {
         text: '#000000',
         button: 'transparent',
         buttonText: '#000000'
+      },
+      neon: {
+        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%)',
+        text: '#00ff88',
+        button: '#00ff88',
+        buttonText: '#0f0f23'
+      },
+      sunset: {
+        background: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%)',
+        text: '#ffffff',
+        button: '#ffffff',
+        buttonText: '#ff6b6b'
+      },
+      ocean: {
+        background: 'linear-gradient(135deg, #0077be 0%, #00d4ff 100%)',
+        text: '#ffffff',
+        button: '#ffffff',
+        buttonText: '#0077be'
+      },
+      forest: {
+        background: 'linear-gradient(135deg, #134e4a 0%, #10b981 100%)',
+        text: '#ffffff',
+        button: '#ffffff',
+        buttonText: '#134e4a'
       }
     };
     return themes[theme] || themes.default;
@@ -397,11 +421,13 @@ const PublicPage = () => {
           <span>{page.views.toLocaleString()} views</span>
         </div>
 
-        <div className="powered-by">
-          <a href="/" target="_blank" rel="noopener noreferrer">
-            Create your own MyLinks
-          </a>
-        </div>
+        {!page.hideBranding && (
+          <div className="powered-by">
+            <a href="/" target="_blank" rel="noopener noreferrer">
+              Create your own MyLinks
+            </a>
+          </div>
+        )}
       </div>
     </div>
     </>

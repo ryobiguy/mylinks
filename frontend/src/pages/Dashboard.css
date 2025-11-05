@@ -242,6 +242,44 @@
   border-radius: 6px;
 }
 
+.minimal-theme .theme-bg {
+  background: #f9fafb;
+}
+
+/* Premium Themes */
+.neon-theme .theme-bg {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+}
+
+.neon-theme .theme-button {
+  background: #00ff88;
+  box-shadow: 0 0 10px #00ff88;
+}
+
+.sunset-theme .theme-bg {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%);
+}
+
+.sunset-theme .theme-button {
+  background: #ffffff;
+}
+
+.ocean-theme .theme-bg {
+  background: linear-gradient(135deg, #0077be 0%, #00d4ff 100%);
+}
+
+.ocean-theme .theme-button {
+  background: #ffffff;
+}
+
+.forest-theme .theme-bg {
+  background: linear-gradient(135deg, #134e4a 0%, #10b981 100%);
+}
+
+.forest-theme .theme-button {
+  background: #ffffff;
+}
+
 .select-input {
   width: 100%;
   padding: 10px;

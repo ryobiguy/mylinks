@@ -504,7 +504,70 @@ const Dashboard = () => {
                     </div>
                     <span>Minimal</span>
                   </button>
+
+                  {/* Premium Themes */}
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'neon' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'neon' })}
+                  >
+                    <div className="theme-preview neon-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Neon 👑</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'sunset' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'sunset' })}
+                  >
+                    <div className="theme-preview sunset-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Sunset 👑</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'ocean' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'ocean' })}
+                  >
+                    <div className="theme-preview ocean-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Ocean 👑</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`theme-option ${page?.theme === 'forest' ? 'selected' : ''}`}
+                    onClick={() => handleUpdatePage({ theme: 'forest' })}
+                  >
+                    <div className="theme-preview forest-theme">
+                      <div className="theme-bg"></div>
+                      <div className="theme-button"></div>
+                    </div>
+                    <span>Forest 👑</span>
+                  </button>
                 </div>
+                <p className="helper-text">👑 Premium themes available with Pro plan</p>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={page?.hideBranding || false}
+                    onChange={(e) => handleUpdatePage({ hideBranding: e.target.checked })}
+                    style={{ marginRight: '8px' }}
+                  />
+                  Hide "Create your own MyLinks" branding 👑
+                </label>
+                <p className="helper-text">Remove branding from your page (Pro feature)</p>
               </div>
 
               <div className="form-group">
