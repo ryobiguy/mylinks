@@ -382,11 +382,11 @@ const PublicPage = () => {
           <h4>Share this page</h4>
           <div className="share-buttons">
             <button
-              className="share-btn twitter"
+              className="share-btn x"
               onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(page.title)}`, '_blank')}
-              title="Share on Twitter"
+              title="Share on X"
             >
-              <FaTwitter size={20} />
+              <img src="/icons/x.png" alt="X" style={{ width: '20px', height: '20px' }} />
             </button>
             <button
               className="share-btn facebook"

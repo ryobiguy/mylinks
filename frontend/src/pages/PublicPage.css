@@ -337,8 +337,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.share-btn.twitter {
-  background: #1DA1F2;
+.share-btn.x {
+  background: #000000;
 }
 
 .share-btn.facebook {
