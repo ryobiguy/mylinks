@@ -291,3 +291,78 @@
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
 }
+
+/* Share Section */
+.share-section {
+  margin: 40px 0 20px;
+  text-align: center;
+}
+
+.share-section h4 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.share-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn.twitter {
+  background: #1DA1F2;
+}
+
+.share-btn.facebook {
+  background: #1877F2;
+}
+
+.share-btn.linkedin {
+  background: #0A66C2;
+}
+
+.share-btn.copy {
+  background: #666;
+}
+
+/* Visitor Counter */
+.visitor-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  font-size: 14px;
+  color: #666;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.visitor-counter svg {
+  color: #4F46E5;
+}

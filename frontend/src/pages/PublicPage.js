@@ -353,6 +353,50 @@ const PublicPage = () => {
           </div>
         )}
 
+        {/* Share Buttons */}
+        <div className="share-section">
+          <h4>Share this page</h4>
+          <div className="share-buttons">
+            <button
+              className="share-btn twitter"
+              onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(page.title)}`, '_blank')}
+              title="Share on Twitter"
+            >
+              <FaTwitter size={20} />
+            </button>
+            <button
+              className="share-btn facebook"
+              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+              title="Share on Facebook"
+            >
+              <FaFacebook size={20} />
+            </button>
+            <button
+              className="share-btn linkedin"
+              onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank')}
+              title="Share on LinkedIn"
+            >
+              <FaLinkedin size={20} />
+            </button>
+            <button
+              className="share-btn copy"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+              }}
+              title="Copy link"
+            >
+              <FaLink size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Visitor Counter */}
+        <div className="visitor-counter">
+          <Eye size={16} />
+          <span>{page.views.toLocaleString()} views</span>
+        </div>
+
         <div className="powered-by">
           <a href="/" target="_blank" rel="noopener noreferrer">
             Create your own MyLinks
