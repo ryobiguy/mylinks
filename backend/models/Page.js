@@ -66,6 +66,10 @@ const pageSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  coverPhoto: {
+    type: String,
+    default: ''
+  },
   theme: {
     type: String,
     default: 'default',

@@ -161,6 +161,9 @@ const PublicPage = () => {
 
   return (
     <div className="public-page" style={pageStyle}>
+      {page.coverPhoto && (
+        <div className="public-cover" style={{ backgroundImage: `url(${page.coverPhoto})` }}></div>
+      )}
       <div className="public-content">
         {page.avatar && (
           <img src={page.avatar} alt={page.title} className="public-avatar" />

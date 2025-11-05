@@ -43,7 +43,7 @@ router.get('/:username', async (req, res) => {
 // Update page
 router.put('/my-page', auth, async (req, res) => {
   try {
-    const { title, bio, avatar, theme, customColors, socialLinks } = req.body;
+    const { title, bio, avatar, coverPhoto, theme, customColors, socialLinks } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -54,6 +54,7 @@ router.put('/my-page', auth, async (req, res) => {
     if (title !== undefined) page.title = title;
     if (bio !== undefined) page.bio = bio;
     if (avatar !== undefined) page.avatar = avatar;
+    if (coverPhoto !== undefined) page.coverPhoto = coverPhoto;
     if (theme !== undefined) page.theme = theme;
     if (customColors) page.customColors = { ...page.customColors, ...customColors };
     if (socialLinks) page.socialLinks = { ...page.socialLinks, ...socialLinks };

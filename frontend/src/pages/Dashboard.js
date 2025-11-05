@@ -76,6 +76,29 @@ const Dashboard = () => {
     }
   };
 
+  const handleCoverUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 5MB for cover)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Cover photo must be less than 5MB');
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        await handleUpdatePage({ coverPhoto: reader.result });
+        toast.success('Cover photo updated!');
+      } catch (error) {
+        toast.error('Failed to upload cover photo');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -234,19 +257,49 @@ const Dashboard = () => {
               <h3>Page Info</h3>
               
               <div className="form-group">
+                <label>Cover Photo</label>
+                <div className="cover-upload">
+                  {page?.coverPhoto ? (
+                    <img src={page.coverPhoto} alt="Cover" className="cover-preview" />
+                  ) : (
+                    <div className="cover-placeholder">No cover photo</div>
+                  )}
+                  <button 
+                    type="button" 
+                    onClick={() => document.getElementById('cover-upload').click()}
+                    className="upload-btn"
+                  >
+                    <Upload size={20} />
+                    Upload Cover
+                  </button>
+                  <input
+                    id="cover-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCoverUpload}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
                 <label>Profile Picture</label>
                 <div className="avatar-upload">
                   {page?.avatar ? (
-                    <img src={page.avatar} alt="Profile" className="avatar-preview" />
+                    <img src={page.avatar} alt="Avatar" className="avatar-preview" />
                   ) : (
-                    <div className="avatar-placeholder">No Image</div>
+                    <div className="avatar-placeholder">No image</div>
                   )}
-                  <label htmlFor="avatar-input" className="upload-btn">
-                    <Upload size={18} />
+                  <button 
+                    type="button" 
+                    onClick={() => document.getElementById('avatar-upload').click()}
+                    className="upload-btn"
+                  >
+                    <Upload size={20} />
                     Upload Image
-                  </label>
+                  </button>
                   <input
-                    id="avatar-input"
+                    id="avatar-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
