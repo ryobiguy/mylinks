@@ -7,9 +7,13 @@ const { auth } = require('../middleware/auth');
 // Create checkout session for Pro plan
 router.post('/create-checkout-session', auth, async (req, res) => {
   try {
+    console.log('Creating checkout session for user:', req.userId);
+    console.log('Stripe Price ID:', process.env.STRIPE_PRICE_ID);
+    
     const user = await User.findById(req.userId);
     
     if (!user) {
+      console.error('User not found:', req.userId);
       return res.status(404).json({ error: 'User not found' });
     }
 

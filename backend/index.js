@@ -8,7 +8,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://mylinks.live', 'https://www.mylinks.live'],
+  origin: ['http://localhost:3000', 'https://mylinks.live', 'https://www.mylinks.live', /\.vercel\.app$/],
   credentials: true
 }));
 
