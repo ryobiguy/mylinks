@@ -7,6 +7,7 @@ import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import { QRCodeSVG } from 'qrcode.react';
 import { HexColorPicker } from 'react-colorful';
+import 'react-colorful/dist/index.css';
 import ImageCropModal from '../components/ImageCropModal';
 import ScheduleModal from '../components/ScheduleModal';
 import './Dashboard.css';
