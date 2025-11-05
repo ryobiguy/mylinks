@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import { ExternalLink } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
@@ -159,12 +160,37 @@ const PublicPage = () => {
     color: hasCustomButtonText ? page.customColors.buttonText : themeStyles.buttonText
   };
 
+  const metaTitle = page.seo?.metaTitle || `${page.title} - MyLinks`;
+  const metaDescription = page.seo?.metaDescription || page.bio || `Check out ${page.title}'s links`;
+  const metaImage = page.seo?.metaImage || page.coverPhoto || page.avatar || `${window.location.origin}/logo.png`;
+  const pageUrl = window.location.href;
+
   return (
-    <div className="public-page" style={pageStyle}>
-      {page.coverPhoto && (
-        <div className="public-cover" style={{ backgroundImage: `url(${page.coverPhoto})` }}></div>
-      )}
-      <div className="public-content">
+    <>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={metaImage} />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={pageUrl} />
+        <meta property="twitter:title" content={metaTitle} />
+        <meta property="twitter:description" content={metaDescription} />
+        <meta property="twitter:image" content={metaImage} />
+      </Helmet>
+      
+      <div className="public-page" style={pageStyle}>
+        {page.coverPhoto && (
+          <div className="public-cover" style={{ backgroundImage: `url(${page.coverPhoto})` }}></div>
+        )}
+        <div className="public-content">
         {page.avatar && (
           <img src={page.avatar} alt={page.title} className="public-avatar" />
         )}
@@ -309,6 +335,7 @@ const PublicPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

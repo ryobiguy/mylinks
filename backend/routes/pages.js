@@ -43,7 +43,7 @@ router.get('/:username', async (req, res) => {
 // Update page
 router.put('/my-page', auth, async (req, res) => {
   try {
-    const { title, bio, avatar, coverPhoto, theme, customColors, socialLinks } = req.body;
+    const { title, bio, avatar, coverPhoto, theme, customColors, socialLinks, seo } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -58,6 +58,7 @@ router.put('/my-page', auth, async (req, res) => {
     if (theme !== undefined) page.theme = theme;
     if (customColors) page.customColors = { ...page.customColors, ...customColors };
     if (socialLinks) page.socialLinks = { ...page.socialLinks, ...socialLinks };
+    if (seo) page.seo = { ...page.seo, ...seo };
 
     await page.save();
     res.json({ page });

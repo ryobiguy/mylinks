@@ -70,6 +70,20 @@ const pageSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  seo: {
+    metaTitle: {
+      type: String,
+      default: ''
+    },
+    metaDescription: {
+      type: String,
+      default: ''
+    },
+    metaImage: {
+      type: String,
+      default: ''
+    }
+  },
   theme: {
     type: String,
     default: 'default',

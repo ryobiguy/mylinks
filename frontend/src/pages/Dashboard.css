@@ -692,3 +692,17 @@
   align-items: center;
   gap: 8px;
 }
+
+/* Helper text */
+.helper-text {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 10px 0;
+}
+
+.form-group small {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+  display: block;
+}

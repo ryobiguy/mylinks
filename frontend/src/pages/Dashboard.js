@@ -539,6 +539,80 @@ const Dashboard = () => {
             </div>
 
             <div className="section-card">
+              <h3>SEO & Social Sharing</h3>
+              
+              <div className="form-group">
+                <label>Meta Title</label>
+                <input
+                  type="text"
+                  value={page?.seo?.metaTitle || ''}
+                  onChange={(e) => setPage({ ...page, seo: { ...page.seo, metaTitle: e.target.value } })}
+                  onBlur={() => handleUpdatePage({ seo: page.seo })}
+                  placeholder="Your Page Title - MyLinks"
+                  maxLength={60}
+                />
+                <small>{(page?.seo?.metaTitle || '').length}/60 characters</small>
+              </div>
+
+              <div className="form-group">
+                <label>Meta Description</label>
+                <textarea
+                  value={page?.seo?.metaDescription || ''}
+                  onChange={(e) => setPage({ ...page, seo: { ...page.seo, metaDescription: e.target.value } })}
+                  onBlur={() => handleUpdatePage({ seo: page.seo })}
+                  placeholder="A brief description of your page for search engines and social media"
+                  rows={3}
+                  maxLength={160}
+                />
+                <small>{(page?.seo?.metaDescription || '').length}/160 characters</small>
+              </div>
+
+              <div className="form-group">
+                <label>Social Preview Image</label>
+                <p className="helper-text">This image appears when your link is shared on social media (recommended: 1200x630px)</p>
+                <div className="avatar-upload">
+                  {page?.seo?.metaImage ? (
+                    <img src={page.seo.metaImage} alt="Social preview" style={{ width: '200px', height: 'auto', borderRadius: '8px' }} />
+                  ) : (
+                    <div className="avatar-placeholder" style={{ width: '200px', height: '105px', borderRadius: '8px' }}>No preview image</div>
+                  )}
+                  <button 
+                    type="button" 
+                    onClick={() => document.getElementById('seo-image-upload').click()}
+                    className="upload-btn"
+                  >
+                    <Upload size={20} />
+                    Upload Image
+                  </button>
+                  <input
+                    id="seo-image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files[0];
+                      if (!file) return;
+                      if (file.size > 2 * 1024 * 1024) {
+                        toast.error('Image must be less than 2MB');
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onloadend = async () => {
+                        try {
+                          await handleUpdatePage({ seo: { ...page.seo, metaImage: reader.result } });
+                          toast.success('Social preview image updated!');
+                        } catch (error) {
+                          toast.error('Failed to upload image');
+                        }
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="section-card">
               <div className="section-header">
                 <h3>Links</h3>
                 <button 
