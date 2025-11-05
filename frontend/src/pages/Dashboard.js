@@ -65,6 +65,7 @@ const Dashboard = () => {
   const handleUpdatePage = async (updates) => {
     try {
       const token = localStorage.getItem('token');
+      console.log('Updating page with:', Object.keys(updates));
       const response = await axios.put(`${API_URL}/pages/my-page`, updates, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -72,7 +73,8 @@ const Dashboard = () => {
       toast.success('Page updated!');
     } catch (error) {
       console.error('Update page error:', error);
-      toast.error('Failed to update page');
+      console.error('Error response:', error.response?.data);
+      toast.error(error.response?.data?.error || 'Failed to update page');
     }
   };
 
@@ -80,22 +82,49 @@ const Dashboard = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Check file size (max 5MB for cover)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Cover photo must be less than 5MB');
+    // Check file size (max 2MB for cover)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Cover photo must be less than 2MB');
       return;
     }
 
-    // Convert to base64
+    // Compress and convert to base64
+    const img = new Image();
     const reader = new FileReader();
-    reader.onloadend = async () => {
+    
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+    
+    img.onload = async () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      // Resize if too large (max 1200px width)
+      const maxWidth = 1200;
+      if (width > maxWidth) {
+        height = (height * maxWidth) / width;
+        width = maxWidth;
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Convert to base64 with compression
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+      
       try {
-        await handleUpdatePage({ coverPhoto: reader.result });
+        await handleUpdatePage({ coverPhoto: compressedBase64 });
         toast.success('Cover photo updated!');
       } catch (error) {
         toast.error('Failed to upload cover photo');
       }
     };
+    
     reader.readAsDataURL(file);
   };
 
@@ -109,16 +138,48 @@ const Dashboard = () => {
       return;
     }
 
-    // Convert to base64
+    // Compress and convert to base64
+    const img = new Image();
     const reader = new FileReader();
-    reader.onloadend = async () => {
+    
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+    
+    img.onload = async () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      // Resize if too large (max 400px)
+      const maxSize = 400;
+      if (width > maxSize || height > maxSize) {
+        if (width > height) {
+          height = (height * maxSize) / width;
+          width = maxSize;
+        } else {
+          width = (width * maxSize) / height;
+          height = maxSize;
+        }
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Convert to base64 with compression
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+      
       try {
-        await handleUpdatePage({ avatar: reader.result });
+        await handleUpdatePage({ avatar: compressedBase64 });
         toast.success('Profile picture updated!');
       } catch (error) {
         toast.error('Failed to upload image');
       }
     };
+    
     reader.readAsDataURL(file);
   };
 
