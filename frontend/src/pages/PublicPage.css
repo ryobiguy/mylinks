@@ -151,10 +151,17 @@
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
+  outline: none;
+  box-shadow: none !important;
 }
 
 .icon-only-link:hover {
   transform: scale(1.1);
+}
+
+.icon-only-link:focus {
+  outline: none;
+  box-shadow: none !important;
 }
 
 .icon-only-link img {

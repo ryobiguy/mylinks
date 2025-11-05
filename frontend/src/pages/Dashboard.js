@@ -675,14 +675,36 @@ const Dashboard = () => {
                     <button
                       type="button"
                       className="upload-btn"
-                      onClick={() => {
-                        setImageToCrop(null);
-                        setShowCropModal(true);
-                      }}
+                      onClick={() => document.getElementById('bg-upload').click()}
                     >
                       <Upload size={20} />
                       Upload Background Image
                     </button>
+                  )}
+                  <input
+                    id="bg-upload"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={async (e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = async (event) => {
+                          try {
+                            await handleUpdatePage({ backgroundImage: event.target.result });
+                            toast.success('Background image uploaded!');
+                          } catch (error) {
+                            toast.error('Failed to upload image');
+                          }
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                      e.target.value = '';
+                    }}
+                  />
+                  {!page?.backgroundImage && (
+                    <span style={{ display: 'none' }}></span>
                   )}
                 </div>
                 {page?.backgroundImage && (
