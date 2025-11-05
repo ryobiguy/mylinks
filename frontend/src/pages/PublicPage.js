@@ -138,9 +138,13 @@ const PublicPage = () => {
   const getButtonClass = () => {
     const style = page.buttonStyle || 'rounded';
     const theme = page.theme || 'default';
+    const animation = page.buttonAnimation || 'none';
     let className = `public-link button-${style}`;
     if (theme === 'minimal') {
       className += ' button-outlined';
+    }
+    if (animation !== 'none') {
+      className += ` animate-${animation}`;
     }
     return className;
   };
@@ -167,6 +171,11 @@ const PublicPage = () => {
   
   const pageStyle = {
     background: hasCustomBackground ? page.customColors.background : themeStyles.background,
+    backgroundImage: page.backgroundImage ? `url(${page.backgroundImage})` : 'none',
+    backgroundSize: page.backgroundStyle === 'cover' ? 'cover' : page.backgroundStyle === 'contain' ? 'contain' : 'auto',
+    backgroundRepeat: page.backgroundStyle === 'repeat' ? 'repeat' : 'no-repeat',
+    backgroundAttachment: page.backgroundStyle === 'fixed' ? 'fixed' : 'scroll',
+    backgroundPosition: 'center',
     color: hasCustomText ? page.customColors.text : themeStyles.text,
     fontFamily: getFontFamily()
   };

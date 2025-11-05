@@ -131,6 +131,20 @@ const pageSchema = new mongoose.Schema({
       default: '#ffffff'
     }
   },
+  backgroundImage: {
+    type: String,
+    default: null
+  },
+  backgroundStyle: {
+    type: String,
+    enum: ['cover', 'contain', 'repeat', 'fixed'],
+    default: 'cover'
+  },
+  buttonAnimation: {
+    type: String,
+    enum: ['none', 'pulse', 'bounce', 'shake', 'glow'],
+    default: 'none'
+  },
   links: [linkSchema],
   socialLinks: {
     twitter: String,

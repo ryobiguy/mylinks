@@ -656,6 +656,66 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
+
+              <div className="form-group">
+                <label>Background Image</label>
+                <div className="image-upload-section">
+                  {page?.backgroundImage ? (
+                    <div className="image-preview">
+                      <img src={page.backgroundImage} alt="Background" />
+                      <button 
+                        type="button" 
+                        className="remove-image-btn"
+                        onClick={() => handleUpdatePage({ backgroundImage: null })}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      className="upload-btn"
+                      onClick={() => {
+                        setImageToCrop(null);
+                        setShowCropModal(true);
+                      }}
+                    >
+                      <Upload size={20} />
+                      Upload Background Image
+                    </button>
+                  )}
+                </div>
+                {page?.backgroundImage && (
+                  <div className="form-group">
+                    <label>Background Style</label>
+                    <select
+                      value={page?.backgroundStyle || 'cover'}
+                      onChange={(e) => handleUpdatePage({ backgroundStyle: e.target.value })}
+                      className="select-input"
+                    >
+                      <option value="cover">Cover (Fill)</option>
+                      <option value="contain">Contain (Fit)</option>
+                      <option value="repeat">Repeat (Tile)</option>
+                      <option value="fixed">Fixed (Parallax)</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>Button Animation</label>
+                <select
+                  value={page?.buttonAnimation || 'none'}
+                  onChange={(e) => handleUpdatePage({ buttonAnimation: e.target.value })}
+                  className="select-input"
+                >
+                  <option value="none">None</option>
+                  <option value="pulse">Pulse</option>
+                  <option value="bounce">Bounce</option>
+                  <option value="shake">Shake</option>
+                  <option value="glow">Glow</option>
+                </select>
+              </div>
             </div>
 
             <div className="section-card">
