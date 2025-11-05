@@ -724,3 +724,60 @@
   border-radius: 4px;
   font-size: 11px;
 }
+
+/* Color Picker */
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.color-input-picker {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.color-input-picker:hover {
+  transform: scale(1.05);
+}
+
+.color-input-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+.color-input-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.color-input-picker::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+.color-input-text {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 14px;
+  background: white;
+  transition: border-color 0.2s ease;
+}
+
+.color-input-text:focus {
+  outline: none;
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}

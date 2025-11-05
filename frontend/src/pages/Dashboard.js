@@ -525,50 +525,94 @@ const Dashboard = () => {
 
               <div className="form-group">
                 <label>Background Color</label>
-                <input
-                  type="color"
-                  value={page?.customColors?.background || '#ffffff'}
-                  onChange={(e) => handleUpdatePage({ 
-                    customColors: { ...page?.customColors, background: e.target.value }
-                  })}
-                  className="color-input"
-                />
+                <div className="color-picker-wrapper">
+                  <input
+                    type="color"
+                    value={page?.customColors?.background || '#ffffff'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, background: e.target.value }
+                    })}
+                    className="color-input-picker"
+                  />
+                  <input
+                    type="text"
+                    value={page?.customColors?.background || '#ffffff'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, background: e.target.value }
+                    })}
+                    className="color-input-text"
+                    placeholder="#ffffff"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
                 <label>Text Color</label>
-                <input
-                  type="color"
-                  value={page?.customColors?.text || '#000000'}
-                  onChange={(e) => handleUpdatePage({ 
-                    customColors: { ...page?.customColors, text: e.target.value }
-                  })}
-                  className="color-input"
-                />
+                <div className="color-picker-wrapper">
+                  <input
+                    type="color"
+                    value={page?.customColors?.text || '#000000'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, text: e.target.value }
+                    })}
+                    className="color-input-picker"
+                  />
+                  <input
+                    type="text"
+                    value={page?.customColors?.text || '#000000'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, text: e.target.value }
+                    })}
+                    className="color-input-text"
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
                 <label>Button Color</label>
-                <input
-                  type="color"
-                  value={page?.customColors?.button || '#000000'}
-                  onChange={(e) => handleUpdatePage({ 
-                    customColors: { ...page?.customColors, button: e.target.value }
-                  })}
-                  className="color-input"
-                />
+                <div className="color-picker-wrapper">
+                  <input
+                    type="color"
+                    value={page?.customColors?.button || '#000000'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, button: e.target.value }
+                    })}
+                    className="color-input-picker"
+                  />
+                  <input
+                    type="text"
+                    value={page?.customColors?.button || '#000000'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, button: e.target.value }
+                    })}
+                    className="color-input-text"
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
                 <label>Button Text Color</label>
-                <input
-                  type="color"
-                  value={page?.customColors?.buttonText || '#ffffff'}
-                  onChange={(e) => handleUpdatePage({ 
-                    customColors: { ...page?.customColors, buttonText: e.target.value }
-                  })}
-                  className="color-input"
-                />
+                <div className="color-picker-wrapper">
+                  <input
+                    type="color"
+                    value={page?.customColors?.buttonText || '#ffffff'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, buttonText: e.target.value }
+                    })}
+                    className="color-input-picker"
+                  />
+                  <input
+                    type="text"
+                    value={page?.customColors?.buttonText || '#ffffff'}
+                    onChange={(e) => handleUpdatePage({ 
+                      customColors: { ...page?.customColors, buttonText: e.target.value }
+                    })}
+                    className="color-input-text"
+                    placeholder="#ffffff"
+                  />
+                </div>
               </div>
             </div>
 
