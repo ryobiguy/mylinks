@@ -686,11 +686,18 @@ const Dashboard = () => {
               <h3>Preview</h3>
             </div>
             <div className="phone-preview">
+              {page?.coverPhoto && (
+                <div 
+                  className="preview-cover"
+                  style={{ backgroundImage: `url(${page.coverPhoto})` }}
+                ></div>
+              )}
               <div 
                 className="preview-content"
                 style={{
                   background: page?.customColors?.background || '#ffffff',
-                  color: page?.customColors?.text || '#000000'
+                  color: page?.customColors?.text || '#000000',
+                  paddingTop: page?.coverPhoto ? '80px' : '40px'
                 }}
               >
                 {page?.avatar ? (
