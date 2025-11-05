@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
+import { QRCodeSVG } from 'qrcode.react';
 import ImageCropModal from '../components/ImageCropModal';
 import './Dashboard.css';
 
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const [showAddLink, setShowAddLink] = useState(false);
   const [showCropModal, setShowCropModal] = useState(false);
   const [imageToCrop, setImageToCrop] = useState(null);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const iconOptions = [
     { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
@@ -264,6 +266,28 @@ const Dashboard = () => {
     navigate('/');
   };
 
+  const downloadQRCode = () => {
+    const svg = document.getElementById('qr-code-svg');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL('image/png');
+      
+      const downloadLink = document.createElement('a');
+      downloadLink.download = `${user.username}-qrcode.png`;
+      downloadLink.href = pngFile;
+      downloadLink.click();
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+  };
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -278,6 +302,10 @@ const Dashboard = () => {
               <Eye size={18} />
               View Page
             </Link>
+            <button onClick={() => setShowQRCode(true)} className="btn-secondary">
+              <QrCode size={18} />
+              QR Code
+            </button>
             <Link to="/analytics" className="btn-secondary">
               <BarChart size={18} />
               Analytics
@@ -749,6 +777,33 @@ const Dashboard = () => {
           }}
           aspectRatio={16 / 9}
         />
+      )}
+
+      {showQRCode && (
+        <div className="qr-modal-overlay" onClick={() => setShowQRCode(false)}>
+          <div className="qr-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="qr-modal-header">
+              <h3>Your QR Code</h3>
+              <button onClick={() => setShowQRCode(false)} className="close-btn">×</button>
+            </div>
+            <div className="qr-modal-content">
+              <QRCodeSVG 
+                id="qr-code-svg"
+                value={`${window.location.origin}/${user.username}`}
+                size={256}
+                level="H"
+                includeMargin={true}
+              />
+              <p className="qr-url">mylinks.com/{user.username}</p>
+            </div>
+            <div className="qr-modal-actions">
+              <button onClick={downloadQRCode} className="btn-primary">
+                <Download size={18} />
+                Download QR Code
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
