@@ -24,6 +24,18 @@ const Dashboard = () => {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
+  
+  // Close color picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (openColorPicker && !event.target.closest('.color-picker-wrapper')) {
+        setOpenColorPicker(null);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openColorPicker]);
 
   const iconOptions = [
     { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
@@ -542,17 +554,17 @@ const Dashboard = () => {
                     className="color-input-text"
                     placeholder="#ffffff"
                   />
+                  {openColorPicker === 'background' && (
+                    <div className="color-picker-popover">
+                      <HexColorPicker 
+                        color={page?.customColors?.background || '#ffffff'}
+                        onChange={(color) => handleUpdatePage({ 
+                          customColors: { ...page?.customColors, background: color }
+                        })}
+                      />
+                    </div>
+                  )}
                 </div>
-                {openColorPicker === 'background' && (
-                  <div className="color-picker-popover">
-                    <HexColorPicker 
-                      color={page?.customColors?.background || '#ffffff'}
-                      onChange={(color) => handleUpdatePage({ 
-                        customColors: { ...page?.customColors, background: color }
-                      })}
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="form-group">
@@ -572,17 +584,17 @@ const Dashboard = () => {
                     className="color-input-text"
                     placeholder="#000000"
                   />
+                  {openColorPicker === 'text' && (
+                    <div className="color-picker-popover">
+                      <HexColorPicker 
+                        color={page?.customColors?.text || '#000000'}
+                        onChange={(color) => handleUpdatePage({ 
+                          customColors: { ...page?.customColors, text: color }
+                        })}
+                      />
+                    </div>
+                  )}
                 </div>
-                {openColorPicker === 'text' && (
-                  <div className="color-picker-popover">
-                    <HexColorPicker 
-                      color={page?.customColors?.text || '#000000'}
-                      onChange={(color) => handleUpdatePage({ 
-                        customColors: { ...page?.customColors, text: color }
-                      })}
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="form-group">
@@ -602,17 +614,17 @@ const Dashboard = () => {
                     className="color-input-text"
                     placeholder="#000000"
                   />
+                  {openColorPicker === 'button' && (
+                    <div className="color-picker-popover">
+                      <HexColorPicker 
+                        color={page?.customColors?.button || '#000000'}
+                        onChange={(color) => handleUpdatePage({ 
+                          customColors: { ...page?.customColors, button: color }
+                        })}
+                      />
+                    </div>
+                  )}
                 </div>
-                {openColorPicker === 'button' && (
-                  <div className="color-picker-popover">
-                    <HexColorPicker 
-                      color={page?.customColors?.button || '#000000'}
-                      onChange={(color) => handleUpdatePage({ 
-                        customColors: { ...page?.customColors, button: color }
-                      })}
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="form-group">
@@ -632,17 +644,17 @@ const Dashboard = () => {
                     className="color-input-text"
                     placeholder="#ffffff"
                   />
+                  {openColorPicker === 'buttonText' && (
+                    <div className="color-picker-popover">
+                      <HexColorPicker 
+                        color={page?.customColors?.buttonText || '#ffffff'}
+                        onChange={(color) => handleUpdatePage({ 
+                          customColors: { ...page?.customColors, buttonText: color }
+                        })}
+                      />
+                    </div>
+                  )}
                 </div>
-                {openColorPicker === 'buttonText' && (
-                  <div className="color-picker-popover">
-                    <HexColorPicker 
-                      color={page?.customColors?.buttonText || '#ffffff'}
-                      onChange={(color) => handleUpdatePage({ 
-                        customColors: { ...page?.customColors, buttonText: color }
-                      })}
-                    />
-                  </div>
-                )}
               </div>
             </div>
 
