@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
+import ImageCropModal from '../components/ImageCropModal';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -14,6 +15,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [newLink, setNewLink] = useState({ title: '', url: '', icon: 'link', iconOnly: false, iconSize: 50, position: 'main' });
   const [showAddLink, setShowAddLink] = useState(false);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
 
   const iconOptions = [
     { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
@@ -88,44 +91,25 @@ const Dashboard = () => {
       return;
     }
 
-    // Compress and convert to base64
-    const img = new Image();
+    // Load image for cropping
     const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      img.src = e.target.result;
+    reader.onload = () => {
+      setImageToCrop(reader.result);
+      setShowCropModal(true);
     };
-    
-    img.onload = async () => {
-      const canvas = document.createElement('canvas');
-      let width = img.width;
-      let height = img.height;
-      
-      // Resize if too large (max 1200px width)
-      const maxWidth = 1200;
-      if (width > maxWidth) {
-        height = (height * maxWidth) / width;
-        width = maxWidth;
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
-      
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-      
-      // Convert to base64 with compression
-      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
-      
-      try {
-        await handleUpdatePage({ coverPhoto: compressedBase64 });
-        toast.success('Cover photo updated!');
-      } catch (error) {
-        toast.error('Failed to upload cover photo');
-      }
-    };
-    
     reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = async (croppedImage) => {
+    setShowCropModal(false);
+    setImageToCrop(null);
+    
+    try {
+      await handleUpdatePage({ coverPhoto: croppedImage });
+      toast.success('Cover photo updated!');
+    } catch (error) {
+      toast.error('Failed to upload cover photo');
+    }
   };
 
   const handleImageUpload = async (e) => {
@@ -754,6 +738,18 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {showCropModal && imageToCrop && (
+        <ImageCropModal
+          image={imageToCrop}
+          onCropComplete={handleCropComplete}
+          onClose={() => {
+            setShowCropModal(false);
+            setImageToCrop(null);
+          }}
+          aspectRatio={16 / 9}
+        />
+      )}
     </div>
   );
 };
