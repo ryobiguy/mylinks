@@ -59,6 +59,22 @@ const PublicPage = () => {
     return icons[iconName] || { type: 'react', icon: FaLink };
   };
 
+  const isLinkVisible = (link) => {
+    if (!link.isActive) return false;
+    
+    // Check if link has scheduling enabled
+    if (link.schedule?.enabled) {
+      const now = new Date();
+      const startDate = link.schedule.startDate ? new Date(link.schedule.startDate) : null;
+      const endDate = link.schedule.endDate ? new Date(link.schedule.endDate) : null;
+      
+      if (startDate && now < startDate) return false;
+      if (endDate && now > endDate) return false;
+    }
+    
+    return true;
+  };
+
   const handleLinkClick = async (linkId, url) => {
     // Track click
     try {
@@ -207,10 +223,10 @@ const PublicPage = () => {
         )}
 
         {/* Top Icons */}
-        {page.links.filter(link => link.isActive && link.position === 'top').length > 0 && (
+        {page.links.filter(link => isLinkVisible(link) && link.position === 'top').length > 0 && (
           <div className="icon-links top-icons">
             {page.links
-              .filter(link => link.isActive && link.position === 'top')
+              .filter(link => isLinkVisible(link) && link.position === 'top')
               .sort((a, b) => a.order - b.order)
               .map((link) => {
                 const iconData = getIcon(link.icon);
@@ -237,7 +253,7 @@ const PublicPage = () => {
         {/* Main Links */}
         <div className="public-links">
           {page.links
-            .filter(link => link.isActive && (!link.position || link.position === 'main'))
+            .filter(link => isLinkVisible(link) && (!link.position || link.position === 'main'))
             .sort((a, b) => a.order - b.order)
             .map((link) => {
               const iconData = getIcon(link.icon);
@@ -281,10 +297,10 @@ const PublicPage = () => {
         </div>
 
         {/* Bottom Icons */}
-        {page.links.filter(link => link.isActive && link.position === 'bottom').length > 0 && (
+        {page.links.filter(link => isLinkVisible(link) && link.position === 'bottom').length > 0 && (
           <div className="icon-links bottom-icons">
             {page.links
-              .filter(link => link.isActive && link.position === 'bottom')
+              .filter(link => isLinkVisible(link) && link.position === 'bottom')
               .sort((a, b) => a.order - b.order)
               .map((link) => {
                 const iconData = getIcon(link.icon);

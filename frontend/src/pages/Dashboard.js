@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import { QRCodeSVG } from 'qrcode.react';
 import ImageCropModal from '../components/ImageCropModal';
+import ScheduleModal from '../components/ScheduleModal';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -19,6 +20,8 @@ const Dashboard = () => {
   const [showCropModal, setShowCropModal] = useState(false);
   const [imageToCrop, setImageToCrop] = useState(null);
   const [showQRCode, setShowQRCode] = useState(false);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [selectedLink, setSelectedLink] = useState(null);
 
   const iconOptions = [
     { name: 'link', icon: FaLink, label: 'Default Link', type: 'react' },
@@ -286,6 +289,37 @@ const Dashboard = () => {
     };
     
     img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+  };
+
+  const handleScheduleLink = (link) => {
+    setSelectedLink(link);
+    setShowScheduleModal(true);
+  };
+
+  const handleSaveSchedule = async (schedule) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(
+        `${API_URL}/pages/my-page/links/${selectedLink._id}`,
+        { schedule },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      // Update local state
+      setPage({
+        ...page,
+        links: page.links.map(l => 
+          l._id === selectedLink._id ? { ...l, schedule } : l
+        )
+      });
+      
+      toast.success('Schedule updated!');
+      setShowScheduleModal(false);
+      setSelectedLink(null);
+    } catch (error) {
+      console.error('Update schedule error:', error);
+      toast.error('Failed to update schedule');
+    }
   };
 
   if (loading) {
@@ -740,14 +774,31 @@ const Dashboard = () => {
                           {link.url}
                           <ExternalLink size={14} />
                         </a>
-                        <span className="link-clicks">{link.clicks} clicks</span>
+                        <span className="link-clicks">
+                          {link.clicks} clicks
+                          {link.schedule?.enabled && (
+                            <span className="schedule-badge" title="Scheduled">
+                              <Calendar size={12} />
+                            </span>
+                          )}
+                        </span>
                       </div>
-                      <button 
-                        onClick={() => handleDeleteLink(link._id)} 
-                        className="btn-icon"
-                      >
-                        <Trash2 size={18} />
-                      </button>
+                      <div className="link-actions">
+                        <button 
+                          onClick={() => handleScheduleLink(link)} 
+                          className="btn-icon"
+                          title="Schedule"
+                        >
+                          <Calendar size={18} />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteLink(link._id)} 
+                          className="btn-icon"
+                          title="Delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}
@@ -885,6 +936,17 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showScheduleModal && selectedLink && (
+        <ScheduleModal
+          link={selectedLink}
+          onSave={handleSaveSchedule}
+          onClose={() => {
+            setShowScheduleModal(false);
+            setSelectedLink(null);
+          }}
+        />
       )}
     </div>
   );

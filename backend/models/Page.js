@@ -39,6 +39,20 @@ const linkSchema = new mongoose.Schema({
   order: {
     type: Number,
     default: 0
+  },
+  schedule: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    startDate: {
+      type: Date,
+      default: null
+    },
+    endDate: {
+      type: Date,
+      default: null
+    }
   }
 });
 
