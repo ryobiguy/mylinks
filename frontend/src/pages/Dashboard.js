@@ -531,7 +531,10 @@ const Dashboard = () => {
                   <div 
                     className="color-preview-circle"
                     style={{ background: page?.customColors?.background || '#ffffff' }}
-                    onClick={() => setOpenColorPicker(openColorPicker === 'background' ? null : 'background')}
+                    onClick={() => {
+                      console.log('Clicked background color picker');
+                      setOpenColorPicker(openColorPicker === 'background' ? null : 'background');
+                    }}
                   />
                   <input
                     type="text"

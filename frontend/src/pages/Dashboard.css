@@ -774,24 +774,32 @@
   top: 100%;
   left: 0;
   margin-top: 8px;
-  z-index: 1000;
+  z-index: 10000 !important;
   background: white;
   padding: 12px;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: block !important;
 }
 
 .color-picker-popover .react-colorful {
-  width: 220px;
-  height: 220px;
+  width: 220px !important;
+  height: 220px !important;
+  display: block !important;
 }
 
 .color-picker-popover .react-colorful__saturation {
   border-radius: 8px 8px 0 0;
+  height: 180px !important;
 }
 
 .color-picker-popover .react-colorful__hue {
   border-radius: 0 0 8px 8px;
-  height: 24px;
+  height: 24px !important;
   margin-top: 12px;
+}
+
+.color-picker-popover .react-colorful__pointer {
+  width: 20px !important;
+  height: 20px !important;
 }
