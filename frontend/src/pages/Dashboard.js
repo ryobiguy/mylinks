@@ -606,14 +606,20 @@ const Dashboard = () => {
               </div>
 
               <div className="form-group">
-                <label>
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
                     checked={page?.hideBranding || false}
-                    onChange={(e) => handleUpdatePage({ hideBranding: e.target.checked })}
-                    style={{ marginRight: '8px' }}
+                    onChange={(e) => {
+                      if (user?.plan === 'free') {
+                        toast.error('Remove branding is a Pro feature. Upgrade to unlock!');
+                      } else {
+                        handleUpdatePage({ hideBranding: e.target.checked });
+                      }
+                    }}
+                    disabled={user?.plan === 'free'}
                   />
-                  Hide "Create your own MyLinks" branding 👑
+                  <span>Hide "Create your own MyLinks" branding 👑</span>
                 </label>
                 <p className="helper-text">Remove branding from your page (Pro feature)</p>
               </div>
