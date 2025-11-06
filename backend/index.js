@@ -12,8 +12,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Stripe webhook route - MUST be before express.json() to get raw body
-app.use('/api/payments/webhook', express.raw({ type: 'application/json' }), require('./routes/webhook'));
+// Stripe webhook - MUST be before express.json()
+app.post('/api/payments/webhook', 
+  express.raw({ type: 'application/json' }), 
+  require('./routes/webhook')
+);
 
 app.use(express.json());
 app.use(cookieParser());

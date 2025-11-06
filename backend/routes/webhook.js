@@ -1,10 +1,8 @@
-const express = require('express');
-const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User = require('../models/User');
 
-// Stripe webhook - handles raw body
-router.post('/', async (req, res) => {
+// Stripe webhook handler
+module.exports = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
@@ -45,7 +43,7 @@ router.post('/', async (req, res) => {
     console.error('Webhook handler error:', error);
     res.status(500).json({ error: 'Webhook handler failed' });
   }
-});
+};
 
 // Helper function to handle checkout completion
 async function handleCheckoutComplete(session) {
@@ -78,6 +76,4 @@ async function handleSubscriptionChange(subscription) {
     await user.save();
     console.log(`✅ Subscription updated for ${user.email}: ${status}`);
   }
-}
-
-module.exports = router;
+};
