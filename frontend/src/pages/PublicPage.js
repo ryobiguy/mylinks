@@ -195,11 +195,13 @@ const PublicPage = () => {
   
   const pageStyle = {
     background: hasCustomBackground ? page.customColors.background : themeStyles.background,
-    backgroundImage: page.backgroundImage ? `url(${page.backgroundImage})` : 'none',
-    backgroundSize: page.backgroundStyle === 'cover' ? 'cover' : page.backgroundStyle === 'contain' ? 'contain' : 'auto',
-    backgroundRepeat: page.backgroundStyle === 'repeat' ? 'repeat' : 'no-repeat',
-    backgroundAttachment: page.backgroundStyle === 'fixed' ? 'fixed' : 'scroll',
-    backgroundPosition: 'center',
+    ...(page.backgroundImage && {
+      backgroundImage: `url(${page.backgroundImage})`,
+      backgroundSize: page.backgroundStyle === 'cover' ? 'cover' : page.backgroundStyle === 'contain' ? 'contain' : 'auto',
+      backgroundRepeat: page.backgroundStyle === 'repeat' ? 'repeat' : 'no-repeat',
+      backgroundAttachment: page.backgroundStyle === 'fixed' ? 'fixed' : 'scroll',
+      backgroundPosition: 'center'
+    }),
     color: hasCustomText ? page.customColors.text : themeStyles.text,
     fontFamily: getFontFamily()
   };
