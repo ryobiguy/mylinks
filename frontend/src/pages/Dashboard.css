@@ -885,8 +885,25 @@
   z-index: 10000;
   background: white;
   padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.apply-color-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: #4F46E5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.apply-color-btn:hover {
+  background: #4338ca;
 }
 
 .color-picker-popover .react-colorful {

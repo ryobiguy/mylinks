@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [selectedLink, setSelectedLink] = useState(null);
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
+  const [tempColor, setTempColor] = useState(null);
   
   // Close color picker when clicking outside
   useEffect(() => {
@@ -674,11 +675,21 @@ const Dashboard = () => {
                   {openColorPicker === 'background' && (
                     <div className="color-picker-popover">
                       <HexColorPicker 
-                        color={page?.customColors?.background || '#ffffff'}
-                        onChange={(color) => handleUpdatePage({ 
-                          customColors: { ...page?.customColors, background: color }
-                        })}
+                        color={tempColor || page?.customColors?.background || '#ffffff'}
+                        onChange={(color) => setTempColor(color)}
                       />
+                      <button 
+                        className="apply-color-btn"
+                        onClick={() => {
+                          handleUpdatePage({ 
+                            customColors: { ...page?.customColors, background: tempColor }
+                          });
+                          setOpenColorPicker(null);
+                          setTempColor(null);
+                        }}
+                      >
+                        ✓ Apply
+                      </button>
                     </div>
                   )}
                 </div>
@@ -704,11 +715,21 @@ const Dashboard = () => {
                   {openColorPicker === 'text' && (
                     <div className="color-picker-popover">
                       <HexColorPicker 
-                        color={page?.customColors?.text || '#000000'}
-                        onChange={(color) => handleUpdatePage({ 
-                          customColors: { ...page?.customColors, text: color }
-                        })}
+                        color={tempColor || page?.customColors?.text || '#000000'}
+                        onChange={(color) => setTempColor(color)}
                       />
+                      <button 
+                        className="apply-color-btn"
+                        onClick={() => {
+                          handleUpdatePage({ 
+                            customColors: { ...page?.customColors, text: tempColor }
+                          });
+                          setOpenColorPicker(null);
+                          setTempColor(null);
+                        }}
+                      >
+                        ✓ Apply
+                      </button>
                     </div>
                   )}
                 </div>
@@ -734,11 +755,21 @@ const Dashboard = () => {
                   {openColorPicker === 'button' && (
                     <div className="color-picker-popover">
                       <HexColorPicker 
-                        color={page?.customColors?.button || '#000000'}
-                        onChange={(color) => handleUpdatePage({ 
-                          customColors: { ...page?.customColors, button: color }
-                        })}
+                        color={tempColor || page?.customColors?.button || '#000000'}
+                        onChange={(color) => setTempColor(color)}
                       />
+                      <button 
+                        className="apply-color-btn"
+                        onClick={() => {
+                          handleUpdatePage({ 
+                            customColors: { ...page?.customColors, button: tempColor }
+                          });
+                          setOpenColorPicker(null);
+                          setTempColor(null);
+                        }}
+                      >
+                        ✓ Apply
+                      </button>
                     </div>
                   )}
                 </div>
@@ -764,11 +795,21 @@ const Dashboard = () => {
                   {openColorPicker === 'buttonText' && (
                     <div className="color-picker-popover">
                       <HexColorPicker 
-                        color={page?.customColors?.buttonText || '#ffffff'}
-                        onChange={(color) => handleUpdatePage({ 
-                          customColors: { ...page?.customColors, buttonText: color }
-                        })}
+                        color={tempColor || page?.customColors?.buttonText || '#ffffff'}
+                        onChange={(color) => setTempColor(color)}
                       />
+                      <button 
+                        className="apply-color-btn"
+                        onClick={() => {
+                          handleUpdatePage({ 
+                            customColors: { ...page?.customColors, buttonText: tempColor }
+                          });
+                          setOpenColorPicker(null);
+                          setTempColor(null);
+                        }}
+                      >
+                        ✓ Apply
+                      </button>
                     </div>
                   )}
                 </div>
