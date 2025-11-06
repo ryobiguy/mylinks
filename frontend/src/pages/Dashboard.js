@@ -349,6 +349,54 @@ const Dashboard = () => {
     }
   };
 
+  const handleBlockImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be less than 2MB');
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Resize to max 800x600 for content blocks
+        let width = img.width;
+        let height = img.height;
+        const maxWidth = 800;
+        const maxHeight = 600;
+        
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = width * ratio;
+          height = height * ratio;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+        setNewBlock({ ...newBlock, imageUrl: compressedBase64 });
+        toast.success('Image uploaded!');
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleLogout = async () => {
     await logout();
     navigate('/');
@@ -467,6 +515,9 @@ const Dashboard = () => {
               
               <div className="form-group">
                 <label>Cover Photo</label>
+                <p className="helper-text" style={{ marginBottom: '8px' }}>
+                  📐 Recommended: 1500x500px • Max 2MB • JPG, PNG, or WebP
+                </p>
                 <div className="cover-upload">
                   {page?.coverPhoto ? (
                     <img src={page.coverPhoto} alt="Cover" className="cover-preview" />
@@ -493,6 +544,9 @@ const Dashboard = () => {
 
               <div className="form-group">
                 <label>Profile Picture</label>
+                <p className="helper-text" style={{ marginBottom: '8px' }}>
+                  📐 Recommended: 400x400px (square) • Max 2MB • JPG, PNG, or WebP
+                </p>
                 <div className="avatar-upload">
                   {page?.avatar ? (
                     <img src={page.avatar} alt="Avatar" className="avatar-preview" />
@@ -1250,14 +1304,46 @@ const Dashboard = () => {
                   </div>
 
                   <div className="form-group">
-                    <label>Image URL</label>
-                    <input
-                      type="url"
-                      value={newBlock.imageUrl}
-                      onChange={(e) => setNewBlock({ ...newBlock, imageUrl: e.target.value })}
-                      placeholder="https://example.com/image.jpg"
-                      required
-                    />
+                    <label>Image</label>
+                    <p className="helper-text" style={{ marginBottom: '8px' }}>
+                      📐 Recommended: 800x600px • Max 2MB • JPG, PNG, or WebP
+                    </p>
+                    <div className="image-upload-section">
+                      {newBlock.imageUrl ? (
+                        <div className="image-preview">
+                          <img src={newBlock.imageUrl} alt="Block preview" />
+                          <button 
+                            type="button"
+                            onClick={() => setNewBlock({ ...newBlock, imageUrl: '' })}
+                            className="btn-secondary btn-small"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <label htmlFor="block-image-upload" className="upload-btn">
+                            <Upload size={20} />
+                            Upload Image
+                          </label>
+                          <input
+                            id="block-image-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBlockImageUpload}
+                            style={{ display: 'none' }}
+                          />
+                          <span style={{ margin: '0 12px', color: '#999' }}>or</span>
+                          <input
+                            type="url"
+                            value={newBlock.imageUrl}
+                            onChange={(e) => setNewBlock({ ...newBlock, imageUrl: e.target.value })}
+                            placeholder="Enter image URL"
+                            style={{ flex: 1 }}
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   <div className="form-group">
