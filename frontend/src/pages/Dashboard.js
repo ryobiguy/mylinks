@@ -714,20 +714,19 @@ const Dashboard = () => {
                             });
                           }}
                           onBlur={(e) => {
-                            // Only save if color actually changed
+                            // Save to backend when done picking
                             const start = e.target.value;
-                            const currentStart = page?.customColors?.gradientStart || '#667eea';
-                            if (start !== currentStart) {
-                              const end = page?.customColors?.gradientEnd || '#764ba2';
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
-                                }
-                              });
-                            }
+                            const end = page?.customColors?.gradientEnd || '#764ba2';
+                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                            console.log('Saving start color:', start, 'Gradient:', gradient);
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: gradient
+                              }
+                            });
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
@@ -754,20 +753,19 @@ const Dashboard = () => {
                             });
                           }}
                           onBlur={(e) => {
-                            // Only save if color actually changed
+                            // Save to backend when done picking
+                            const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
-                            const currentEnd = page?.customColors?.gradientEnd || '#764ba2';
-                            if (end !== currentEnd) {
-                              const start = page?.customColors?.gradientStart || '#667eea';
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
-                                }
-                              });
-                            }
+                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                            console.log('Saving end color:', end, 'Gradient:', gradient);
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: gradient
+                              }
+                            });
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
