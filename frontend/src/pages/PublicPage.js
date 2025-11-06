@@ -187,11 +187,11 @@ const PublicPage = () => {
 
   const themeStyles = getThemeStyles();
   
-  // Use custom colors if they differ from default, otherwise use theme
-  const hasCustomBackground = page.customColors?.background && page.customColors.background !== '#ffffff';
-  const hasCustomText = page.customColors?.text && page.customColors.text !== '#000000';
-  const hasCustomButton = page.customColors?.button && page.customColors.button !== '#000000';
-  const hasCustomButtonText = page.customColors?.buttonText && page.customColors.buttonText !== '#ffffff';
+  // Use custom colors if they exist
+  const hasCustomBackground = page.customColors?.background;
+  const hasCustomText = page.customColors?.text;
+  const hasCustomButton = page.customColors?.button;
+  const hasCustomButtonText = page.customColors?.buttonText;
   
   const pageStyle = {
     background: hasCustomBackground ? page.customColors.background : themeStyles.background,
