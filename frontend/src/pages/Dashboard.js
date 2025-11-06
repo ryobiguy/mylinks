@@ -1148,7 +1148,13 @@ const Dashboard = () => {
                 style={{
                   background: page?.customColors?.background || '#ffffff',
                   color: page?.customColors?.text || '#000000',
-                  paddingTop: page?.coverPhoto ? '80px' : '40px'
+                  paddingTop: page?.coverPhoto ? '80px' : '40px',
+                  fontFamily: page?.font === 'inter' ? 'Inter, sans-serif' :
+                              page?.font === 'poppins' ? 'Poppins, sans-serif' :
+                              page?.font === 'roboto' ? 'Roboto, sans-serif' :
+                              page?.font === 'montserrat' ? 'Montserrat, sans-serif' :
+                              page?.font === 'playfair' ? 'Playfair Display, serif' :
+                              'system-ui, -apple-system, sans-serif'
                 }}
               >
                 {page?.avatar ? (
