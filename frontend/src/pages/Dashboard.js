@@ -678,130 +678,88 @@ const Dashboard = () => {
               <h3>Appearance</h3>
               
               <div className="form-group">
-                <label>Theme</label>
-                <div className="theme-grid">
-                  <button
-                    type="button"
-                    className={`theme-option ${!page?.theme || page?.theme === 'default' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'default' })}
-                  >
-                    <div className="theme-preview default-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Default</span>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'dark' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'dark' })}
-                  >
-                    <div className="theme-preview dark-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Dark</span>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'gradient' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'gradient' })}
-                  >
-                    <div className="theme-preview gradient-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Gradient</span>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'minimal' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'minimal' })}
-                  >
-                    <div className="theme-preview minimal-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Minimal</span>
-                  </button>
+                <label>Page Background</label>
+                <p className="helper-text" style={{ marginBottom: '8px' }}>
+                  {user?.plan === 'pro' ? '💎 Pro: Use solid colors or gradients' : '🎨 Free: Solid colors only • Upgrade for gradients'}
+                </p>
+                
+                {user?.plan === 'pro' ? (
+                  <div style={{ marginBottom: '12px' }}>
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={page?.customColors?.backgroundType === 'gradient'}
+                        onChange={(e) => {
+                          handleUpdatePage({ 
+                            customColors: { 
+                              ...page?.customColors, 
+                              backgroundType: e.target.checked ? 'gradient' : 'solid',
+                              background: e.target.checked ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#ffffff'
+                            }
+                          });
+                        }}
+                      />
+                      <span>Use Gradient Background 👑</span>
+                    </label>
+                  </div>
+                ) : null}
 
-                  {/* Premium Themes */}
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'neon' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
-                    onClick={() => {
-                      if (user?.plan === 'free') {
-                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
-                      } else {
-                        handleUpdatePage({ theme: 'neon' });
-                      }
-                    }}
-                  >
-                    <div className="theme-preview neon-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
+                {page?.customColors?.backgroundType === 'gradient' && user?.plan === 'pro' ? (
+                  <div>
+                    <label style={{ fontSize: '0.875rem', marginBottom: '8px', display: 'block' }}>Gradient Colors</label>
+                    <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
+                      <div style={{ flex: 1 }}>
+                        <label style={{ fontSize: '0.75rem', color: '#666' }}>Start Color</label>
+                        <input
+                          type="color"
+                          value={page?.customColors?.gradientStart || '#667eea'}
+                          onChange={(e) => {
+                            const start = e.target.value;
+                            const end = page?.customColors?.gradientEnd || '#764ba2';
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientStart: start,
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                              }
+                            });
+                          }}
+                          style={{ width: '100%', height: '40px', cursor: 'pointer' }}
+                        />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <label style={{ fontSize: '0.75rem', color: '#666' }}>End Color</label>
+                        <input
+                          type="color"
+                          value={page?.customColors?.gradientEnd || '#764ba2'}
+                          onChange={(e) => {
+                            const start = page?.customColors?.gradientStart || '#667eea';
+                            const end = e.target.value;
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientEnd: end,
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                              }
+                            });
+                          }}
+                          style={{ width: '100%', height: '40px', cursor: 'pointer' }}
+                        />
+                      </div>
                     </div>
-                    <span>Neon 👑</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'sunset' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
-                    onClick={() => {
-                      if (user?.plan === 'free') {
-                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
-                      } else {
-                        handleUpdatePage({ theme: 'sunset' });
-                      }
-                    }}
-                  >
-                    <div className="theme-preview sunset-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Sunset 👑</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'ocean' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
-                    onClick={() => {
-                      if (user?.plan === 'free') {
-                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
-                      } else {
-                        handleUpdatePage({ theme: 'ocean' });
-                      }
-                    }}
-                  >
-                    <div className="theme-preview ocean-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Ocean 👑</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`theme-option ${page?.theme === 'forest' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
-                    onClick={() => {
-                      if (user?.plan === 'free') {
-                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
-                      } else {
-                        handleUpdatePage({ theme: 'forest' });
-                      }
-                    }}
-                  >
-                    <div className="theme-preview forest-theme">
-                      <div className="theme-bg"></div>
-                      <div className="theme-button"></div>
-                    </div>
-                    <span>Forest 👑</span>
-                  </button>
-                </div>
-                <p className="helper-text">👑 Premium themes available with Pro plan</p>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="color"
+                      value={page?.customColors?.background || '#ffffff'}
+                      onChange={(e) => handleUpdatePage({ 
+                        customColors: { ...page?.customColors, background: e.target.value, backgroundType: 'solid' }
+                      })}
+                      style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px' }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
@@ -851,46 +809,6 @@ const Dashboard = () => {
                   <option value="montserrat">Montserrat</option>
                   <option value="playfair">Playfair Display</option>
                 </select>
-              </div>
-
-              <div className="form-group">
-                <label>Background Color</label>
-                <div className="color-picker-wrapper">
-                  <div 
-                    className="color-preview-circle"
-                    style={{ background: page?.customColors?.background || '#ffffff' }}
-                    onClick={() => setOpenColorPicker(openColorPicker === 'background' ? null : 'background')}
-                  />
-                  <input
-                    type="text"
-                    value={page?.customColors?.background || '#ffffff'}
-                    onChange={(e) => handleUpdatePage({ 
-                      customColors: { ...page?.customColors, background: e.target.value }
-                    })}
-                    className="color-input-text"
-                    placeholder="#ffffff"
-                  />
-                  {openColorPicker === 'background' && (
-                    <div className="color-picker-popover">
-                      <HexColorPicker 
-                        color={tempColor || page?.customColors?.background || '#ffffff'}
-                        onChange={(color) => setTempColor(color)}
-                      />
-                      <button 
-                        className="apply-color-btn"
-                        onClick={() => {
-                          handleUpdatePage({ 
-                            customColors: { ...page?.customColors, background: tempColor }
-                          });
-                          setOpenColorPicker(null);
-                          setTempColor(null);
-                        }}
-                      >
-                        ✓ Apply
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
 
               <div className="form-group">
