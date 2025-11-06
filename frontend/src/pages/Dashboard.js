@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar, Edit } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import { QRCodeSVG } from 'qrcode.react';
 import { HexColorPicker } from 'react-colorful';
@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
   const [tempColor, setTempColor] = useState(null);
   const [showAddBlock, setShowAddBlock] = useState(false);
+  const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
     type: 'image', 
     title: '', 
@@ -35,6 +36,7 @@ const Dashboard = () => {
     backgroundColor: '#ffffff',
     layout: 'full'
   });
+  const [editingLink, setEditingLink] = useState(null);
   
   // Close color picker when clicking outside
   useEffect(() => {
@@ -280,6 +282,39 @@ const Dashboard = () => {
     }
   };
 
+  const handleEditLink = (link) => {
+    setEditingLink(link);
+    setNewLink({
+      title: link.title,
+      url: link.url,
+      icon: link.icon,
+      iconOnly: link.iconOnly,
+      iconSize: link.iconSize,
+      position: link.position
+    });
+    setShowAddLink(true);
+  };
+
+  const handleUpdateLink = async (e) => {
+    e.preventDefault();
+    if (!newLink.url) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`${API_URL}/pages/my-page/links/${editingLink._id}`, newLink, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPage(response.data.page);
+      setNewLink({ title: '', url: '', icon: 'link', iconOnly: false, iconSize: 50, position: 'main' });
+      setShowAddLink(false);
+      setEditingLink(null);
+      toast.success('Link updated!');
+    } catch (error) {
+      console.error('Update link error:', error);
+      toast.error('Failed to update link');
+    }
+  };
+
   const handleDeleteLink = async (linkId) => {
     if (!window.confirm('Delete this link?')) return;
 
@@ -330,6 +365,52 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Add block error:', error);
       toast.error('Failed to add content block');
+    }
+  };
+
+  const handleEditBlock = (block) => {
+    setEditingBlock(block);
+    setNewBlock({
+      type: block.type,
+      title: block.title,
+      description: block.description,
+      imageUrl: block.imageUrl,
+      linkUrl: block.linkUrl,
+      backgroundColor: block.backgroundColor,
+      layout: block.layout
+    });
+    setShowAddBlock(true);
+  };
+
+  const handleUpdateBlock = async (e) => {
+    e.preventDefault();
+
+    if (!newBlock.title || !newBlock.imageUrl) {
+      toast.error('Please fill in title and image');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`${API_URL}/pages/my-page/content-blocks/${editingBlock._id}`, newBlock, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPage(response.data.page);
+      setNewBlock({ 
+        type: 'image', 
+        title: '', 
+        description: '', 
+        imageUrl: '', 
+        linkUrl: '', 
+        backgroundColor: '#ffffff',
+        layout: 'full'
+      });
+      setShowAddBlock(false);
+      setEditingBlock(null);
+      toast.success('Content block updated!');
+    } catch (error) {
+      console.error('Update block error:', error);
+      toast.error('Failed to update content block');
     }
   };
 
@@ -1102,7 +1183,7 @@ const Dashboard = () => {
               </div>
 
               {showAddLink && (
-                <form onSubmit={handleAddLink} className="add-link-form">
+                <form onSubmit={editingLink ? handleUpdateLink : handleAddLink} className="add-link-form">
                   <input
                     type="text"
                     placeholder={newLink.iconOnly ? "Link title (for tooltip)" : "Link title"}
@@ -1183,10 +1264,16 @@ const Dashboard = () => {
                   </div>
 
                   <div className="form-actions">
-                    <button type="submit" className="btn-primary btn-small">Add</button>
+                    <button type="submit" className="btn-primary btn-small">
+                      {editingLink ? 'Update' : 'Add'}
+                    </button>
                     <button 
                       type="button" 
-                      onClick={() => setShowAddLink(false)} 
+                      onClick={() => {
+                        setShowAddLink(false);
+                        setEditingLink(null);
+                        setNewLink({ title: '', url: '', icon: 'link', iconOnly: false, iconSize: 50, position: 'main' });
+                      }} 
                       className="btn-secondary btn-small"
                     >
                       Cancel
@@ -1227,6 +1314,13 @@ const Dashboard = () => {
                         </span>
                       </div>
                       <div className="link-actions">
+                        <button 
+                          onClick={() => handleEditLink(link)} 
+                          className="btn-icon"
+                          title="Edit"
+                        >
+                          <Edit size={18} />
+                        </button>
                         <button 
                           onClick={() => handleScheduleLink(link)} 
                           className="btn-icon"
@@ -1269,7 +1363,7 @@ const Dashboard = () => {
               </div>
 
               {showAddBlock && (
-                <form onSubmit={handleAddBlock} className="add-link-form">
+                <form onSubmit={editingBlock ? handleUpdateBlock : handleAddBlock} className="add-link-form">
                   <div className="form-group">
                     <label>Layout</label>
                     <select
@@ -1366,10 +1460,24 @@ const Dashboard = () => {
                   </div>
 
                   <div className="form-actions">
-                    <button type="submit" className="btn-primary btn-small">Add Block</button>
+                    <button type="submit" className="btn-primary btn-small">
+                      {editingBlock ? 'Update Block' : 'Add Block'}
+                    </button>
                     <button 
                       type="button" 
-                      onClick={() => setShowAddBlock(false)} 
+                      onClick={() => {
+                        setShowAddBlock(false);
+                        setEditingBlock(null);
+                        setNewBlock({ 
+                          type: 'image', 
+                          title: '', 
+                          description: '', 
+                          imageUrl: '', 
+                          linkUrl: '', 
+                          backgroundColor: '#ffffff',
+                          layout: 'full'
+                        });
+                      }} 
                       className="btn-secondary btn-small"
                     >
                       Cancel
@@ -1405,6 +1513,13 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="link-actions">
+                        <button 
+                          onClick={() => handleEditBlock(block)} 
+                          className="btn-icon"
+                          title="Edit"
+                        >
+                          <Edit size={18} />
+                        </button>
                         <button 
                           onClick={() => handleDeleteBlock(block._id)} 
                           className="btn-icon"
