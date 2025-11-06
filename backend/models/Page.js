@@ -171,6 +171,14 @@ const pageSchema = new mongoose.Schema({
       type: String,
       default: '#ffffff'
     },
+    gradientStart: {
+      type: String,
+      default: '#667eea'
+    },
+    gradientEnd: {
+      type: String,
+      default: '#764ba2'
+    },
     text: {
       type: String,
       default: '#000000'
