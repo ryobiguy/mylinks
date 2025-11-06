@@ -726,7 +726,7 @@ const Dashboard = () => {
                               <button 
                                 className="apply-color-btn"
                                 onClick={() => {
-                                  const start = tempColor;
+                                  const start = tempColor || page?.customColors?.gradientStart || '#667eea';
                                   const end = page?.customColors?.gradientEnd || '#764ba2';
                                   const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
                                   console.log('Applying gradient start:', start, end, gradient);
@@ -786,7 +786,7 @@ const Dashboard = () => {
                                 className="apply-color-btn"
                                 onClick={() => {
                                   const start = page?.customColors?.gradientStart || '#667eea';
-                                  const end = tempColor;
+                                  const end = tempColor || page?.customColors?.gradientEnd || '#764ba2';
                                   const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
                                   console.log('Applying gradient end:', start, end, gradient);
                                   handleUpdatePage({ 
