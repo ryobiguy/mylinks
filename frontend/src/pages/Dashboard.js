@@ -706,122 +706,45 @@ const Dashboard = () => {
                   <div>
                     <label style={{ fontSize: '0.875rem', marginBottom: '8px', display: 'block' }}>Gradient Colors 👑</label>
                     <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
-                      {/* Start Color */}
                       <div style={{ flex: 1 }}>
                         <label style={{ fontSize: '0.75rem', color: '#666', marginBottom: '4px', display: 'block' }}>Start Color</label>
-                        <div className="color-picker-wrapper">
-                          <div 
-                            className="color-preview-circle"
-                            style={{ background: page?.customColors?.gradientStart || '#667eea' }}
-                            onClick={() => setOpenColorPicker(openColorPicker === 'gradientStart' ? null : 'gradientStart')}
-                          />
-                          <input
-                            type="text"
-                            value={page?.customColors?.gradientStart || '#667eea'}
-                            onChange={(e) => {
-                              const start = e.target.value;
-                              const end = page?.customColors?.gradientEnd || '#764ba2';
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
-                                }
-                              });
-                            }}
-                            className="color-input-text"
-                            placeholder="#667eea"
-                          />
-                          {openColorPicker === 'gradientStart' && (
-                            <div className="color-picker-popover">
-                              <HexColorPicker 
-                                color={tempColor || page?.customColors?.gradientStart || '#667eea'}
-                                onChange={(color) => setTempColor(color)}
-                              />
-                              <button 
-                                className="apply-color-btn"
-                                onClick={() => {
-                                  const start = tempColor || page?.customColors?.gradientStart || '#667eea';
-                                  const end = page?.customColors?.gradientEnd || '#764ba2';
-                                  const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                                  console.log('Applying gradient start:', start, end, gradient);
-                                  handleUpdatePage({ 
-                                    customColors: { 
-                                      ...page?.customColors, 
-                                      gradientStart: start,
-                                      gradientEnd: end,
-                                      background: gradient
-                                    }
-                                  });
-                                  setOpenColorPicker(null);
-                                  setTempColor(null);
-                                }}
-                              >
-                                ✓ Apply
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                        <input
+                          type="color"
+                          value={page?.customColors?.gradientStart || '#667eea'}
+                          onChange={(e) => {
+                            const start = e.target.value;
+                            const end = page?.customColors?.gradientEnd || '#764ba2';
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                              }
+                            });
+                          }}
+                          style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
+                        />
                       </div>
-
-                      {/* End Color */}
                       <div style={{ flex: 1 }}>
                         <label style={{ fontSize: '0.75rem', color: '#666', marginBottom: '4px', display: 'block' }}>End Color</label>
-                        <div className="color-picker-wrapper">
-                          <div 
-                            className="color-preview-circle"
-                            style={{ background: page?.customColors?.gradientEnd || '#764ba2' }}
-                            onClick={() => setOpenColorPicker(openColorPicker === 'gradientEnd' ? null : 'gradientEnd')}
-                          />
-                          <input
-                            type="text"
-                            value={page?.customColors?.gradientEnd || '#764ba2'}
-                            onChange={(e) => {
-                              const start = page?.customColors?.gradientStart || '#667eea';
-                              const end = e.target.value;
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
-                                }
-                              });
-                            }}
-                            className="color-input-text"
-                            placeholder="#764ba2"
-                          />
-                          {openColorPicker === 'gradientEnd' && (
-                            <div className="color-picker-popover">
-                              <HexColorPicker 
-                                color={tempColor || page?.customColors?.gradientEnd || '#764ba2'}
-                                onChange={(color) => setTempColor(color)}
-                              />
-                              <button 
-                                className="apply-color-btn"
-                                onClick={() => {
-                                  const start = page?.customColors?.gradientStart || '#667eea';
-                                  const end = tempColor || page?.customColors?.gradientEnd || '#764ba2';
-                                  const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                                  console.log('Applying gradient end:', start, end, gradient);
-                                  handleUpdatePage({ 
-                                    customColors: { 
-                                      ...page?.customColors, 
-                                      gradientStart: start,
-                                      gradientEnd: end,
-                                      background: gradient
-                                    }
-                                  });
-                                  setOpenColorPicker(null);
-                                  setTempColor(null);
-                                }}
-                              >
-                                ✓ Apply
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                        <input
+                          type="color"
+                          value={page?.customColors?.gradientEnd || '#764ba2'}
+                          onChange={(e) => {
+                            const start = page?.customColors?.gradientStart || '#667eea';
+                            const end = e.target.value;
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                              }
+                            });
+                          }}
+                          style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
+                        />
                       </div>
                     </div>
                     <p className="helper-text" style={{ fontSize: '0.75rem' }}>
