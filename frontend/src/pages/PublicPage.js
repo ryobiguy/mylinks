@@ -345,9 +345,9 @@ const PublicPage = () => {
                   <div className="content-block-image">
                     <img src={block.imageUrl} alt={block.title} />
                   </div>
-                  <div className="content-block-text">
-                    <h3>{block.title}</h3>
-                    {block.description && <p>{block.description}</p>}
+                  <div className="content-block-text" style={{ color: block.textColor || '#1a1a1a' }}>
+                    <h3 style={{ color: block.textColor || '#1a1a1a' }}>{block.title}</h3>
+                    {block.description && <p style={{ color: block.textColor || '#666' }}>{block.description}</p>}
                   </div>
                 </div>
               ))}

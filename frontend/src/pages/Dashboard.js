@@ -34,6 +34,7 @@ const Dashboard = () => {
     imageUrl: '', 
     linkUrl: '', 
     backgroundColor: '#ffffff',
+    textColor: '#000000',
     layout: 'full'
   });
   const [editingLink, setEditingLink] = useState(null);
@@ -358,6 +359,7 @@ const Dashboard = () => {
         imageUrl: '', 
         linkUrl: '', 
         backgroundColor: '#ffffff',
+        textColor: '#000000',
         layout: 'full'
       });
       setShowAddBlock(false);
@@ -403,6 +405,7 @@ const Dashboard = () => {
         imageUrl: '', 
         linkUrl: '', 
         backgroundColor: '#ffffff',
+        textColor: '#000000',
         layout: 'full'
       });
       setShowAddBlock(false);
@@ -1437,6 +1440,42 @@ const Dashboard = () => {
                     </div>
                   </div>
 
+                  <div className="form-group">
+                    <label>Text Color</label>
+                    <div className="color-picker-wrapper">
+                      <div 
+                        className="color-preview-circle"
+                        style={{ background: newBlock.textColor || '#000000' }}
+                        onClick={() => setOpenColorPicker(openColorPicker === 'blockText' ? null : 'blockText')}
+                      />
+                      <input
+                        type="text"
+                        value={newBlock.textColor || '#000000'}
+                        onChange={(e) => setNewBlock({ ...newBlock, textColor: e.target.value })}
+                        className="color-input-text"
+                        placeholder="#000000"
+                      />
+                      {openColorPicker === 'blockText' && (
+                        <div className="color-picker-popover">
+                          <HexColorPicker 
+                            color={tempColor || newBlock.textColor || '#000000'}
+                            onChange={(color) => setTempColor(color)}
+                          />
+                          <button 
+                            className="apply-color-btn"
+                            onClick={() => {
+                              setNewBlock({ ...newBlock, textColor: tempColor });
+                              setOpenColorPicker(null);
+                              setTempColor(null);
+                            }}
+                          >
+                            ✓ Apply
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="form-actions">
                     <button type="submit" className="btn-primary btn-small">
                       {editingBlock ? 'Update Block' : 'Add Block'}
@@ -1453,6 +1492,7 @@ const Dashboard = () => {
                           imageUrl: '', 
                           linkUrl: '', 
                           backgroundColor: '#ffffff',
+                          textColor: '#000000',
                           layout: 'full'
                         });
                       }} 

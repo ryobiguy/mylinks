@@ -231,7 +231,7 @@ router.post('/:username/links/:linkId/click', async (req, res) => {
 // Add content block
 router.post('/my-page/content-blocks', auth, async (req, res) => {
   try {
-    const { type, title, description, imageUrl, videoUrl, linkUrl, backgroundColor, layout } = req.body;
+    const { type, title, description, imageUrl, videoUrl, linkUrl, backgroundColor, textColor, layout } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -246,6 +246,7 @@ router.post('/my-page/content-blocks', auth, async (req, res) => {
       videoUrl,
       linkUrl,
       backgroundColor,
+      textColor,
       layout,
       order: page.contentBlocks.length
     };
@@ -262,7 +263,7 @@ router.post('/my-page/content-blocks', auth, async (req, res) => {
 // Update content block
 router.put('/my-page/content-blocks/:blockId', auth, async (req, res) => {
   try {
-    const { title, description, imageUrl, videoUrl, linkUrl, backgroundColor, layout, isActive } = req.body;
+    const { title, description, imageUrl, videoUrl, linkUrl, backgroundColor, textColor, layout, isActive } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -280,6 +281,7 @@ router.put('/my-page/content-blocks/:blockId', auth, async (req, res) => {
     if (videoUrl !== undefined) block.videoUrl = videoUrl;
     if (linkUrl !== undefined) block.linkUrl = linkUrl;
     if (backgroundColor !== undefined) block.backgroundColor = backgroundColor;
+    if (textColor !== undefined) block.textColor = textColor;
     if (layout !== undefined) block.layout = layout;
     if (isActive !== undefined) block.isActive = isActive;
 

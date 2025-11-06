@@ -86,6 +86,10 @@ const contentBlockSchema = new mongoose.Schema({
     type: String,
     default: '#ffffff'
   },
+  textColor: {
+    type: String,
+    default: '#000000'
+  },
   layout: {
     type: String,
     enum: ['full', 'half'],
