@@ -728,12 +728,14 @@ const Dashboard = () => {
                                 onClick={() => {
                                   const start = tempColor;
                                   const end = page?.customColors?.gradientEnd || '#764ba2';
+                                  const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                                  console.log('Applying gradient start:', start, end, gradient);
                                   handleUpdatePage({ 
                                     customColors: { 
                                       ...page?.customColors, 
                                       gradientStart: start,
                                       gradientEnd: end,
-                                      background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                      background: gradient
                                     }
                                   });
                                   setOpenColorPicker(null);
@@ -785,12 +787,14 @@ const Dashboard = () => {
                                 onClick={() => {
                                   const start = page?.customColors?.gradientStart || '#667eea';
                                   const end = tempColor;
+                                  const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                                  console.log('Applying gradient end:', start, end, gradient);
                                   handleUpdatePage({ 
                                     customColors: { 
                                       ...page?.customColors, 
                                       gradientStart: start,
                                       gradientEnd: end,
-                                      background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                      background: gradient
                                     }
                                   });
                                   setOpenColorPicker(null);
