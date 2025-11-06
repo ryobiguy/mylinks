@@ -79,11 +79,12 @@ router.post('/create-portal-session', auth, async (req, res) => {
 });
 
 // Stripe webhook
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+router.post('/webhook', async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
   try {
+    // req.body is already raw from the middleware in index.js
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
@@ -91,6 +92,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     );
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
+    console.error('Webhook secret:', process.env.STRIPE_WEBHOOK_SECRET ? 'Set' : 'Not set');
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
