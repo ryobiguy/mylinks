@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [showAddBlock, setShowAddBlock] = useState(false);
   const savingGradient = React.useRef(false);
   const gradientSaveTimeout = React.useRef(null);
+  const isPickingGradient = React.useRef(false);
   const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
     type: 'image', 
@@ -121,8 +122,12 @@ const Dashboard = () => {
       });
       console.log('Server returned gradient:', response.data.page.customColors?.background);
       
-      // Use server response (it has the correct saved values)
-      setPage(response.data.page);
+      // Only update page state if not currently picking gradient colors
+      if (!isPickingGradient.current) {
+        setPage(response.data.page);
+      } else {
+        console.log('Skipping page update - user is picking gradient');
+      }
       
       toast.success('Page updated!');
     } catch (error) {
@@ -713,6 +718,9 @@ const Dashboard = () => {
                         <input
                           type="color"
                           value={page?.customColors?.gradientStart || '#667eea'}
+                          onFocus={() => {
+                            isPickingGradient.current = true;
+                          }}
                           onChange={(e) => {
                             const start = e.target.value;
                             const end = page?.customColors?.gradientEnd || '#764ba2';
@@ -736,6 +744,7 @@ const Dashboard = () => {
                             
                             gradientSaveTimeout.current = setTimeout(() => {
                               console.log('Auto-saving gradient:', gradient);
+                              isPickingGradient.current = false;
                               handleUpdatePage({ 
                                 customColors: { 
                                   ...page?.customColors, 
@@ -743,6 +752,11 @@ const Dashboard = () => {
                                   gradientEnd: end,
                                   background: gradient
                                 }
+                              }).then(() => {
+                                // Re-enable page updates after save completes
+                                setTimeout(() => {
+                                  isPickingGradient.current = false;
+                                }, 100);
                               });
                             }, 1000);
                           }}
@@ -754,6 +768,9 @@ const Dashboard = () => {
                         <input
                           type="color"
                           value={page?.customColors?.gradientEnd || '#764ba2'}
+                          onFocus={() => {
+                            isPickingGradient.current = true;
+                          }}
                           onChange={(e) => {
                             const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
@@ -777,6 +794,7 @@ const Dashboard = () => {
                             
                             gradientSaveTimeout.current = setTimeout(() => {
                               console.log('Auto-saving gradient:', gradient);
+                              isPickingGradient.current = false;
                               handleUpdatePage({ 
                                 customColors: { 
                                   ...page?.customColors, 
@@ -784,6 +802,11 @@ const Dashboard = () => {
                                   gradientEnd: end,
                                   background: gradient
                                 }
+                              }).then(() => {
+                                // Re-enable page updates after save completes
+                                setTimeout(() => {
+                                  isPickingGradient.current = false;
+                                }, 100);
                               });
                             }, 1000);
                           }}
