@@ -1628,6 +1628,54 @@ const Dashboard = () => {
                     );
                   })}
                 </div>
+
+                {/* Content Blocks Preview */}
+                {page?.contentBlocks && page.contentBlocks.length > 0 && (
+                  <div style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '8px', 
+                    marginTop: '16px',
+                    width: '100%'
+                  }}>
+                    {page.contentBlocks.map((block) => (
+                      <div 
+                        key={block._id}
+                        style={{
+                          width: block.layout === 'half' ? 'calc(50% - 4px)' : '100%',
+                          backgroundColor: block.backgroundColor,
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          fontSize: '0.75rem'
+                        }}
+                      >
+                        <div style={{ 
+                          width: '100%', 
+                          height: '60px', 
+                          background: '#e5e7eb',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          {block.imageUrl && (
+                            <img 
+                              src={block.imageUrl} 
+                              alt={block.title}
+                              style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover' 
+                              }}
+                            />
+                          )}
+                        </div>
+                        <div style={{ padding: '6px' }}>
+                          <strong style={{ fontSize: '0.7rem' }}>{block.title}</strong>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
