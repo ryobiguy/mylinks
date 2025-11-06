@@ -25,6 +25,8 @@ const Dashboard = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
   const [tempColor, setTempColor] = useState(null);
+  const [tempGradientStart, setTempGradientStart] = useState(null);
+  const [tempGradientEnd, setTempGradientEnd] = useState(null);
   const [showAddBlock, setShowAddBlock] = useState(false);
   const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
@@ -82,6 +84,20 @@ const Dashboard = () => {
   useEffect(() => {
     fetchPage();
   }, []);
+
+  // Initialize gradient colors if they don't exist
+  useEffect(() => {
+    if (page && !page.customColors?.gradientStart && !page.customColors?.gradientEnd) {
+      // Set default gradient colors
+      handleUpdatePage({
+        customColors: {
+          ...page.customColors,
+          gradientStart: '#667eea',
+          gradientEnd: '#764ba2'
+        }
+      });
+    }
+  }, [page?.user]);
 
   const fetchPage = async () => {
     try {
