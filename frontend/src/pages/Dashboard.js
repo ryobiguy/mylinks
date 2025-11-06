@@ -726,7 +726,7 @@ const Dashboard = () => {
                                   ...page?.customColors, 
                                   gradientStart: start,
                                   gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                  background: `linear-gradient(to bottom, ${start} 0%, ${end} 100%)`
                                 }
                               });
                             }}
@@ -749,7 +749,7 @@ const Dashboard = () => {
                                       ...page?.customColors, 
                                       gradientStart: start,
                                       gradientEnd: end,
-                                      background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                      background: `linear-gradient(to bottom, ${start} 0%, ${end} 100%)`
                                     }
                                   });
                                   setOpenColorPicker(null);
@@ -783,7 +783,7 @@ const Dashboard = () => {
                                   ...page?.customColors, 
                                   gradientStart: start,
                                   gradientEnd: end,
-                                  background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                  background: `linear-gradient(to bottom, ${start} 0%, ${end} 100%)`
                                 }
                               });
                             }}
@@ -806,7 +806,7 @@ const Dashboard = () => {
                                       ...page?.customColors, 
                                       gradientStart: start,
                                       gradientEnd: end,
-                                      background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
+                                      background: `linear-gradient(to bottom, ${start} 0%, ${end} 100%)`
                                     }
                                   });
                                   setOpenColorPicker(null);
