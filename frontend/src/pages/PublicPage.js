@@ -329,6 +329,31 @@ const PublicPage = () => {
             })}
         </div>
 
+        {/* Content Blocks */}
+        {page.contentBlocks && page.contentBlocks.length > 0 && (
+          <div className="content-blocks-container">
+            {page.contentBlocks
+              .filter(block => block.isActive)
+              .sort((a, b) => a.order - b.order)
+              .map((block) => (
+                <div 
+                  key={block._id} 
+                  className={`content-block ${block.layout === 'half' ? 'half-width' : 'full-width'}`}
+                  style={{ backgroundColor: block.backgroundColor }}
+                  onClick={() => block.linkUrl && window.open(block.linkUrl, '_blank')}
+                >
+                  <div className="content-block-image">
+                    <img src={block.imageUrl} alt={block.title} />
+                  </div>
+                  <div className="content-block-text">
+                    <h3>{block.title}</h3>
+                    {block.description && <p>{block.description}</p>}
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+
         {/* Bottom Icons */}
         {page.links.filter(link => isLinkVisible(link) && link.position === 'bottom').length > 0 && (
           <div className="icon-links bottom-icons">

@@ -300,6 +300,25 @@
 }
 
 /* Share Section */
+.share-sect.branding {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  opacity: 0.8;
+}
+
+.branding a {
+  color: #4F46E5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.branding a:hover {
+  text-decoration: underline;
+}
+
 .share-section {
   margin: 40px 0 20px;
   text-align: center;
@@ -351,6 +370,73 @@
 
 .share-btn.copy {
   background: #666;
+}
+
+/* Content Blocks */
+.content-blocks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+  width: 100%;
+}
+
+.content-block {
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-block:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-block.full-width {
+  width: 100%;
+}
+
+.content-block.half-width {
+  width: calc(50% - 8px);
+}
+
+@media (max-width: 640px) {
+  .content-block.half-width {
+    width: 100%;
+  }
+}
+
+.content-block-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.content-block-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content-block-text {
+  padding: 16px;
+  text-align: left;
+}
+
+.content-block-text h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.content-block-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 }
 
 /* Visitor Counter */
