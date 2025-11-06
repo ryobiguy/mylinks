@@ -858,18 +858,23 @@
 }
 
 .theme-option.locked {
-  opacity: 0.5;
   cursor: not-allowed;
   position: relative;
+}
+
+.theme-option.locked .theme-preview {
+  opacity: 0.6;
 }
 
 .theme-option.locked::after {
   content: '🔒';
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .color-picker-popover {
