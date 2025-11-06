@@ -121,14 +121,7 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Server returned gradient:', response.data.page.customColors?.background);
-      
-      // Only update page state if not currently picking gradient colors
-      if (!isPickingGradient.current) {
-        setPage(response.data.page);
-      } else {
-        console.log('Skipping page update - user is picking gradient');
-      }
-      
+      setPage(response.data.page);
       toast.success('Page updated!');
     } catch (error) {
       console.error('Update page error:', error);
@@ -718,47 +711,17 @@ const Dashboard = () => {
                         <input
                           type="color"
                           value={page?.customColors?.gradientStart || '#667eea'}
-                          onFocus={() => {
-                            isPickingGradient.current = true;
-                          }}
                           onChange={(e) => {
                             const start = e.target.value;
                             const end = page?.customColors?.gradientEnd || '#764ba2';
-                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            
-                            // Update local state immediately
-                            setPage({
-                              ...page,
-                              customColors: {
-                                ...page?.customColors,
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
                                 gradientStart: start,
                                 gradientEnd: end,
-                                background: gradient
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
                               }
                             });
-                            
-                            // Debounce save to backend
-                            if (gradientSaveTimeout.current) {
-                              clearTimeout(gradientSaveTimeout.current);
-                            }
-                            
-                            gradientSaveTimeout.current = setTimeout(() => {
-                              console.log('Auto-saving gradient:', gradient);
-                              isPickingGradient.current = false;
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: gradient
-                                }
-                              }).then(() => {
-                                // Re-enable page updates after save completes
-                                setTimeout(() => {
-                                  isPickingGradient.current = false;
-                                }, 100);
-                              });
-                            }, 1000);
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
@@ -768,47 +731,17 @@ const Dashboard = () => {
                         <input
                           type="color"
                           value={page?.customColors?.gradientEnd || '#764ba2'}
-                          onFocus={() => {
-                            isPickingGradient.current = true;
-                          }}
                           onChange={(e) => {
                             const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
-                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            
-                            // Update local state immediately
-                            setPage({
-                              ...page,
-                              customColors: {
-                                ...page?.customColors,
+                            handleUpdatePage({ 
+                              customColors: { 
+                                ...page?.customColors, 
                                 gradientStart: start,
                                 gradientEnd: end,
-                                background: gradient
+                                background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
                               }
                             });
-                            
-                            // Debounce save to backend
-                            if (gradientSaveTimeout.current) {
-                              clearTimeout(gradientSaveTimeout.current);
-                            }
-                            
-                            gradientSaveTimeout.current = setTimeout(() => {
-                              console.log('Auto-saving gradient:', gradient);
-                              isPickingGradient.current = false;
-                              handleUpdatePage({ 
-                                customColors: { 
-                                  ...page?.customColors, 
-                                  gradientStart: start,
-                                  gradientEnd: end,
-                                  background: gradient
-                                }
-                              }).then(() => {
-                                // Re-enable page updates after save completes
-                                setTimeout(() => {
-                                  isPickingGradient.current = false;
-                                }, 100);
-                              });
-                            }, 1000);
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
