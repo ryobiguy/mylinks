@@ -80,7 +80,7 @@ const Pricing = () => {
           <div className="plan-header">
             <h2>Pro</h2>
             <div className="price">
-              <span className="amount">$9</span>
+              <span className="amount">£2.99</span>
               <span className="period">/month</span>
             </div>
           </div>
