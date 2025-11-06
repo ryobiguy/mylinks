@@ -28,6 +28,7 @@ const Dashboard = () => {
   const [tempGradientStart, setTempGradientStart] = useState(null);
   const [tempGradientEnd, setTempGradientEnd] = useState(null);
   const [showAddBlock, setShowAddBlock] = useState(false);
+  const savingGradient = React.useRef(false);
   const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
     type: 'image', 
@@ -714,11 +715,15 @@ const Dashboard = () => {
                             });
                           }}
                           onBlur={(e) => {
-                            // Save to backend when done picking
+                            // Prevent duplicate saves
+                            if (savingGradient.current) return;
+                            
                             const start = e.target.value;
                             const end = page?.customColors?.gradientEnd || '#764ba2';
                             const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
                             console.log('Saving start color:', start, 'Gradient:', gradient);
+                            
+                            savingGradient.current = true;
                             handleUpdatePage({ 
                               customColors: { 
                                 ...page?.customColors, 
@@ -726,6 +731,10 @@ const Dashboard = () => {
                                 gradientEnd: end,
                                 background: gradient
                               }
+                            }).finally(() => {
+                              setTimeout(() => {
+                                savingGradient.current = false;
+                              }, 500);
                             });
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
@@ -753,11 +762,15 @@ const Dashboard = () => {
                             });
                           }}
                           onBlur={(e) => {
-                            // Save to backend when done picking
+                            // Prevent duplicate saves
+                            if (savingGradient.current) return;
+                            
                             const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
                             const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
                             console.log('Saving end color:', end, 'Gradient:', gradient);
+                            
+                            savingGradient.current = true;
                             handleUpdatePage({ 
                               customColors: { 
                                 ...page?.customColors, 
@@ -765,6 +778,10 @@ const Dashboard = () => {
                                 gradientEnd: end,
                                 background: gradient
                               }
+                            }).finally(() => {
+                              setTimeout(() => {
+                                savingGradient.current = false;
+                              }, 500);
                             });
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
