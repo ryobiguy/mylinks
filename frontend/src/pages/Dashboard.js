@@ -683,43 +683,15 @@ const Dashboard = () => {
               <div className="form-group">
                 <label>Page Background</label>
                 <p className="helper-text" style={{ marginBottom: '8px' }}>
-                  {user?.plan === 'pro' ? '💎 Pro: Use solid colors or gradients' : '🎨 Free: Solid colors only • Upgrade for gradients'}
+                  {user?.plan === 'pro' ? '💎 Pro: Create gradients with two colors' : '🎨 Free: Solid color only'}
                 </p>
                 
                 {user?.plan === 'pro' ? (
-                  <div style={{ marginBottom: '12px' }}>
-                    <label className="checkbox-label" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <input
-                        type="checkbox"
-                        checked={page?.customColors?.backgroundType === 'gradient'}
-                        onChange={(e) => {
-                          console.log('Gradient checkbox clicked:', e.target.checked);
-                          console.log('User plan:', user?.plan);
-                          const isGradient = e.target.checked;
-                          const currentBg = page?.customColors?.background || '#ffffff';
-                          handleUpdatePage({ 
-                            customColors: { 
-                              ...page?.customColors, 
-                              backgroundType: isGradient ? 'gradient' : 'solid',
-                              background: isGradient ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : (currentBg.includes('gradient') ? '#ffffff' : currentBg),
-                              gradientStart: '#667eea',
-                              gradientEnd: '#764ba2'
-                            }
-                          });
-                        }}
-                        style={{ cursor: 'pointer', margin: 0 }}
-                      />
-                      <span style={{ cursor: 'pointer' }}>Use Gradient Background 👑</span>
-                    </label>
-                  </div>
-                ) : null}
-
-                {page?.customColors?.backgroundType === 'gradient' && user?.plan === 'pro' ? (
                   <div>
-                    <label style={{ fontSize: '0.875rem', marginBottom: '8px', display: 'block' }}>Gradient Colors</label>
+                    <label style={{ fontSize: '0.875rem', marginBottom: '8px', display: 'block' }}>Gradient Colors 👑</label>
                     <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
                       <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: '0.75rem', color: '#666' }}>Start Color</label>
+                        <label style={{ fontSize: '0.75rem', color: '#666', marginBottom: '4px', display: 'block' }}>Start Color</label>
                         <input
                           type="color"
                           value={page?.customColors?.gradientStart || '#667eea'}
@@ -730,15 +702,16 @@ const Dashboard = () => {
                               customColors: { 
                                 ...page?.customColors, 
                                 gradientStart: start,
+                                gradientEnd: end,
                                 background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
                               }
                             });
                           }}
-                          style={{ width: '100%', height: '40px', cursor: 'pointer' }}
+                          style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: '0.75rem', color: '#666' }}>End Color</label>
+                        <label style={{ fontSize: '0.75rem', color: '#666', marginBottom: '4px', display: 'block' }}>End Color</label>
                         <input
                           type="color"
                           value={page?.customColors?.gradientEnd || '#764ba2'}
@@ -748,15 +721,19 @@ const Dashboard = () => {
                             handleUpdatePage({ 
                               customColors: { 
                                 ...page?.customColors, 
+                                gradientStart: start,
                                 gradientEnd: end,
                                 background: `linear-gradient(135deg, ${start} 0%, ${end} 100%)`
                               }
                             });
                           }}
-                          style={{ width: '100%', height: '40px', cursor: 'pointer' }}
+                          style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
                       </div>
                     </div>
+                    <p className="helper-text" style={{ fontSize: '0.75rem' }}>
+                      💡 Tip: Use the same color for both to create a solid background
+                    </p>
                   </div>
                 ) : (
                   <div className="color-picker-wrapper">
@@ -769,7 +746,7 @@ const Dashboard = () => {
                       type="text"
                       value={page?.customColors?.background || '#ffffff'}
                       onChange={(e) => handleUpdatePage({ 
-                        customColors: { ...page?.customColors, background: e.target.value, backgroundType: 'solid' }
+                        customColors: { ...page?.customColors, background: e.target.value }
                       })}
                       className="color-input-text"
                       placeholder="#ffffff"
@@ -784,7 +761,7 @@ const Dashboard = () => {
                           className="apply-color-btn"
                           onClick={() => {
                             handleUpdatePage({ 
-                              customColors: { ...page?.customColors, background: tempColor, backgroundType: 'solid' }
+                              customColors: { ...page?.customColors, background: tempColor }
                             });
                             setOpenColorPicker(null);
                             setTempColor(null);
