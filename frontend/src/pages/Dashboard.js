@@ -714,6 +714,23 @@ const Dashboard = () => {
                           onChange={(e) => {
                             const start = e.target.value;
                             const end = page?.customColors?.gradientEnd || '#764ba2';
+                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                            console.log('Start color changed:', start, gradient);
+                            // Update page state immediately
+                            setPage({
+                              ...page,
+                              customColors: {
+                                ...page?.customColors,
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: gradient
+                              }
+                            });
+                          }}
+                          onBlur={(e) => {
+                            // Save to backend when done
+                            const start = e.target.value;
+                            const end = page?.customColors?.gradientEnd || '#764ba2';
                             handleUpdatePage({ 
                               customColors: { 
                                 ...page?.customColors, 
@@ -732,6 +749,23 @@ const Dashboard = () => {
                           type="color"
                           value={page?.customColors?.gradientEnd || '#764ba2'}
                           onChange={(e) => {
+                            const start = page?.customColors?.gradientStart || '#667eea';
+                            const end = e.target.value;
+                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
+                            console.log('End color changed:', end, gradient);
+                            // Update page state immediately
+                            setPage({
+                              ...page,
+                              customColors: {
+                                ...page?.customColors,
+                                gradientStart: start,
+                                gradientEnd: end,
+                                background: gradient
+                              }
+                            });
+                          }}
+                          onBlur={(e) => {
+                            // Save to backend when done
                             const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
                             handleUpdatePage({ 
