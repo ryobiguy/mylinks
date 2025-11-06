@@ -190,6 +190,13 @@ const Dashboard = () => {
     e.preventDefault();
     if (!newLink.url) return;
 
+    // Check link limit for free users
+    const currentLinks = page?.links?.length || 0;
+    if (user?.plan === 'free' && currentLinks >= 4) {
+      toast.error('Free plan limited to 4 links. Upgrade to Pro for unlimited links!');
+      return;
+    }
+
     // If icon-only and no title, use the icon name as title
     const linkToAdd = {
       ...newLink,
@@ -350,9 +357,19 @@ const Dashboard = () => {
               <Eye size={18} />
               View Page
             </Link>
-            <button onClick={() => setShowQRCode(true)} className="btn-secondary">
+            <button 
+              onClick={() => {
+                if (user?.plan === 'free') {
+                  toast.error('QR Code is a Pro feature. Upgrade to access!');
+                } else {
+                  setShowQRCode(true);
+                }
+              }} 
+              className="btn-secondary"
+              style={user?.plan === 'free' ? { opacity: 0.6 } : {}}
+            >
               <QrCode size={18} />
-              QR Code
+              QR Code {user?.plan === 'free' && '👑'}
             </button>
             <Link to="/analytics" className="btn-secondary">
               <BarChart size={18} />
@@ -515,8 +532,14 @@ const Dashboard = () => {
                   {/* Premium Themes */}
                   <button
                     type="button"
-                    className={`theme-option ${page?.theme === 'neon' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'neon' })}
+                    className={`theme-option ${page?.theme === 'neon' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
+                    onClick={() => {
+                      if (user?.plan === 'free') {
+                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
+                      } else {
+                        handleUpdatePage({ theme: 'neon' });
+                      }
+                    }}
                   >
                     <div className="theme-preview neon-theme">
                       <div className="theme-bg"></div>
@@ -527,8 +550,14 @@ const Dashboard = () => {
 
                   <button
                     type="button"
-                    className={`theme-option ${page?.theme === 'sunset' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'sunset' })}
+                    className={`theme-option ${page?.theme === 'sunset' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
+                    onClick={() => {
+                      if (user?.plan === 'free') {
+                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
+                      } else {
+                        handleUpdatePage({ theme: 'sunset' });
+                      }
+                    }}
                   >
                     <div className="theme-preview sunset-theme">
                       <div className="theme-bg"></div>
@@ -539,8 +568,14 @@ const Dashboard = () => {
 
                   <button
                     type="button"
-                    className={`theme-option ${page?.theme === 'ocean' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'ocean' })}
+                    className={`theme-option ${page?.theme === 'ocean' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
+                    onClick={() => {
+                      if (user?.plan === 'free') {
+                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
+                      } else {
+                        handleUpdatePage({ theme: 'ocean' });
+                      }
+                    }}
                   >
                     <div className="theme-preview ocean-theme">
                       <div className="theme-bg"></div>
@@ -551,8 +586,14 @@ const Dashboard = () => {
 
                   <button
                     type="button"
-                    className={`theme-option ${page?.theme === 'forest' ? 'selected' : ''}`}
-                    onClick={() => handleUpdatePage({ theme: 'forest' })}
+                    className={`theme-option ${page?.theme === 'forest' ? 'selected' : ''} ${user?.plan === 'free' ? 'locked' : ''}`}
+                    onClick={() => {
+                      if (user?.plan === 'free') {
+                        toast.error('Premium themes are Pro only. Upgrade to unlock!');
+                      } else {
+                        handleUpdatePage({ theme: 'forest' });
+                      }
+                    }}
                   >
                     <div className="theme-preview forest-theme">
                       <div className="theme-bg"></div>
