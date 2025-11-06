@@ -87,6 +87,15 @@ const Dashboard = () => {
     fetchPage();
   }, []);
 
+  // Clear gradient save timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (gradientSaveTimeout.current) {
+        clearTimeout(gradientSaveTimeout.current);
+      }
+    };
+  }, []);
+
   const fetchPage = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -112,21 +121,8 @@ const Dashboard = () => {
       });
       console.log('Server returned gradient:', response.data.page.customColors?.background);
       
-      // Don't overwrite local gradient state if we just saved it
-      if (updates.customColors?.background) {
-        console.log('Preserving local gradient state');
-        setPage(prev => ({
-          ...response.data.page,
-          customColors: {
-            ...response.data.page.customColors,
-            gradientStart: prev.customColors?.gradientStart,
-            gradientEnd: prev.customColors?.gradientEnd,
-            background: prev.customColors?.background
-          }
-        }));
-      } else {
-        setPage(response.data.page);
-      }
+      // Use server response (it has the correct saved values)
+      setPage(response.data.page);
       
       toast.success('Page updated!');
     } catch (error) {
