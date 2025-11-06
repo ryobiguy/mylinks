@@ -56,6 +56,51 @@ const linkSchema = new mongoose.Schema({
   }
 });
 
+const contentBlockSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['image', 'video', 'product', 'text'],
+    default: 'image'
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  imageUrl: {
+    type: String,
+    default: ''
+  },
+  videoUrl: {
+    type: String,
+    default: ''
+  },
+  linkUrl: {
+    type: String,
+    default: ''
+  },
+  backgroundColor: {
+    type: String,
+    default: '#ffffff'
+  },
+  layout: {
+    type: String,
+    enum: ['full', 'half'],
+    default: 'full'
+  },
+  order: {
+    type: Number,
+    default: 0
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  }
+});
+
 const pageSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -150,6 +195,7 @@ const pageSchema = new mongoose.Schema({
     default: 'none'
   },
   links: [linkSchema],
+  contentBlocks: [contentBlockSchema],
   socialLinks: {
     twitter: String,
     instagram: String,

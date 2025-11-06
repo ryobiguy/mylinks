@@ -228,4 +228,84 @@ router.post('/:username/links/:linkId/click', async (req, res) => {
   }
 });
 
+// Add content block
+router.post('/my-page/content-blocks', auth, async (req, res) => {
+  try {
+    const { type, title, description, imageUrl, videoUrl, linkUrl, backgroundColor, layout } = req.body;
+
+    const page = await Page.findOne({ user: req.userId });
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    const newBlock = {
+      type,
+      title,
+      description,
+      imageUrl,
+      videoUrl,
+      linkUrl,
+      backgroundColor,
+      layout,
+      order: page.contentBlocks.length
+    };
+
+    page.contentBlocks.push(newBlock);
+    await page.save();
+    res.json({ page });
+  } catch (error) {
+    console.error('Add content block error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update content block
+router.put('/my-page/content-blocks/:blockId', auth, async (req, res) => {
+  try {
+    const { title, description, imageUrl, videoUrl, linkUrl, backgroundColor, layout, isActive } = req.body;
+
+    const page = await Page.findOne({ user: req.userId });
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    const block = page.contentBlocks.id(req.params.blockId);
+    if (!block) {
+      return res.status(404).json({ error: 'Content block not found' });
+    }
+
+    if (title !== undefined) block.title = title;
+    if (description !== undefined) block.description = description;
+    if (imageUrl !== undefined) block.imageUrl = imageUrl;
+    if (videoUrl !== undefined) block.videoUrl = videoUrl;
+    if (linkUrl !== undefined) block.linkUrl = linkUrl;
+    if (backgroundColor !== undefined) block.backgroundColor = backgroundColor;
+    if (layout !== undefined) block.layout = layout;
+    if (isActive !== undefined) block.isActive = isActive;
+
+    await page.save();
+    res.json({ page });
+  } catch (error) {
+    console.error('Update content block error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Delete content block
+router.delete('/my-page/content-blocks/:blockId', auth, async (req, res) => {
+  try {
+    const page = await Page.findOne({ user: req.userId });
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    page.contentBlocks.pull(req.params.blockId);
+    await page.save();
+    res.json({ page });
+  } catch (error) {
+    console.error('Delete content block error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
