@@ -221,6 +221,24 @@ router.post('/:username/links/:linkId/click', async (req, res) => {
     link.clicks += 1;
     await page.save();
 
+    // Also track in Analytics collection
+    const Analytics = require('../models/Analytics');
+    const ua = req.headers['user-agent'] || '';
+    let device = 'unknown';
+    if (/mobile/i.test(ua)) device = 'mobile';
+    else if (/tablet|ipad/i.test(ua)) device = 'tablet';
+    else if (/mozilla/i.test(ua)) device = 'desktop';
+
+    await Analytics.create({
+      page: page._id,
+      type: 'click',
+      linkId: link._id,
+      linkTitle: link.title,
+      device,
+      referrer: req.headers.referer || 'direct',
+      timestamp: new Date()
+    });
+
     res.json({ success: true });
   } catch (error) {
     console.error('Track click error:', error);

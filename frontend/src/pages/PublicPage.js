@@ -18,6 +18,18 @@ const PublicPage = () => {
     fetchPage();
   }, [username]);
 
+  // Track page view
+  useEffect(() => {
+    if (page?.username) {
+      axios.post(`${API_URL}/analytics/track`, {
+        username: page.username,
+        type: 'view',
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'direct'
+      }).catch(err => console.error('Analytics tracking error:', err));
+    }
+  }, [page?.username]);
+
   const fetchPage = async () => {
     try {
       const response = await axios.get(`${API_URL}/pages/${username}`);
