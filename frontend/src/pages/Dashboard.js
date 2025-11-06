@@ -1375,11 +1375,38 @@ const Dashboard = () => {
 
                   <div className="form-group">
                     <label>Background Color</label>
-                    <input
-                      type="color"
-                      value={newBlock.backgroundColor}
-                      onChange={(e) => setNewBlock({ ...newBlock, backgroundColor: e.target.value })}
-                    />
+                    <div className="color-picker-wrapper">
+                      <div 
+                        className="color-preview-circle"
+                        style={{ background: newBlock.backgroundColor || '#ffffff' }}
+                        onClick={() => setOpenColorPicker(openColorPicker === 'blockBg' ? null : 'blockBg')}
+                      />
+                      <input
+                        type="text"
+                        value={newBlock.backgroundColor || '#ffffff'}
+                        onChange={(e) => setNewBlock({ ...newBlock, backgroundColor: e.target.value })}
+                        className="color-input-text"
+                        placeholder="#ffffff"
+                      />
+                      {openColorPicker === 'blockBg' && (
+                        <div className="color-picker-popover">
+                          <HexColorPicker 
+                            color={tempColor || newBlock.backgroundColor || '#ffffff'}
+                            onChange={(color) => setTempColor(color)}
+                          />
+                          <button 
+                            className="apply-color-btn"
+                            onClick={() => {
+                              setNewBlock({ ...newBlock, backgroundColor: tempColor });
+                              setOpenColorPicker(null);
+                              setTempColor(null);
+                            }}
+                          >
+                            ✓ Apply
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="form-actions">
