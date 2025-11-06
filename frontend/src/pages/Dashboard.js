@@ -685,19 +685,24 @@ const Dashboard = () => {
                 
                 {user?.plan === 'pro' ? (
                   <div style={{ marginBottom: '12px' }}>
-                    <label className="checkbox-label">
+                    <label className="checkbox-label" style={{ cursor: 'pointer' }}>
                       <input
                         type="checkbox"
                         checked={page?.customColors?.backgroundType === 'gradient'}
                         onChange={(e) => {
+                          const isGradient = e.target.checked;
+                          const currentBg = page?.customColors?.background || '#ffffff';
                           handleUpdatePage({ 
                             customColors: { 
                               ...page?.customColors, 
-                              backgroundType: e.target.checked ? 'gradient' : 'solid',
-                              background: e.target.checked ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#ffffff'
+                              backgroundType: isGradient ? 'gradient' : 'solid',
+                              background: isGradient ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : (currentBg.includes('gradient') ? '#ffffff' : currentBg),
+                              gradientStart: '#667eea',
+                              gradientEnd: '#764ba2'
                             }
                           });
                         }}
+                        style={{ cursor: 'pointer' }}
                       />
                       <span>Use Gradient Background 👑</span>
                     </label>
