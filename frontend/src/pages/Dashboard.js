@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [tempGradientEnd, setTempGradientEnd] = useState(null);
   const [showAddBlock, setShowAddBlock] = useState(false);
   const savingGradient = React.useRef(false);
+  const gradientSaveTimeout = React.useRef(null);
   const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
     type: 'image', 
@@ -702,8 +703,8 @@ const Dashboard = () => {
                             const start = e.target.value;
                             const end = page?.customColors?.gradientEnd || '#764ba2';
                             const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            console.log('Start color changed:', start, gradient);
-                            // Update page state immediately
+                            
+                            // Update local state immediately
                             setPage({
                               ...page,
                               customColors: {
@@ -713,29 +714,23 @@ const Dashboard = () => {
                                 background: gradient
                               }
                             });
-                          }}
-                          onBlur={(e) => {
-                            // Prevent duplicate saves
-                            if (savingGradient.current) return;
                             
-                            const start = e.target.value;
-                            const end = page?.customColors?.gradientEnd || '#764ba2';
-                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            console.log('Saving start color:', start, 'Gradient:', gradient);
+                            // Debounce save to backend
+                            if (gradientSaveTimeout.current) {
+                              clearTimeout(gradientSaveTimeout.current);
+                            }
                             
-                            savingGradient.current = true;
-                            handleUpdatePage({ 
-                              customColors: { 
-                                ...page?.customColors, 
-                                gradientStart: start,
-                                gradientEnd: end,
-                                background: gradient
-                              }
-                            }).finally(() => {
-                              setTimeout(() => {
-                                savingGradient.current = false;
-                              }, 500);
-                            });
+                            gradientSaveTimeout.current = setTimeout(() => {
+                              console.log('Auto-saving gradient:', gradient);
+                              handleUpdatePage({ 
+                                customColors: { 
+                                  ...page?.customColors, 
+                                  gradientStart: start,
+                                  gradientEnd: end,
+                                  background: gradient
+                                }
+                              });
+                            }, 1000);
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
@@ -749,8 +744,8 @@ const Dashboard = () => {
                             const start = page?.customColors?.gradientStart || '#667eea';
                             const end = e.target.value;
                             const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            console.log('End color changed:', end, gradient);
-                            // Update page state immediately
+                            
+                            // Update local state immediately
                             setPage({
                               ...page,
                               customColors: {
@@ -760,29 +755,23 @@ const Dashboard = () => {
                                 background: gradient
                               }
                             });
-                          }}
-                          onBlur={(e) => {
-                            // Prevent duplicate saves
-                            if (savingGradient.current) return;
                             
-                            const start = page?.customColors?.gradientStart || '#667eea';
-                            const end = e.target.value;
-                            const gradient = `linear-gradient(135deg, ${start} 0%, ${end} 100%)`;
-                            console.log('Saving end color:', end, 'Gradient:', gradient);
+                            // Debounce save to backend
+                            if (gradientSaveTimeout.current) {
+                              clearTimeout(gradientSaveTimeout.current);
+                            }
                             
-                            savingGradient.current = true;
-                            handleUpdatePage({ 
-                              customColors: { 
-                                ...page?.customColors, 
-                                gradientStart: start,
-                                gradientEnd: end,
-                                background: gradient
-                              }
-                            }).finally(() => {
-                              setTimeout(() => {
-                                savingGradient.current = false;
-                              }, 500);
-                            });
+                            gradientSaveTimeout.current = setTimeout(() => {
+                              console.log('Auto-saving gradient:', gradient);
+                              handleUpdatePage({ 
+                                customColors: { 
+                                  ...page?.customColors, 
+                                  gradientStart: start,
+                                  gradientEnd: end,
+                                  background: gradient
+                                }
+                              });
+                            }, 1000);
                           }}
                           style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px', border: '2px solid #e5e7eb' }}
                         />
