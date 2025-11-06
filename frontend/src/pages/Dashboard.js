@@ -106,9 +106,11 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       console.log('Updating page with:', Object.keys(updates));
+      console.log('Gradient being saved:', updates.customColors?.background);
       const response = await axios.put(`${API_URL}/pages/my-page`, updates, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('Server returned gradient:', response.data.page.customColors?.background);
       setPage(response.data.page);
       toast.success('Page updated!');
     } catch (error) {
