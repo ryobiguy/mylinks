@@ -601,10 +601,28 @@ const Dashboard = () => {
             <h1>Edit Your Page</h1>
             <p>mylinks.com/{user?.username}</p>
           </div>
-          {user?.plan === 'free' && (
+          {user?.plan === 'free' ? (
             <Link to="/pricing" className="upgrade-btn">
               👑 Upgrade to Pro
             </Link>
+          ) : (
+            <button 
+              onClick={async () => {
+                try {
+                  const token = localStorage.getItem('token');
+                  const response = await axios.post(`${API_URL}/payments/create-portal-session`, {}, {
+                    headers: { Authorization: `Bearer ${token}` }
+                  });
+                  window.open(response.data.url, '_blank');
+                } catch (error) {
+                  console.error('Portal error:', error);
+                  toast.error('Failed to open billing portal');
+                }
+              }}
+              className="btn-secondary"
+            >
+              Manage Subscription
+            </button>
           )}
         </div>
 
