@@ -685,11 +685,13 @@ const Dashboard = () => {
                 
                 {user?.plan === 'pro' ? (
                   <div style={{ marginBottom: '12px' }}>
-                    <label className="checkbox-label" style={{ cursor: 'pointer' }}>
+                    <label className="checkbox-label" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <input
                         type="checkbox"
                         checked={page?.customColors?.backgroundType === 'gradient'}
                         onChange={(e) => {
+                          console.log('Gradient checkbox clicked:', e.target.checked);
+                          console.log('User plan:', user?.plan);
                           const isGradient = e.target.checked;
                           const currentBg = page?.customColors?.background || '#ffffff';
                           handleUpdatePage({ 
@@ -702,9 +704,9 @@ const Dashboard = () => {
                             }
                           });
                         }}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: 'pointer', margin: 0 }}
                       />
-                      <span>Use Gradient Background 👑</span>
+                      <span style={{ cursor: 'pointer' }}>Use Gradient Background 👑</span>
                     </label>
                   </div>
                 ) : null}
@@ -754,15 +756,41 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ) : (
-                  <div>
+                  <div className="color-picker-wrapper">
+                    <div 
+                      className="color-preview-circle"
+                      style={{ background: page?.customColors?.background || '#ffffff' }}
+                      onClick={() => setOpenColorPicker(openColorPicker === 'pageBg' ? null : 'pageBg')}
+                    />
                     <input
-                      type="color"
+                      type="text"
                       value={page?.customColors?.background || '#ffffff'}
                       onChange={(e) => handleUpdatePage({ 
                         customColors: { ...page?.customColors, background: e.target.value, backgroundType: 'solid' }
                       })}
-                      style={{ width: '100%', height: '50px', cursor: 'pointer', borderRadius: '8px' }}
+                      className="color-input-text"
+                      placeholder="#ffffff"
                     />
+                    {openColorPicker === 'pageBg' && (
+                      <div className="color-picker-popover">
+                        <HexColorPicker 
+                          color={tempColor || page?.customColors?.background || '#ffffff'}
+                          onChange={(color) => setTempColor(color)}
+                        />
+                        <button 
+                          className="apply-color-btn"
+                          onClick={() => {
+                            handleUpdatePage({ 
+                              customColors: { ...page?.customColors, background: tempColor, backgroundType: 'solid' }
+                            });
+                            setOpenColorPicker(null);
+                            setTempColor(null);
+                          }}
+                        >
+                          ✓ Apply
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
