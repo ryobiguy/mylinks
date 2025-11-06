@@ -25,6 +25,16 @@ const Dashboard = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
   const [tempColor, setTempColor] = useState(null);
+  const [showAddBlock, setShowAddBlock] = useState(false);
+  const [newBlock, setNewBlock] = useState({ 
+    type: 'image', 
+    title: '', 
+    description: '', 
+    imageUrl: '', 
+    linkUrl: '', 
+    backgroundColor: '#ffffff',
+    layout: 'full'
+  });
   
   // Close color picker when clicking outside
   useEffect(() => {
@@ -283,6 +293,59 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Delete link error:', error);
       toast.error('Failed to delete link');
+    }
+  };
+
+  // Content Block Handlers
+  const handleAddBlock = async (e) => {
+    e.preventDefault();
+    
+    if (user?.plan === 'free') {
+      toast.error('Content Blocks are a Pro feature! Upgrade to unlock.');
+      return;
+    }
+
+    if (!newBlock.title || !newBlock.imageUrl) {
+      toast.error('Please fill in title and image URL');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`${API_URL}/pages/my-page/content-blocks`, newBlock, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPage(response.data.page);
+      setNewBlock({ 
+        type: 'image', 
+        title: '', 
+        description: '', 
+        imageUrl: '', 
+        linkUrl: '', 
+        backgroundColor: '#ffffff',
+        layout: 'full'
+      });
+      setShowAddBlock(false);
+      toast.success('Content block added!');
+    } catch (error) {
+      console.error('Add block error:', error);
+      toast.error('Failed to add content block');
+    }
+  };
+
+  const handleDeleteBlock = async (blockId) => {
+    if (!window.confirm('Delete this content block?')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(`${API_URL}/pages/my-page/content-blocks/${blockId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPage(response.data.page);
+      toast.success('Content block deleted!');
+    } catch (error) {
+      console.error('Delete block error:', error);
+      toast.error('Failed to delete content block');
     }
   };
 
@@ -1119,6 +1182,145 @@ const Dashboard = () => {
                         </button>
                         <button 
                           onClick={() => handleDeleteLink(link._id)} 
+                          className="btn-icon"
+                          title="Delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Content Blocks Section - Pro Only */}
+            <div className="section">
+              <div className="section-header">
+                <h2>Content Blocks 👑</h2>
+                <button 
+                  onClick={() => {
+                    if (user?.plan === 'free') {
+                      toast.error('Content Blocks are a Pro feature! Upgrade to unlock.');
+                    } else {
+                      setShowAddBlock(!showAddBlock);
+                    }
+                  }}
+                  className="btn-primary"
+                  style={user?.plan === 'free' ? { opacity: 0.6 } : {}}
+                >
+                  <Plus size={18} />
+                  Add Content Block
+                </button>
+              </div>
+
+              {showAddBlock && (
+                <form onSubmit={handleAddBlock} className="add-link-form">
+                  <div className="form-group">
+                    <label>Layout</label>
+                    <select
+                      value={newBlock.layout}
+                      onChange={(e) => setNewBlock({ ...newBlock, layout: e.target.value })}
+                      className="select-input"
+                    >
+                      <option value="full">Full Width</option>
+                      <option value="half">Half Width (2 columns)</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Title</label>
+                    <input
+                      type="text"
+                      value={newBlock.title}
+                      onChange={(e) => setNewBlock({ ...newBlock, title: e.target.value })}
+                      placeholder="e.g., Check out my Amazon list"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Description (optional)</label>
+                    <input
+                      type="text"
+                      value={newBlock.description}
+                      onChange={(e) => setNewBlock({ ...newBlock, description: e.target.value })}
+                      placeholder="e.g., My favorite products"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Image URL</label>
+                    <input
+                      type="url"
+                      value={newBlock.imageUrl}
+                      onChange={(e) => setNewBlock({ ...newBlock, imageUrl: e.target.value })}
+                      placeholder="https://example.com/image.jpg"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Link URL (optional)</label>
+                    <input
+                      type="url"
+                      value={newBlock.linkUrl}
+                      onChange={(e) => setNewBlock({ ...newBlock, linkUrl: e.target.value })}
+                      placeholder="https://example.com"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Background Color</label>
+                    <input
+                      type="color"
+                      value={newBlock.backgroundColor}
+                      onChange={(e) => setNewBlock({ ...newBlock, backgroundColor: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="form-actions">
+                    <button type="submit" className="btn-primary btn-small">Add Block</button>
+                    <button 
+                      type="button" 
+                      onClick={() => setShowAddBlock(false)} 
+                      className="btn-secondary btn-small"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="links-list">
+                {page?.contentBlocks?.length === 0 ? (
+                  <p className="empty-state">No content blocks yet. Add rich media cards to showcase your content! 👑</p>
+                ) : (
+                  page?.contentBlocks?.map((block) => (
+                    <div key={block._id} className="link-item">
+                      <div className="link-info">
+                        <img 
+                          src={block.imageUrl} 
+                          alt={block.title}
+                          style={{ 
+                            width: 60, 
+                            height: 60, 
+                            objectFit: 'cover', 
+                            borderRadius: 8,
+                            marginRight: 12
+                          }}
+                        />
+                        <div>
+                          <strong>{block.title}</strong>
+                          {block.description && <p style={{ fontSize: '0.875rem', color: '#666', margin: '4px 0 0 0' }}>{block.description}</p>}
+                          <span style={{ fontSize: '0.75rem', color: '#999' }}>
+                            {block.layout === 'full' ? 'Full Width' : 'Half Width'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="link-actions">
+                        <button 
+                          onClick={() => handleDeleteBlock(block._id)} 
                           className="btn-icon"
                           title="Delete"
                         >
