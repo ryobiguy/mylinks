@@ -111,7 +111,23 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Server returned gradient:', response.data.page.customColors?.background);
-      setPage(response.data.page);
+      
+      // Don't overwrite local gradient state if we just saved it
+      if (updates.customColors?.background) {
+        console.log('Preserving local gradient state');
+        setPage(prev => ({
+          ...response.data.page,
+          customColors: {
+            ...response.data.page.customColors,
+            gradientStart: prev.customColors?.gradientStart,
+            gradientEnd: prev.customColors?.gradientEnd,
+            background: prev.customColors?.background
+          }
+        }));
+      } else {
+        setPage(response.data.page);
+      }
+      
       toast.success('Page updated!');
     } catch (error) {
       console.error('Update page error:', error);
