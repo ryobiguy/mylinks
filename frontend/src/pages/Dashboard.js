@@ -563,7 +563,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <nav className="dashboard-nav">
         <div className="nav-content">
-          <img src="/logo.png" alt="MyLinks" style={{ height: '80px' }} />
+          <img src="/logo.png" alt="MyLinks" style={{ height: '180px' }} />
           <div className="nav-actions">
             <Link to={`/${user?.username}`} className="btn-secondary">
               <Eye size={18} />
