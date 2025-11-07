@@ -33,7 +33,7 @@ const Register = () => {
       <div className="auth-container">
         <div className="auth-header">
           <Link to="/" className="auth-logo">
-            <img src="/logo.png" alt="MyLinks" style={{ height: '120px' }} />
+            <img src="/logo.png" alt="MyLinks" style={{ height: '240px' }} />
           </Link>
           <h1>Create your account</h1>
           <p>Get started for free</p>
