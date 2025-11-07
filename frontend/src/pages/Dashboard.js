@@ -1161,6 +1161,44 @@ const Dashboard = () => {
                   <option value="glow">Glow</option>
                 </select>
               </div>
+
+              <div className="form-group">
+                <label>Font Family 👑</label>
+                {user?.plan === 'pro' ? (
+                  <select
+                    value={page?.font || 'system'}
+                    onChange={(e) => handleUpdatePage({ font: e.target.value })}
+                    className="select-input"
+                  >
+                    <option value="system">System Default</option>
+                    <option value="inter">Inter (Modern)</option>
+                    <option value="poppins">Poppins (Friendly)</option>
+                    <option value="roboto">Roboto (Clean)</option>
+                    <option value="montserrat">Montserrat (Bold)</option>
+                    <option value="playfair">Playfair Display (Elegant)</option>
+                  </select>
+                ) : (
+                  <div>
+                    <select disabled className="select-input">
+                      <option>System Default</option>
+                    </select>
+                    <small style={{ color: '#666' }}>Upgrade to Pro to unlock custom fonts</small>
+                  </div>
+                )}
+              </div>
+
+              {user?.plan === 'pro' && (
+                <div className="form-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={page?.hideBranding || false}
+                      onChange={(e) => handleUpdatePage({ hideBranding: e.target.checked })}
+                    />
+                    <span>Hide "Powered by MyLinks" Branding 👑</span>
+                  </label>
+                </div>
+              )}
               </>
               )}
             </div>
