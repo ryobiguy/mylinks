@@ -228,6 +228,41 @@ const pageSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  customCSS: {
+    type: String,
+    default: ''
+  },
+  passwordProtection: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    password: {
+      type: String,
+      default: ''
+    }
+  },
+  emailCapture: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: 'Join my mailing list!'
+    },
+    description: {
+      type: String,
+      default: 'Get exclusive updates and content'
+    },
+    emails: [{
+      email: String,
+      capturedAt: {
+        type: Date,
+        default: Date.now
+      }
+    }]
+  },
   createdAt: {
     type: Date,
     default: Date.now

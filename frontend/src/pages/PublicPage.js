@@ -234,6 +234,11 @@ const PublicPage = () => {
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         
+        {/* Custom CSS */}
+        {page.customCSS && (
+          <style>{page.customCSS}</style>
+        )}
+        
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={pageUrl} />

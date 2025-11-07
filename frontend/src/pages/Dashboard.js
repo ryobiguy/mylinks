@@ -1199,6 +1199,23 @@ const Dashboard = () => {
                   </label>
                 </div>
               )}
+
+              {user?.plan === 'pro' && (
+                <div className="form-group">
+                  <label>Custom CSS 👑</label>
+                  <p className="helper-text" style={{ marginBottom: '8px' }}>
+                    Add custom CSS to fully customize your page appearance
+                  </p>
+                  <textarea
+                    value={page?.customCSS || ''}
+                    onChange={(e) => setPage({ ...page, customCSS: e.target.value })}
+                    onBlur={() => handleUpdatePage({ customCSS: page.customCSS })}
+                    placeholder=".public-link { border-radius: 20px; }"
+                    rows={6}
+                    style={{ fontFamily: 'monospace', fontSize: '14px' }}
+                  />
+                </div>
+              )}
               </>
               )}
             </div>
