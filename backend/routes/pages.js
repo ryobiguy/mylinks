@@ -23,7 +23,7 @@ router.get('/:username', async (req, res) => {
     const page = await Page.findOne({ 
       username: req.params.username.toLowerCase(),
       isPublished: true
-    });
+    }).populate('user', 'plan');
     
     if (!page) {
       return res.status(404).json({ error: 'Page not found' });

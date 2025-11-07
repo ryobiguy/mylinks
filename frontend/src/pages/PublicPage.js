@@ -232,6 +232,12 @@ const PublicPage = () => {
   const metaImage = page.seo?.metaImage || page.coverPhoto || page.avatar || `${window.location.origin}/logo.png`;
   const pageUrl = window.location.href;
 
+  // Check if user is using Pro features but doesn't have Pro plan
+  const isUsingProFeatures = page.hideBranding || page.font !== 'system' || page.customCSS || 
+    page.passwordProtection?.enabled || page.emailCapture?.enabled || page.contentBlocks?.length > 0;
+  const isPro = page.user?.plan === 'pro';
+  const showProWarning = isUsingProFeatures && !isPro;
+
   return (
     <>
       <Helmet>
@@ -257,6 +263,59 @@ const PublicPage = () => {
         <meta property="twitter:description" content={metaDescription} />
         <meta property="twitter:image" content={metaImage} />
       </Helmet>
+
+      {/* Pro Feature Warning Overlay */}
+      {showProWarning && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.95)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '60px 40px',
+            borderRadius: '20px',
+            maxWidth: '500px',
+            width: '100%',
+            textAlign: 'center',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+          }}>
+            <div style={{ fontSize: '80px', marginBottom: '20px' }}>⚠️</div>
+            <h2 style={{ fontSize: '32px', marginBottom: '20px', color: '#dc2626' }}>
+              Pro Features Disabled
+            </h2>
+            <p style={{ fontSize: '18px', color: '#666', marginBottom: '30px', lineHeight: '1.6' }}>
+              This user's Pro subscription has expired. Pro features like custom branding, fonts, and content blocks are no longer available.
+            </p>
+            <p style={{ fontSize: '16px', color: '#999', marginBottom: '30px' }}>
+              The page owner needs to renew their Pro subscription to restore these features.
+            </p>
+            <a 
+              href="/" 
+              style={{
+                display: 'inline-block',
+                padding: '16px 32px',
+                background: '#6366f1',
+                color: 'white',
+                textDecoration: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: '600'
+              }}
+            >
+              Create Your Own MyLinks
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Password Protection Modal */}
       {page.passwordProtection?.enabled && !isPasswordCorrect && (
