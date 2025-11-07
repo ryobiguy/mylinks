@@ -305,9 +305,9 @@ const Dashboard = () => {
       title: link.title,
       url: link.url,
       icon: link.icon,
-      iconOnly: link.iconOnly,
-      iconSize: link.iconSize,
-      position: link.position
+      iconOnly: link.iconOnly || false,
+      iconSize: link.iconSize || 50,
+      position: link.position || 'main'
     });
     setShowAddLink(true);
   };
