@@ -134,7 +134,7 @@ router.put('/my-page/links/reorder', auth, async (req, res) => {
 // Update link
 router.put('/my-page/links/:linkId', auth, async (req, res) => {
   try {
-    const { title, url, icon, isActive } = req.body;
+    const { title, url, icon, isActive, iconOnly, iconSize, position } = req.body;
 
     const page = await Page.findOne({ user: req.userId });
     if (!page) {
@@ -150,6 +150,9 @@ router.put('/my-page/links/:linkId', auth, async (req, res) => {
     if (url !== undefined) link.url = url;
     if (icon !== undefined) link.icon = icon;
     if (isActive !== undefined) link.isActive = isActive;
+    if (iconOnly !== undefined) link.iconOnly = iconOnly;
+    if (iconSize !== undefined) link.iconSize = iconSize;
+    if (position !== undefined) link.position = position;
 
     await page.save();
     res.json({ page });
