@@ -62,6 +62,10 @@ router.post('/create-portal-session', auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     
+    console.log('Portal session - User ID:', req.userId);
+    console.log('Portal session - User email:', user?.email);
+    console.log('Portal session - Stripe Customer ID:', user?.stripeCustomerId);
+    
     if (!user || !user.stripeCustomerId) {
       return res.status(404).json({ error: 'No subscription found' });
     }

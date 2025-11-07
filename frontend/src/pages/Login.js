@@ -32,7 +32,7 @@ const Login = () => {
       <div className="auth-container">
         <div className="auth-header">
           <Link to="/" className="auth-logo">
-            <img src="/logo.png" alt="MyLinks" style={{ height: '80px' }} />
+            <img src="/logo.png" alt="MyLinks" style={{ height: '120px' }} />
           </Link>
           <h1>Welcome back</h1>
           <p>Log in to your account</p>
