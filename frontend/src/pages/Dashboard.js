@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar, Edit } from 'lucide-react';
+import { Plus, Trash2, Eye, BarChart, LogOut, ExternalLink, Upload, GripVertical, QrCode, Download, Calendar, Edit, ChevronDown, ChevronUp } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaTiktok, FaLinkedin, FaReddit, FaGithub, FaDiscord, FaTwitch, FaSpotify, FaLink } from 'react-icons/fa';
 import { QRCodeSVG } from 'qrcode.react';
 import { HexColorPicker } from 'react-colorful';
@@ -43,6 +43,17 @@ const Dashboard = () => {
     layout: 'full'
   });
   const [editingLink, setEditingLink] = useState(null);
+  const [openSections, setOpenSections] = useState({
+    pageInfo: true,
+    appearance: false,
+    seo: false,
+    links: true,
+    contentBlocks: false
+  });
+  
+  const toggleSection = (section) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
   
   // Close color picker when clicking outside
   useEffect(() => {
@@ -629,8 +640,17 @@ const Dashboard = () => {
         <div className="dashboard-grid">
           <div className="editor-section">
             <div className="section-card">
-              <h3>Page Info</h3>
+              <div 
+                className="section-header-collapsible" 
+                onClick={() => toggleSection('pageInfo')}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+              >
+                <h3 style={{ margin: 0 }}>Page Info</h3>
+                {openSections.pageInfo ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </div>
               
+              {openSections.pageInfo && (
+              <>
               <div className="form-group">
                 <label>Cover Photo</label>
                 <p className="helper-text" style={{ marginBottom: '8px' }}>
@@ -709,11 +729,22 @@ const Dashboard = () => {
                   rows={3}
                 />
               </div>
+              </>
+              )}
             </div>
 
             <div className="section-card">
-              <h3>Appearance</h3>
+              <div 
+                className="section-header-collapsible" 
+                onClick={() => toggleSection('appearance')}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+              >
+                <h3 style={{ margin: 0 }}>Appearance</h3>
+                {openSections.appearance ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </div>
               
+              {openSections.appearance && (
+              <>
               <div className="form-group">
                 <label>Page Background</label>
                 <p className="helper-text" style={{ marginBottom: '8px' }}>
@@ -1132,6 +1163,8 @@ const Dashboard = () => {
                   <option value="glow">Glow</option>
                 </select>
               </div>
+              </>
+              )}
             </div>
 
             <div className="section-card">
