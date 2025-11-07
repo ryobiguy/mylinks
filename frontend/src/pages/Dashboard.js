@@ -48,7 +48,9 @@ const Dashboard = () => {
     appearance: false,
     seo: false,
     links: true,
-    contentBlocks: false
+    contentBlocks: false,
+    password: false,
+    emailCapture: false
   });
   
   const toggleSection = (section) => {
@@ -1752,6 +1754,150 @@ const Dashboard = () => {
               </>
               )}
             </div>
+
+            {/* Password Protection Section - Pro Only */}
+            {user?.plan === 'pro' && (
+              <div className="section-card">
+                <div 
+                  onClick={() => toggleSection('password')}
+                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+                >
+                  <h3 style={{ margin: 0 }}>Password Protection 👑</h3>
+                  {openSections.password ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </div>
+                
+                {openSections.password && (
+                <>
+                  <div className="form-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={page?.passwordProtection?.enabled || false}
+                        onChange={(e) => handleUpdatePage({ 
+                          passwordProtection: { 
+                            ...page?.passwordProtection, 
+                            enabled: e.target.checked 
+                          } 
+                        })}
+                      />
+                      <span>Enable Password Protection</span>
+                    </label>
+                    <p className="helper-text">Require visitors to enter a password to view your page</p>
+                  </div>
+
+                  {page?.passwordProtection?.enabled && (
+                    <div className="form-group">
+                      <label>Password</label>
+                      <input
+                        type="text"
+                        value={page?.passwordProtection?.password || ''}
+                        onChange={(e) => setPage({ 
+                          ...page, 
+                          passwordProtection: { 
+                            ...page?.passwordProtection, 
+                            password: e.target.value 
+                          } 
+                        })}
+                        onBlur={() => handleUpdatePage({ passwordProtection: page.passwordProtection })}
+                        placeholder="Enter password"
+                      />
+                    </div>
+                  )}
+                </>
+                )}
+              </div>
+            )}
+
+            {/* Email Capture Section - Pro Only */}
+            {user?.plan === 'pro' && (
+              <div className="section-card">
+                <div 
+                  onClick={() => toggleSection('emailCapture')}
+                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+                >
+                  <h3 style={{ margin: 0 }}>Email Capture 👑</h3>
+                  {openSections.emailCapture ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </div>
+                
+                {openSections.emailCapture && (
+                <>
+                  <div className="form-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={page?.emailCapture?.enabled || false}
+                        onChange={(e) => handleUpdatePage({ 
+                          emailCapture: { 
+                            ...page?.emailCapture, 
+                            enabled: e.target.checked 
+                          } 
+                        })}
+                      />
+                      <span>Enable Email Capture</span>
+                    </label>
+                    <p className="helper-text">Collect emails before visitors see your links</p>
+                  </div>
+
+                  {page?.emailCapture?.enabled && (
+                    <>
+                      <div className="form-group">
+                        <label>Form Title</label>
+                        <input
+                          type="text"
+                          value={page?.emailCapture?.title || 'Join my mailing list!'}
+                          onChange={(e) => setPage({ 
+                            ...page, 
+                            emailCapture: { 
+                              ...page?.emailCapture, 
+                              title: e.target.value 
+                            } 
+                          })}
+                          onBlur={() => handleUpdatePage({ emailCapture: page.emailCapture })}
+                          placeholder="Join my mailing list!"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Description</label>
+                        <textarea
+                          value={page?.emailCapture?.description || 'Get exclusive updates and content'}
+                          onChange={(e) => setPage({ 
+                            ...page, 
+                            emailCapture: { 
+                              ...page?.emailCapture, 
+                              description: e.target.value 
+                            } 
+                          })}
+                          onBlur={() => handleUpdatePage({ emailCapture: page.emailCapture })}
+                          placeholder="Get exclusive updates and content"
+                          rows={3}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label>Collected Emails ({page?.emailCapture?.emails?.length || 0})</label>
+                        {page?.emailCapture?.emails?.length > 0 ? (
+                          <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '12px' }}>
+                            {page.emailCapture.emails.map((entry, index) => (
+                              <div key={index} style={{ padding: '8px', borderBottom: index < page.emailCapture.emails.length - 1 ? '1px solid #f3f4f6' : 'none' }}>
+                                <strong>{entry.email}</strong>
+                                <br />
+                                <small style={{ color: '#666' }}>
+                                  {new Date(entry.capturedAt).toLocaleDateString()}
+                                </small>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="helper-text">No emails collected yet</p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="preview-section">

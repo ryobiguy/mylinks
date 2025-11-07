@@ -11,6 +11,10 @@ const PublicPage = () => {
   const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [hasSubmittedEmail, setHasSubmittedEmail] = useState(false);
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -253,6 +257,167 @@ const PublicPage = () => {
         <meta property="twitter:description" content={metaDescription} />
         <meta property="twitter:image" content={metaImage} />
       </Helmet>
+
+      {/* Password Protection Modal */}
+      {page.passwordProtection?.enabled && !isPasswordCorrect && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '40px',
+            borderRadius: '16px',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center'
+          }}>
+            <h2>🔒 Password Protected</h2>
+            <p style={{ color: '#666', marginBottom: '24px' }}>This page is password protected. Please enter the password to continue.</p>
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              placeholder="Enter password"
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '16px',
+                marginBottom: '16px'
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  if (passwordInput === page.passwordProtection.password) {
+                    setIsPasswordCorrect(true);
+                  } else {
+                    alert('Incorrect password');
+                  }
+                }
+              }}
+            />
+            <button
+              onClick={() => {
+                if (passwordInput === page.passwordProtection.password) {
+                  setIsPasswordCorrect(true);
+                } else {
+                  alert('Incorrect password');
+                }
+              }}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: '#6366f1',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Email Capture Modal */}
+      {page.emailCapture?.enabled && !hasSubmittedEmail && (!page.passwordProtection?.enabled || isPasswordCorrect) && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '40px',
+            borderRadius: '16px',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center'
+          }}>
+            <h2>📧 {page.emailCapture.title}</h2>
+            <p style={{ color: '#666', marginBottom: '24px' }}>{page.emailCapture.description}</p>
+            <input
+              type="email"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              placeholder="Enter your email"
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '16px',
+                marginBottom: '16px'
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && emailInput.includes('@')) {
+                  axios.post(`${API_URL}/pages/${username}/capture-email`, { email: emailInput })
+                    .then(() => setHasSubmittedEmail(true))
+                    .catch(err => console.error('Email capture error:', err));
+                }
+              }}
+            />
+            <button
+              onClick={() => {
+                if (emailInput.includes('@')) {
+                  axios.post(`${API_URL}/pages/${username}/capture-email`, { email: emailInput })
+                    .then(() => setHasSubmittedEmail(true))
+                    .catch(err => console.error('Email capture error:', err));
+                } else {
+                  alert('Please enter a valid email');
+                }
+              }}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: '#6366f1',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                marginBottom: '12px'
+              }}
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => setHasSubmittedEmail(true)}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: 'transparent',
+                color: '#666',
+                border: 'none',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}
+            >
+              Skip for now
+            </button>
+          </div>
+        </div>
+      )}
       
       <div className="public-page" style={pageStyle}>
         {page.coverPhoto && (

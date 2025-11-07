@@ -331,4 +331,34 @@ router.delete('/my-page/content-blocks/:blockId', auth, async (req, res) => {
   }
 });
 
+// Capture email
+router.post('/:username/capture-email', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const page = await Page.findOne({ username: req.params.username.toLowerCase() });
+    
+    if (!page) {
+      return res.status(404).json({ error: 'Page not found' });
+    }
+
+    // Check if email already exists
+    const emailExists = page.emailCapture?.emails?.some(e => e.email === email);
+    if (!emailExists) {
+      if (!page.emailCapture) {
+        page.emailCapture = { emails: [] };
+      }
+      if (!page.emailCapture.emails) {
+        page.emailCapture.emails = [];
+      }
+      page.emailCapture.emails.push({ email, capturedAt: new Date() });
+      await page.save();
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Capture email error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
