@@ -641,7 +641,6 @@ const Dashboard = () => {
           <div className="editor-section">
             <div className="section-card">
               <div 
-                className="section-header-collapsible" 
                 onClick={() => toggleSection('pageInfo')}
                 style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
               >
@@ -735,7 +734,6 @@ const Dashboard = () => {
 
             <div className="section-card">
               <div 
-                className="section-header-collapsible" 
                 onClick={() => toggleSection('appearance')}
                 style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
               >
@@ -1351,13 +1349,13 @@ const Dashboard = () => {
             </div>
 
             {/* Content Blocks Section - Pro Only */}
-            <div className="section">
+            <div className="section-card">
               <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <div 
                   onClick={() => toggleSection('contentBlocks')}
                   style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}
                 >
-                  <h2 style={{ margin: 0 }}>Content Blocks 👑</h2>
+                  <h3 style={{ margin: 0 }}>Content Blocks 👑</h3>
                   {openSections.contentBlocks ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
                 <button 
@@ -1618,7 +1616,6 @@ const Dashboard = () => {
 
             <div className="section-card">
               <div 
-                className="section-header-collapsible" 
                 onClick={() => toggleSection('seo')}
                 style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
               >
