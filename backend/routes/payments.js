@@ -43,6 +43,9 @@ router.post('/create-checkout-session', auth, async (req, res) => {
         },
       ],
       mode: 'subscription',
+      subscription_data: {
+        trial_period_days: 90, // 3 months free trial
+      },
       success_url: `${process.env.CLIENT_URL}/dashboard?upgrade=success`,
       cancel_url: `${process.env.CLIENT_URL}/dashboard?upgrade=cancelled`,
       metadata: {

@@ -83,6 +83,17 @@ const Pricing = () => {
               <span className="amount">£2.99</span>
               <span className="period">/month</span>
             </div>
+            <div style={{ 
+              background: '#10b981', 
+              color: 'white', 
+              padding: '8px 16px', 
+              borderRadius: '8px', 
+              fontSize: '14px', 
+              fontWeight: '600',
+              marginTop: '12px'
+            }}>
+              🎉 First 3 Months FREE
+            </div>
           </div>
 
           <ul className="features-list">
