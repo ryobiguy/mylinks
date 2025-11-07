@@ -1166,14 +1166,17 @@ const Dashboard = () => {
             </div>
 
             <div className="section-card">
-              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div 
-                  onClick={() => toggleSection('links')}
-                  style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}
-                >
-                  <h3 style={{ margin: 0 }}>Links</h3>
-                  {openSections.links ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </div>
+              <div 
+                onClick={() => toggleSection('links')}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+              >
+                <h3 style={{ margin: 0 }}>Links</h3>
+                {openSections.links ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </div>
+              
+              {openSections.links && (
+              <>
+              <div style={{ marginBottom: '16px' }}>
                 <button 
                   onClick={() => setShowAddLink(!showAddLink)} 
                   className="btn-primary btn-small"
@@ -1182,9 +1185,6 @@ const Dashboard = () => {
                   Add Link
                 </button>
               </div>
-              
-              {openSections.links && (
-              <>
 
               {showAddLink && (
                 <form onSubmit={editingLink ? handleUpdateLink : handleAddLink} className="add-link-form">
@@ -1350,14 +1350,17 @@ const Dashboard = () => {
 
             {/* Content Blocks Section - Pro Only */}
             <div className="section-card">
-              <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <div 
-                  onClick={() => toggleSection('contentBlocks')}
-                  style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}
-                >
-                  <h3 style={{ margin: 0 }}>Content Blocks 👑</h3>
-                  {openSections.contentBlocks ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </div>
+              <div 
+                onClick={() => toggleSection('contentBlocks')}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}
+              >
+                <h3 style={{ margin: 0 }}>Content Blocks 👑</h3>
+                {openSections.contentBlocks ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </div>
+              
+              {openSections.contentBlocks && (
+              <>
+              <div style={{ marginBottom: '16px' }}>
                 <button 
                   onClick={() => {
                     if (user?.plan === 'free') {
@@ -1372,9 +1375,6 @@ const Dashboard = () => {
                   Add Block
                 </button>
               </div>
-              
-              {openSections.contentBlocks && (
-              <>
 
               {showAddBlock && (
                 <form onSubmit={editingBlock ? handleUpdateBlock : handleAddBlock} className="add-link-form">
