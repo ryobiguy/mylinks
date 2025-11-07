@@ -9,6 +9,10 @@ const Pricing = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  
+  // Check if launch promo is still active (expires Dec 1, 2025)
+  const promoEndDate = new Date('2025-12-01T00:00:00Z');
+  const isPromoActive = new Date() < promoEndDate;
 
   const handleUpgrade = async () => {
     try {
@@ -83,17 +87,19 @@ const Pricing = () => {
               <span className="amount">£2.99</span>
               <span className="period">/month</span>
             </div>
-            <div style={{ 
-              background: '#10b981', 
-              color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '8px', 
-              fontSize: '14px', 
-              fontWeight: '600',
-              marginTop: '12px'
-            }}>
-              🎉 First 3 Months FREE
-            </div>
+            {isPromoActive && (
+              <div style={{ 
+                background: '#10b981', 
+                color: 'white', 
+                padding: '8px 16px', 
+                borderRadius: '8px', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                marginTop: '12px'
+              }}>
+                🎉 First 3 Months FREE
+              </div>
+            )}
           </div>
 
           <ul className="features-list">

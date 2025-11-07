@@ -32,8 +32,12 @@ router.post('/create-checkout-session', auth, async (req, res) => {
       await user.save();
     }
 
+    // Check if launch promo is still active (expires Dec 1, 2025)
+    const promoEndDate = new Date('2025-12-01T00:00:00Z');
+    const isPromoActive = new Date() < promoEndDate;
+
     // Create checkout session
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig = {
       customer: customerId,
       payment_method_types: ['card'],
       line_items: [
@@ -43,15 +47,21 @@ router.post('/create-checkout-session', auth, async (req, res) => {
         },
       ],
       mode: 'subscription',
-      subscription_data: {
-        trial_period_days: 90, // 3 months free trial
-      },
       success_url: `${process.env.CLIENT_URL}/dashboard?upgrade=success`,
       cancel_url: `${process.env.CLIENT_URL}/dashboard?upgrade=cancelled`,
       metadata: {
         userId: user._id.toString()
       }
-    });
+    };
+
+    // Add trial only if promo is active
+    if (isPromoActive) {
+      sessionConfig.subscription_data = {
+        trial_period_days: 90, // 3 months free trial
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     res.json({ sessionId: session.id, url: session.url });
   } catch (error) {
