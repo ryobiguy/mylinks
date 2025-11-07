@@ -86,14 +86,16 @@ const Pricing = () => {
           </div>
 
           <ul className="features-list">
-            <li><Check size={20} /> <strong>Everything in Free</strong></li>
-            <li><Zap size={20} className="highlight" /> 4 Premium themes</li>
-            <li><Zap size={20} className="highlight" /> Remove branding</li>
+            <li><Check size={20} /> <strong>Everything in Free, plus:</strong></li>
+            <li><Zap size={20} className="highlight" /> Gradient backgrounds</li>
+            <li><Zap size={20} className="highlight" /> Content blocks (images, videos)</li>
+            <li><Zap size={20} className="highlight" /> Custom fonts (6 options)</li>
+            <li><Zap size={20} className="highlight" /> Remove "Powered by" branding</li>
+            <li><Zap size={20} className="highlight" /> Custom CSS</li>
             <li><Zap size={20} className="highlight" /> Advanced analytics</li>
-            <li><Zap size={20} className="highlight" /> Device breakdown</li>
-            <li><Zap size={20} className="highlight" /> Time series data</li>
-            <li><Zap size={20} className="highlight" /> Link heatmap</li>
-            <li><Zap size={20} className="highlight" /> Top referrers</li>
+            <li><Zap size={20} className="highlight" /> Password protection</li>
+            <li><Zap size={20} className="highlight" /> Email capture forms</li>
+            <li><Zap size={20} className="highlight" /> Link scheduling & expiration</li>
             <li><Zap size={20} className="highlight" /> Priority support</li>
           </ul>
 
