@@ -25,12 +25,7 @@ const Dashboard = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [openColorPicker, setOpenColorPicker] = useState(null); // 'background', 'text', 'button', 'buttonText'
   const [tempColor, setTempColor] = useState(null);
-  const [tempGradientStart, setTempGradientStart] = useState(null);
-  const [tempGradientEnd, setTempGradientEnd] = useState(null);
   const [showAddBlock, setShowAddBlock] = useState(false);
-  const savingGradient = React.useRef(false);
-  const gradientSaveTimeout = React.useRef(null);
-  const isPickingGradient = React.useRef(false);
   const [editingBlock, setEditingBlock] = useState(null);
   const [newBlock, setNewBlock] = useState({ 
     type: 'image', 
@@ -99,16 +94,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Clear gradient save timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (gradientSaveTimeout.current) {
-        clearTimeout(gradientSaveTimeout.current);
-      }
-    };
-  }, []);
 
   const fetchPage = async () => {
     try {

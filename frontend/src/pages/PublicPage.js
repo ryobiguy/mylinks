@@ -20,6 +20,7 @@ const PublicPage = () => {
 
   useEffect(() => {
     fetchPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   // Track page view
@@ -32,6 +33,7 @@ const PublicPage = () => {
         referrer: document.referrer || 'direct'
       }).catch(err => console.error('Analytics tracking error:', err));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page?.username]);
 
   const fetchPage = async () => {
