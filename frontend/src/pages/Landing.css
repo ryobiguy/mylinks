@@ -14,12 +14,16 @@ body {
 
 .landing {
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Navigation */
@@ -328,12 +332,41 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .logo img {
+    max-height: 120px !important;
+    width: auto;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .hero {
+    padding: 60px 0;
+  }
+
   .hero h1 {
     font-size: 40px;
   }
 
   .hero-subtitle {
     font-size: 18px;
+  }
+
+  .demo-phone {
+    width: 280px;
+    max-width: 90%;
+  }
+
+  .features,
+  .pricing,
+  .cta-section {
+    padding: 60px 0;
   }
 
   .features h2,
@@ -344,5 +377,10 @@ body {
 
   .pricing-card.featured {
     transform: scale(1);
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
   }
 }
