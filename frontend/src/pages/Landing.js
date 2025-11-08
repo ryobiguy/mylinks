@@ -108,7 +108,7 @@ const Landing = () => {
               <div className="popular-badge">Most Popular</div>
               <h3>Pro</h3>
               <div className="price">
-                <span className="amount">£4.99</span>
+                <span className="amount">£2.99</span>
                 <span className="period">/month</span>
               </div>
               <ul className="features-list">
